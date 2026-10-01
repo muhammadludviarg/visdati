@@ -1,0 +1,85 @@
+/* Token warna: mengikuti referensi (latar gelap, aksen teal).
+   Aksen teal + abu terang tetap terbaca oleh penderita buta warna merah-hijau. */
+:root {
+  --latar: #1b1b1b;
+  --latar-kepala: #303030;
+  --permukaan: #242424;
+  --teks: #f2f2f2;
+  --teks-redup: #b9b9b9;
+  --aksen: #2ec4b6;
+  --aksen-gelap: #14625b;
+  --garis: #4a4a4a;
+  --lebar-maks: 1180px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--latar);
+  color: var(--teks);
+  font-family: "Archivo", system-ui, sans-serif;
+  line-height: 1.55;
+}
+
+/* Kepala halaman */
+.hero {
+  background: var(--latar-kepala);
+  padding: 2.5rem 1.25rem 2.25rem;
+  text-align: center;
+}
+.hero h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  margin: 0 0 1.25rem;
+}
+.hero hr { border: 0; border-top: 1px solid var(--garis); max-width: var(--lebar-maks); margin: 0 auto 1.25rem; }
+.hero p { max-width: 62ch; margin: 0 auto; color: var(--teks-redup); font-size: 0.95rem; }
+
+/* Bagian (scene): judul selang-seling kiri/kanan seperti referensi */
+.scene {
+  max-width: var(--lebar-maks);
+  margin: 0 auto;
+  padding: 3rem 1.25rem;
+  border-bottom: 1px solid var(--garis);
+}
+.scene:last-child { border-bottom: 0; }
+.scene-kepala { max-width: 60ch; }
+.scene.kiri .scene-kepala { text-align: left; }
+.scene.kanan .scene-kepala { text-align: right; margin-left: auto; }
+.scene h2 { font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.12; margin: 0 0 0.75rem; }
+.scene-kepala p { color: var(--teks-redup); font-size: 0.92rem; margin: 0 0 1.25rem; }
+
+/* Chart: tinggi tetap agar tata letak tidak melompat saat Plotly memuat */
+.chart { width: 100%; background: var(--permukaan); border-radius: 6px; }
+.chart.sedang { height: 440px; }
+.chart.tinggi { height: 620px; }
+.dua-kolom { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* Kontrol: dropdown dan tombol bulat bergaya referensi */
+.kontrol { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin: 0 0 1rem; }
+.scene.kanan .kontrol { justify-content: flex-end; }
+.kontrol label { color: var(--teks-redup); font-size: 0.85rem; }
+select, .tombol-tahun {
+  font: inherit; color: var(--teks);
+  background: #2c2c2c; border: 1px solid var(--garis);
+  border-radius: 999px; padding: 0.55rem 1.1rem; cursor: pointer;
+}
+.tombol-tahun:hover, select:hover { border-color: var(--aksen); }
+.tombol-tahun.aktif { background: var(--aksen-gelap); border-color: var(--aksen); }
+select:focus-visible, .tombol-tahun:focus-visible { outline: 2px solid var(--aksen); outline-offset: 2px; }
+
+.sumber { color: var(--teks-redup); font-size: 0.78rem; margin: 0.75rem 0 0; }
+.kaki { text-align: center; color: var(--teks-redup); font-size: 0.8rem; padding: 2rem 1.25rem 2.5rem; }
+
+/* Ponsel: kolom ditumpuk, judul rata kiri semua agar mudah dibaca */
+@media (max-width: 760px) {
+  .dua-kolom { grid-template-columns: 1fr; }
+  .scene.kanan .scene-kepala { text-align: left; margin-left: 0; }
+  .scene.kanan .kontrol { justify-content: flex-start; }
+  .chart.tinggi { height: 480px; }
+}

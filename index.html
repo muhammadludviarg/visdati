@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wajah Kemiskinan Indonesia: Potret, Sebab, dan Pergerakannya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Kepala halaman: judul serif besar + paragraf pengantar, seperti referensi -->
+  <header class="hero">
+    <h1>Wajah Kemiskinan Indonesia</h1>
+    <hr>
+    <p>Potret, sebab, dan pergerakannya. Halaman ini menelusuri kemiskinan di Indonesia dari peta
+      kabupaten/kota, kemiripan antarprovinsi, komponen garis kemiskinan, faktor yang berkaitan,
+      hingga perubahan posisi provinsi dari waktu ke waktu. Data utama: Badan Pusat Statistik
+      (BPS), acuan 2025. Klik, arahkan kursor, atau pilih filter pada setiap bagian untuk menjelajah.</p>
+  </header>
+
+  <main>
+
+    <!-- Scene 1: judul di kiri, seperti bagian "Region" pada referensi -->
+    <section id="scene1" class="scene kiri">
+      <div class="scene-kepala">
+        <h2>Seperti Apa Peta Kemiskinan Indonesia Hari Ini?</h2>
+        <p>Peta menampilkan persentase penduduk miskin di 514 kabupaten/kota. Pilih kelompok
+          wilayah untuk memperbesar, lalu arahkan kursor ke satu wilayah untuk melihat angkanya.</p>
+      </div>
+      <div class="kontrol">
+        <label for="s1-wilayah">Kelompok wilayah</label>
+        <select id="s1-wilayah"><option value="semua">Seluruh Indonesia</option></select>
+      </div>
+      <div id="s1-peta" class="chart tinggi"></div>
+      <p class="sumber">Sumber: BPS (persentase penduduk miskin Maret 2025, per kabupaten/kota); batas wilayah: Alf-Anas/batas-administrasi-indonesia.</p>
+    </section>
+
+    <!-- Scene 2: judul di kanan (selang-seling seperti referensi) -->
+    <section id="scene2" class="scene kanan">
+      <div class="scene-kepala">
+        <h2>Provinsi Mana yang Mirip, dan Mana yang Berbeda Sendirian?</h2>
+        <p>Sepuluh indikator provinsi diringkas menjadi dua sumbu dengan analisis komponen utama
+          (Principal Component Analysis). Klik satu titik, garisnya akan disorot di diagram koordinat paralel.</p>
+      </div>
+      <div class="dua-kolom">
+        <div id="s2-pca" class="chart sedang"></div>
+        <div id="s2-paralel" class="chart sedang"></div>
+      </div>
+      <p class="sumber">Sumber: BPS (olahan penulis).</p>
+    </section>
+
+    <section id="scene3" class="scene kiri">
+      <div class="scene-kepala">
+        <h2>Provinsi yang Menonjol Tadi, Seberapa Besar Sebenarnya Masalahnya?</h2>
+        <p>Ukuran lingkaran menunjukkan jumlah penduduk miskin (ribu jiwa), bukan persentasenya.</p>
+      </div>
+      <div id="s3-simbol" class="chart tinggi"></div>
+      <p class="sumber">Sumber: BPS (jumlah penduduk miskin Maret 2025, per kabupaten/kota).</p>
+    </section>
+
+    <section id="scene4" class="scene kanan">
+      <div class="scene-kepala">
+        <h2>Sebenarnya, Apa yang Membuat Seseorang Disebut Miskin?</h2>
+        <p>Garis kemiskinan nasional Maret 2026 sebesar Rp669.235 per kapita per bulan. Klik kotak
+          untuk melihat komoditas penyusunnya.</p>
+      </div>
+      <div class="kontrol">
+        <button class="tombol-tahun aktif" data-daerah="perkotaan">Perkotaan</button>
+        <button class="tombol-tahun" data-daerah="perdesaan">Perdesaan</button>
+      </div>
+      <div class="dua-kolom">
+        <div id="s4-treemap" class="chart sedang"></div>
+        <div id="s4-sunburst" class="chart sedang"></div>
+      </div>
+      <p class="sumber">Sumber: BPS, Berita Resmi Statistik Maret 2026, Tabel 4.</p>
+    </section>
+
+    <section id="scene5" class="scene kiri">
+      <div class="scene-kepala">
+        <h2>Faktor Apa yang Paling Berkaitan dengan Tingginya Kemiskinan?</h2>
+        <p>Warna menunjukkan kekuatan hubungan antarindikator provinsi (korelasi Pearson, -1 sampai 1).</p>
+      </div>
+      <div id="s5-heatmap" class="chart tinggi"></div>
+      <p class="sumber">Sumber: BPS (olahan penulis).</p>
+    </section>
+
+    <section id="scene6" class="scene kanan">
+      <div class="scene-kepala">
+        <h2>Apakah Wilayah Miskin Tetap Miskin, atau Berubah?</h2>
+        <p>Provinsi dikelompokkan Rendah, Sedang, Tinggi pada tiap titik waktu. Pita menunjukkan
+          perpindahan kelompok.</p>
+      </div>
+      <div id="s6-sankey" class="chart tinggi"></div>
+      <p class="sumber">Sumber: BPS (persentase penduduk miskin per provinsi, 34 provinsi konsisten).</p>
+    </section>
+
+  </main>
+
+  <footer class="kaki">
+    <p>Dibuat untuk UAS Visualisasi Data dan Informasi, Politeknik Statistika STIS. Sumber data: BPS.
+      Pengolahan data dan penyusunan kode dibantu AI (dideklarasikan pada makalah).</p>
+  </footer>
+
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  <script src="js/main.js"></script>
+  <script src="js/scene1.js"></script>
+  <script src="js/scene2.js"></script>
+  <script src="js/scene3.js"></script>
+  <script src="js/scene4.js"></script>
+  <script src="js/scene5.js"></script>
+  <script src="js/scene6.js"></script>
+</body>
+</html>
