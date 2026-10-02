@@ -9,14 +9,20 @@ const appData = {
     provinsiMultivariat: null,
     provinsiPcaMuatan: null,
     komoditas: null,
-    provinsiSimbol: null
+    provinsiSimbol: null,
+    trenKemiskinan: null,
+    desaKota: null,
+    dataTeksKemiskinan: null
 };
 
 // Status pelacak inisialisasi render agar tidak dirender berulang kali
 const sceneRendered = {
-    scene1: false,
+    makro: false,
+    scene1Koroplet: false,
+    scene1Bubble: false,
     scene2: false,
-    scene3: false,
+    scene3Treemap: false,
+    scene3Tree: false,
     scene5: false
 };
 
@@ -31,14 +37,20 @@ async function initApp() {
             multivariatRes, 
             pcaMuatanRes, 
             komoditasRes,
-            provinsiSimbolRes
+            provinsiSimbolRes,
+            trenRes,
+            desaKotaRes,
+            teksRes
         ] = await Promise.all([
             fetch('data/olahan/kabkota_kemiskinan.json' + cacheBuster),
             fetch('data/olahan/kabkota.geojson' + cacheBuster),
             fetch('data/olahan/provinsi_multivariat.json' + cacheBuster),
             fetch('data/olahan/provinsi_pca_muatan.json' + cacheBuster),
             fetch('data/olahan/komoditas_kemiskinan.json' + cacheBuster),
-            fetch('data/olahan/provinsi_simbol.json' + cacheBuster)
+            fetch('data/olahan/provinsi_simbol.json' + cacheBuster),
+            d3.csv('data/olahan/tren_kemiskinan.csv' + cacheBuster),
+            d3.csv('data/olahan/desa_kota.csv' + cacheBuster),
+            fetch('data/olahan/data_teks_kemiskinan.json' + cacheBuster)
         ]);
 
         appData.kabkota = await kabkotaRes.json();
@@ -47,8 +59,25 @@ async function initApp() {
         appData.provinsiPcaMuatan = await pcaMuatanRes.json();
         appData.komoditas = await komoditasRes.json();
         appData.provinsiSimbol = await provinsiSimbolRes.json();
+        
+        // Formating data tren CSV
+        appData.trenKemiskinan = trenRes.map(d => ({
+            tahun: +d.tahun,
+            persentase: +d.persentase,
+            jumlah_juta: +d.jumlah_juta,
+            anotasi: d.anotasi || null
+        }));
 
-        console.log("Data berhasil dimuat ke memori browser!", appData);
+        // Formating data desa_kota CSV
+        appData.desaKota = desaKotaRes.map(d => ({
+            provinsi: d.provinsi,
+            p0_kota: +d.p0_kota,
+            p0_desa: +d.p0_desa
+        }));
+
+        appData.dataTeksKemiskinan = await teksRes.json();
+
+        console.log("Semua data berhasil dimuat ke memori browser!", appData);
 
         // Siapkan observer untuk lazy-rendering setiap frame grafik saat di-scroll
         setupScrollObservers();
@@ -62,8 +91,8 @@ async function initApp() {
 function setupScrollObservers() {
     const observerOptions = {
         root: null,
-        rootMargin: "100px 0px 100px 0px", // Mulai render saat grafik hampir masuk layar
-        threshold: 0.05
+        rootMargin: "300px 0px 300px 0px",
+        threshold: 0.01
     };
 
     const observer = new IntersectionObserver((entries, obs) => {
@@ -71,16 +100,31 @@ function setupScrollObservers() {
             if (entry.isIntersecting) {
                 const targetId = entry.target.id;
 
-                // Bagian 1: Peta Spasial (Scene 1)
-                if (targetId === "frame-scene1" && !sceneRendered.scene1) {
-                    if (typeof initMap === 'function') {
-                        initMap();
-                        updateMap('koroplet');
-                        sceneRendered.scene1 = true;
+                // Bagian 1: Resolusi Makro (BRS Teks & Tren Line Chart)
+                if ((targetId === "frame-teks-brs" || targetId === "frame-tren-kemiskinan") && !sceneRendered.makro) {
+                    if (typeof renderMakroSection === 'function') {
+                        renderMakroSection();
+                        sceneRendered.makro = true;
                     }
                 }
 
-                // Bagian 2: Multivariat PCA & Radar (Scene 2) serta Heatmap (Scene 5)
+                // Bagian 2: Resolusi Spasial - Koroplet (Peta 1)
+                if (targetId === "frame-scene1-koroplet" && !sceneRendered.scene1Koroplet) {
+                    if (typeof initKoropletMap === 'function') {
+                        initKoropletMap('#chart-map-koroplet');
+                        sceneRendered.scene1Koroplet = true;
+                    }
+                }
+
+                // Bagian 2: Resolusi Spasial - Bubble (Peta 2)
+                if (targetId === "frame-scene1-bubble" && !sceneRendered.scene1Bubble) {
+                    if (typeof initBubbleMap === 'function') {
+                        initBubbleMap('#chart-map-bubble');
+                        sceneRendered.scene1Bubble = true;
+                    }
+                }
+
+                // Bagian 3: Multivariat PCA & Radar (Scene 2) serta Heatmap (Scene 5)
                 if (targetId === "frame-scene2" && !sceneRendered.scene2) {
                     if (typeof renderScene2 === 'function') {
                         renderScene2();
@@ -92,53 +136,47 @@ function setupScrollObservers() {
                     }
                 }
 
-                // Bagian 3: Anatomi Garis Kemiskinan Treemap & Tree (Scene 3)
-                if (targetId === "frame-scene3" && !sceneRendered.scene3) {
-                    if (typeof renderScene3 === 'function') {
-                        renderScene3();
-                        sceneRendered.scene3 = true;
+                // Bagian 3: Anatomi Garis Kemiskinan Treemap
+                if (targetId === "frame-scene3-treemap" && !sceneRendered.scene3Treemap) {
+                    if (typeof renderTreemapView === 'function') {
+                        renderTreemapView('#chart-scene3-treemap');
+                        sceneRendered.scene3Treemap = true;
                     }
                 }
 
-                // Hentikan observasi pada elemen yang sudah dirender
+                // Bagian 3: Anatomi Garis Kemiskinan Collapsible Tree
+                if (targetId === "frame-scene3-tree" && !sceneRendered.scene3Tree) {
+                    if (typeof renderCollapsibleTreeView === 'function') {
+                        renderCollapsibleTreeView('#chart-scene3-tree');
+                        sceneRendered.scene3Tree = true;
+                    }
+                }
+
                 obs.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
     // Daftarkan frame visualisasi ke observer
-    ["frame-scene1", "frame-scene2", "frame-scene3"].forEach(id => {
+    [
+        "frame-teks-brs", 
+        "frame-tren-kemiskinan", 
+        "frame-scene1-koroplet", 
+        "frame-scene1-bubble", 
+        "frame-scene2", 
+        "frame-scene3-treemap", 
+        "frame-scene3-tree"
+    ].forEach(id => {
         const el = document.getElementById(id);
         if (el) observer.observe(el);
     });
 
-    // Fallback: Jika pengguna langsung me-refresh halaman pada posisi tengah
+    // Fallback: Jika me-refresh halaman pada posisi tertentu
     setTimeout(() => {
-        ["frame-scene1", "frame-scene2", "frame-scene3"].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    if (id === "frame-scene1" && !sceneRendered.scene1 && typeof initMap === 'function') {
-                        initMap();
-                        updateMap('koroplet');
-                        sceneRendered.scene1 = true;
-                    }
-                    if (id === "frame-scene2" && !sceneRendered.scene2 && typeof renderScene2 === 'function') {
-                        renderScene2();
-                        sceneRendered.scene2 = true;
-                        if (typeof renderScene5 === 'function') {
-                            renderScene5();
-                            sceneRendered.scene5 = true;
-                        }
-                    }
-                    if (id === "frame-scene3" && !sceneRendered.scene3 && typeof renderScene3 === 'function') {
-                        renderScene3();
-                        sceneRendered.scene3 = true;
-                    }
-                }
-            }
-        });
+        if (!sceneRendered.makro && typeof renderMakroSection === 'function') {
+            renderMakroSection();
+            sceneRendered.makro = true;
+        }
     }, 400);
 }
 
@@ -147,12 +185,14 @@ let resizeTimer;
 window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-        // Render ulang elemen yang sudah pernah terbuka jika ukuran layar berubah signifikan
-        if (sceneRendered.scene1 && typeof initMap === 'function') {
-            initMap();
-            if (typeof updateMap === 'function') {
-                updateMap(mapState.currentMode || 'koroplet');
-            }
+        if (sceneRendered.makro && typeof renderMakroSection === 'function') {
+            renderMakroSection();
+        }
+        if (sceneRendered.scene1Koroplet && typeof initKoropletMap === 'function') {
+            initKoropletMap('#chart-map-koroplet');
+        }
+        if (sceneRendered.scene1Bubble && typeof initBubbleMap === 'function') {
+            initBubbleMap('#chart-map-bubble');
         }
         if (sceneRendered.scene2 && typeof renderScene2 === 'function') {
             renderScene2();
@@ -160,8 +200,11 @@ window.addEventListener("resize", () => {
         if (sceneRendered.scene5 && typeof renderScene5 === 'function') {
             renderScene5();
         }
-        if (sceneRendered.scene3 && typeof renderScene3 === 'function') {
-            renderScene3();
+        if (sceneRendered.scene3Treemap && typeof renderTreemapView === 'function') {
+            renderTreemapView('#chart-scene3-treemap');
+        }
+        if (sceneRendered.scene3Tree && typeof renderCollapsibleTreeView === 'function') {
+            renderCollapsibleTreeView('#chart-scene3-tree');
         }
     }, 350);
 });

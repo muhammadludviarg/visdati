@@ -148,15 +148,15 @@ body {
   margin-top: 1.5rem !important;
 }
 
-/* ── WADAH GRAFIK FULL / WIDE ─────────────────────────────────────────── */
+/* ── WADAH GRAFIK FULL / WIDE (Seamless Editorial Layout) ─────────────── */
 .graphic-frame {
   max-width: var(--lebar-grafik);
-  margin: 2.5rem auto 4.5rem;
-  background: var(--permukaan);
-  border: 1px solid var(--garis);
-  border-radius: 8px;
-  padding: 1.5rem 1.5rem 1.25rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  margin: 2rem auto 4rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 1rem 0;
+  box-shadow: none;
 }
 
 .graphic-frame.dua-kolom-frame {
@@ -169,32 +169,99 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--garis);
 }
 
 .graphic-header-stacked {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .graphic-title {
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--teks-mutlak);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
 .chart-canvas {
   width: 100%;
-  min-height: 480px;
+  min-height: 400px;
+  background: transparent;
 }
 
 .graphic-caption {
-  font-size: 0.8rem;
-  color: #7c7c84;
-  margin: 0.85rem 0 0;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  color: #8e8e93;
+  margin: 1rem 0 0;
+  line-height: 1.6;
+}
+
+/* ── STYLING KARTU BRS (ANALISIS TEKS BAHASA NEGARA) ───────────────────── */
+.brs-network-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.brs-keyword-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--garis);
+  border-radius: 6px;
+  padding: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.brs-keyword-card:hover {
+  border-color: var(--aksen);
+}
+
+.brs-word {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--aksen);
+  margin-bottom: 4px;
+}
+
+.brs-freq {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f4a261;
+  margin-bottom: 6px;
+}
+
+.brs-desc {
+  font-size: 0.78rem;
+  color: #a1a1a6;
+  line-height: 1.4;
+}
+
+.brs-quotes-box {
+  background: transparent;
+  border: 1px dashed var(--garis);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+}
+
+.brs-quote-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e5e5ea;
+  margin-bottom: 8px;
+}
+
+.brs-quote-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.82rem;
+  color: #a1a1a6;
+  line-height: 1.6;
+}
+
+.brs-quote-list strong {
+  color: var(--aksen);
 }
 
 /* ── TOOLBAR & BUTTONS ELEGAN ──────────────────────────────────────────── */
@@ -270,6 +337,76 @@ select:focus {
   gap: 2rem;
 }
 
+/* Lencana (Badges) Komparasi Provinsi */
+.selected-provinces-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--garis-terang);
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.selected-provinces-hint {
+  font-size: 0.8rem;
+  color: #7c7c84;
+  font-style: italic;
+}
+
+.prov-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e1e24;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 0.28rem 0.75rem 0.28rem 0.6rem;
+  font-size: 0.82rem;
+  color: #ffffff;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.prov-badge:hover {
+  border-color: var(--aksen);
+  transform: translateY(-1px);
+}
+
+.prov-badge-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.prov-badge-name {
+  font-size: 0.82rem;
+  color: #f5f5f7;
+}
+
+.prov-badge-remove {
+  background: transparent;
+  border: none;
+  color: #8e8e93;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  margin-left: 2px;
+  border-radius: 50%;
+  transition: color 0.15s ease;
+}
+
+.prov-badge-remove:hover {
+  color: #ff4d4f;
+}
+
 .pca-radar-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -278,16 +415,17 @@ select:focus {
 }
 
 .sub-panel {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  padding: 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .sub-panel-title {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: var(--teks-sub);
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
 }
 
 .heatmap-subcontainer {
@@ -395,6 +533,6 @@ select:focus {
   }
 
   .chart-canvas {
-    min-height: 400px;
+    min-height: 360px;
   }
 }

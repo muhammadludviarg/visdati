@@ -4,10 +4,12 @@
 //   - Brush scatter -> tampilkan semua provinsi terpilih di radar (overlay)
 //   - Klik titik -> toggle masuk/keluar set komparasi
 //   - Dropdown -> tambah provinsi ke set komparasi
+//   - Lencana Badges -> Tampilkan daftar provinsi terpilih + titik warna + tombol Hapus ✕
 //   - Maks 6 provinsi sekaligus di radar agar terbaca
 
 function renderScene2() {
     const data = appData.provinsiMultivariat;
+    if (!data || !data.length) return;
 
     // ─── KONFIGURASI VARIABEL RADAR ──────────────────────────────────────
     const radarDimensions = [
@@ -48,7 +50,8 @@ function renderScene2() {
 
     const radarRadius = Math.min(wR - mR.left - mR.right, H - mR.top - mR.bottom) / 2 - 40;
 
-    const tooltip = d3.select("body").append("div").attr("class", "d3-tooltip");
+    d3.selectAll(".d3-tooltip.scene2-tooltip").remove();
+    const tooltip = d3.select("body").append("div").attr("class", "d3-tooltip scene2-tooltip");
 
     // STATE: set provinsi yang sedang dibandingkan (kunci -> index warna)
     let compareMap = new Map(); // kunci -> colorIndex
@@ -56,7 +59,7 @@ function renderScene2() {
     let brushedKeys = new Set();
 
     // ─────────────────────────────────────────────────────────────────────
-    //  A. SCATTER PLOT
+    //  A. SCATTER PLOT (PCA)
     // ─────────────────────────────────────────────────────────────────────
     const svgS = d3.select("#scatter-pca")
         .append("svg").attr("width","100%").attr("height", H)
@@ -92,9 +95,9 @@ function renderScene2() {
     const dots = svgS.selectAll("circle.pca-dot")
         .data(data).enter().append("circle").attr("class","pca-dot")
         .attr("cx", d => xS(d.PC1)).attr("cy", d => yS(d.PC2))
-        .attr("r",5)
-        .style("fill","var(--aksen)").style("stroke","var(--permukaan)")
-        .style("stroke-width",1.5).style("opacity",0.8).style("cursor","pointer");
+        .attr("r", 5)
+        .style("fill", "var(--aksen)").style("stroke", "#141414")
+        .style("stroke-width", 1.5).style("opacity", 0.8).style("cursor", "pointer");
 
     // Label hover scatter
     const scatterLabel = svgS.append("text").style("fill","#f2f2f2")
@@ -116,7 +119,7 @@ function renderScene2() {
                 .style("fill", dotColor(d))
                 .attr("r", isCompare ? 7 : (isBrushed ? 5 : (hasAny ? 4 : 5)))
                 .style("opacity", isActive ? 1 : (hasAny ? 0.15 : 0.8))
-                .style("stroke", isCompare ? "#ffffff" : "var(--permukaan)")
+                .style("stroke", isCompare ? "#ffffff" : "#141414")
                 .style("stroke-width", isCompare ? 2 : 1.5);
         });
     }
@@ -147,7 +150,7 @@ function renderScene2() {
             toggleCompare(d.kunci);
         });
 
-    // Brush scatter (menambahkan semua yang di-brush ke komparasi sekaligus)
+    // Brush scatter
     const brushScatter = d3.brush()
         .extent([[0,0],[wS-mS.left-mS.right, H-mS.top-mS.bottom]])
         .on("brush", (event) => {
@@ -166,7 +169,6 @@ function renderScene2() {
                 updateDots();
                 return;
             }
-            // Saat brush selesai, tambahkan semua ke compareMap
             brushedKeys.forEach(key => {
                 if (!compareMap.has(key) && compareMap.size < MAX_COMPARE) {
                     compareMap.set(key, nextColorIdx % colorPalette.length);
@@ -176,8 +178,7 @@ function renderScene2() {
             brushedKeys.clear();
             updateDots();
             updateRadar();
-            updateLegend();
-            // Reset brush selection
+            updateBadges();
             svgS.select(".brush").call(brushScatter.move, null);
         });
 
@@ -193,7 +194,6 @@ function renderScene2() {
     const gR = svgR.append("g")
         .attr("transform", `translate(${wR/2},${H/2 + 10})`);
 
-    // Glow filter
     const defs = svgR.append("defs");
     const filt = defs.append("filter").attr("id","glow-r");
     filt.append("feGaussianBlur").attr("stdDeviation","2.5").attr("result","coloredBlur");
@@ -201,13 +201,12 @@ function renderScene2() {
     fm.append("feMergeNode").attr("in","coloredBlur");
     fm.append("feMergeNode").attr("in","SourceGraphic");
 
-    // Judul radar
-    const radarTitle = svgR.append("text")
+    svgR.append("text")
         .attr("x", wR/2).attr("y", 22).attr("text-anchor","middle")
         .style("fill","#f2f2f2").style("font-size","13px").style("font-weight","bold")
-        .text("Radar Komparasi Provinsi");
+        .text("Radar Komparasi Profil Multidimensi");
 
-    // Grid
+    // Grid Radar
     const levels = 5;
     const axisGrid = gR.append("g").attr("class","axisWrapper");
     d3.range(1, levels+1).reverse().forEach(lvl => {
@@ -221,7 +220,6 @@ function renderScene2() {
         }
     });
 
-    // Sumbu
     const axisGroup = axisGrid.selectAll(".radar-axis")
         .data(radarDimensions).enter().append("g").attr("class","radar-axis");
 
@@ -240,12 +238,10 @@ function renderScene2() {
         .attr("dy","0.35em")
         .style("fill","#b9b9b9").style("font-size","10px").text(d => d.label);
 
-    // Placeholder teks kosong
     const emptyHint = gR.append("text").attr("text-anchor","middle").attr("y",0)
-        .style("fill","#4a4a4a").style("font-size","12px")
-        .text("Pilih/brush provinsi untuk komparasi");
+        .style("fill","#6a6a6a").style("font-size","12px")
+        .text("Pilih provinsi dari dropdown / peta untuk komparasi");
 
-    // Kontainer blob radar (diupdate dinamis)
     const blobLayer = gR.append("g").attr("class","blob-layer");
 
     function radarPoints(prov) {
@@ -271,18 +267,15 @@ function renderScene2() {
 
         emptyHint.style("display", selected.length === 0 ? null : "none");
 
-        // Bind data ke blob
         const blobs = blobLayer.selectAll("g.blob-group")
             .data(selected, d => d.prov.kunci);
 
-        // Enter
         const blobEnter = blobs.enter().append("g").attr("class","blob-group");
 
         blobEnter.append("path").attr("class","blob-area")
             .style("fill-opacity",0).style("stroke-width","2px")
             .style("filter","url(#glow-r)");
 
-        // Merge & update
         const blobAll = blobEnter.merge(blobs);
 
         blobAll.each(function(d) {
@@ -297,7 +290,6 @@ function renderScene2() {
                 .style("fill-opacity", 0.20 + (0.1 / Math.max(selected.length,1)))
                 .style("stroke", color);
 
-            // Titik pada sumbu
             const dotsSel = g.selectAll("circle.r-dot").data(pts);
             dotsSel.enter().append("circle").attr("class","r-dot")
                 .attr("r",4).style("fill-opacity",0.9).style("cursor","default")
@@ -307,7 +299,6 @@ function renderScene2() {
                 .attr("cx", p => p.r * Math.cos(p.angle))
                 .attr("cy", p => p.r * Math.sin(p.angle));
 
-            // Hover tooltip pada titik radar
             g.selectAll("circle.r-dot")
                 .on("mouseover", function(event, p) {
                     tooltip.html(`<b>${d.prov.provinsi}</b><br>${p.label}: ${p.value.toLocaleString("id-ID")}`)
@@ -322,78 +313,84 @@ function renderScene2() {
             dotsSel.exit().remove();
         });
 
-        // Exit: hapus blob
         blobs.exit().select(".blob-area").transition().duration(300)
             .style("fill-opacity",0).style("stroke-opacity",0);
         blobs.exit().transition().duration(350).remove();
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    //  C. LEGENDA INTERAKTIF (klik legenda = hapus dari komparasi)
+    //  C. LENCANA (BADGES) DAFTAR PROVINSI TERPILIH DI HEADER SCENE 2
     // ─────────────────────────────────────────────────────────────────────
-    const legendG = svgR.append("g").attr("class","radar-legend")
-        .attr("transform", `translate(8, ${H - 10})`);
+    function updateBadges() {
+        const badgeContainer = d3.select("#selected-provinces-container");
+        if (badgeContainer.empty()) return;
 
-    function updateLegend() {
+        badgeContainer.selectAll("*").remove();
+
+        if (compareMap.size === 0) {
+            badgeContainer.append("span")
+                .attr("class", "selected-provinces-hint")
+                .html("💡 Belum ada provinsi dibandingkan. Pilih provinsi dari menu dropdown di atas atau seleksi (brush) titik pada peta PCA.");
+            return;
+        }
+
         const items = [...compareMap.entries()]
             .map(([key, ci]) => ({ key, ci, prov: data.find(d => d.kunci === key) }))
             .filter(x => x.prov);
 
-        const lItem = legendG.selectAll("g.leg-item").data(items, d => d.key);
+        items.forEach(d => {
+            const color = colorPalette[d.ci];
+            const badge = badgeContainer.append("div").attr("class", "prov-badge");
 
-        const lEnter = lItem.enter().append("g").attr("class","leg-item")
-            .style("cursor","pointer")
-            .on("click", (event, d) => {
-                event.stopPropagation();
-                toggleCompare(d.key);
-            })
-            .on("mouseover", function() { d3.select(this).style("opacity",0.6); })
-            .on("mouseleave", function() { d3.select(this).style("opacity",1); });
+            badge.append("span")
+                .attr("class", "prov-badge-dot")
+                .style("background-color", color)
+                .style("color", color);
 
-        lEnter.append("rect").attr("width",10).attr("height",10).attr("rx",2)
-            .attr("y",-10);
-        lEnter.append("text").attr("x",14).attr("y",-1)
-            .style("font-size","10px").style("fill","#f2f2f2");
+            badge.append("span")
+                .attr("class", "prov-badge-name")
+                .text(d.prov.provinsi);
 
-        const lAll = lEnter.merge(lItem);
-        lAll.each(function(d, i) {
-            const col = colorPalette[d.ci];
-            d3.select(this).attr("transform", `translate(${i * 110}, 0)`);
-            d3.select(this).select("rect").style("fill", col);
-            d3.select(this).select("text").text(d.prov.provinsi);
+            badge.append("button")
+                .attr("class", "prov-badge-remove")
+                .attr("title", "Hapus dari perbandingan")
+                .html("✕")
+                .on("click", (event) => {
+                    event.stopPropagation();
+                    toggleCompare(d.key);
+                });
         });
-
-        lItem.exit().remove();
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    //  D. TOGGLE HELPER & DROPDOWN
+    //  D. TOGGLE HELPER & DROPDOWN HANDLER
     // ─────────────────────────────────────────────────────────────────────
     function toggleCompare(key) {
         if (compareMap.has(key)) {
             compareMap.delete(key);
         } else {
             if (compareMap.size >= MAX_COMPARE) {
-                // Hapus yang paling lama (first inserted)
                 const firstKey = compareMap.keys().next().value;
                 compareMap.delete(firstKey);
             }
             compareMap.set(key, nextColorIdx % colorPalette.length);
             nextColorIdx++;
         }
-        // Sync dropdown (kosongkan jika multi)
-        d3.select("#dropdown-provinsi").property("value","");
+
+        d3.select("#dropdown-provinsi").property("value", "");
         updateDots();
         updateRadar();
-        updateLegend();
+        updateBadges();
     }
 
-    // Isi dropdown
+    // Populate Options Dropdown
     const sorted = [...data].sort((a,b) => a.provinsi.localeCompare(b.provinsi));
     const dropdown = d3.select("#dropdown-provinsi");
     dropdown.selectAll("option.prov-opt").remove();
+    dropdown.append("option").attr("value", "").text("-- Pilih Provinsi --");
+    
     sorted.forEach(d => {
-        dropdown.append("option").attr("class","prov-opt")
+        dropdown.append("option").attr("class", "prov-opt")
             .attr("value", d.kunci).text(d.provinsi);
     });
 
@@ -401,12 +398,11 @@ function renderScene2() {
         const key = this.value;
         if (!key) return;
         if (!compareMap.has(key)) toggleCompare(key);
-        // Reset select ke placeholder
         this.value = "";
     });
 
     // ─── Init ─────────────────────────────────────────────────────────────
     updateDots();
     updateRadar();
-    updateLegend();
+    updateBadges();
 }
