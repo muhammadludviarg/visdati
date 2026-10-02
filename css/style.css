@@ -83,3 +83,6 @@ select:focus-visible, .tombol-tahun:focus-visible { outline: 2px solid var(--aks
   .scene.kanan .kontrol { justify-content: flex-start; }
   .chart.tinggi { height: 480px; }
 }
+
+/* Tooltip D3 */
+.d3-tooltip { position: absolute; text-align: left; padding: 10px; font: 12px sans-serif; background: rgba(0, 0, 0, 0.85); border: 1px solid #4a4a4a; border-radius: 4px; pointer-events: none; color: #fff; z-index: 1000; box-shadow: 0px 4px 6px rgba(0,0,0,0.3); transition: opacity 0.2s; opacity: 0; }

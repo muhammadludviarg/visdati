@@ -1,0 +1,268 @@
+[
+  {
+    "provinsi": "ACEH",
+    "jumlah_ribu": 704.69,
+    "p0_avg": 12.7,
+    "lon": 96.66703186800007,
+    "lat": 3.9666785395000375
+  },
+  {
+    "provinsi": "SUMATERA UTARA",
+    "jumlah_ribu": 1140.25,
+    "p0_avg": 9.08,
+    "lon": 98.72093186200007,
+    "lat": 1.865867598500046
+  },
+  {
+    "provinsi": "SUMATERA BARAT",
+    "jumlah_ribu": 312.36,
+    "p0_avg": 5.4,
+    "lon": 100.24346274550004,
+    "lat": -1.220256718499968
+  },
+  {
+    "provinsi": "RIAU",
+    "jumlah_ribu": 460.97,
+    "p0_avg": 7.04,
+    "lon": 101.93058622100006,
+    "lat": 0.710369983500044
+  },
+  {
+    "provinsi": "JAMBI",
+    "jumlah_ribu": 270.95,
+    "p0_avg": 7.14,
+    "lon": 102.81133297400007,
+    "lat": -1.750109661999943
+  },
+  {
+    "provinsi": "SUMATERA SELATAN",
+    "jumlah_ribu": 919.6,
+    "p0_avg": 10.46,
+    "lon": 104.07551856300006,
+    "lat": -3.319829757499946
+  },
+  {
+    "provinsi": "BENGKULU",
+    "jumlah_ribu": 252.98,
+    "p0_avg": 12.15,
+    "lon": 102.40643986800006,
+    "lat": -3.8971683074999532
+  },
+  {
+    "provinsi": "LAMPUNG",
+    "jumlah_ribu": 887.04,
+    "p0_avg": 9.55,
+    "lon": 104.75072996550006,
+    "lat": -4.834750723999946
+  },
+  {
+    "provinsi": "KEPULAUAN BANGKA BELITUNG",
+    "jumlah_ribu": 77.72,
+    "p0_avg": 5.16,
+    "lon": 106.70143479050006,
+    "lat": -2.3880658589999655
+  },
+  {
+    "provinsi": "KEPULAUAN RIAU",
+    "jumlah_ribu": 117.29,
+    "p0_avg": 5.71,
+    "lon": 106.10073020650006,
+    "lat": 2.0253326665000486
+  },
+  {
+    "provinsi": "DKI JAKARTA",
+    "jumlah_ribu": 464.88,
+    "p0_avg": 5.75,
+    "lon": 106.82990781950005,
+    "lat": -6.2310384869999496
+  },
+  {
+    "provinsi": "JAWA BARAT",
+    "jumlah_ribu": 3654.78,
+    "p0_avg": 7.6,
+    "lon": 107.60185925750008,
+    "lat": -6.8803861154999595
+  },
+  {
+    "provinsi": "JAWA TENGAH",
+    "jumlah_ribu": 3366.71,
+    "p0_avg": 9.19,
+    "lon": 110.12398103250007,
+    "lat": -7.019065974999961
+  },
+  {
+    "provinsi": "DI YOGYAKARTA",
+    "jumlah_ribu": 425.84,
+    "p0_avg": 10.61,
+    "lon": 110.27355940000004,
+    "lat": -7.784614228499947
+  },
+  {
+    "provinsi": "JAWA TIMUR",
+    "jumlah_ribu": 3875.89,
+    "p0_avg": 9.48,
+    "lon": 113.39727707000003,
+    "lat": -7.255500270499965
+  },
+  {
+    "provinsi": "BANTEN",
+    "jumlah_ribu": 772.77,
+    "p0_avg": 5.5,
+    "lon": 105.97115506000006,
+    "lat": -6.435657223499959
+  },
+  {
+    "provinsi": "BALI",
+    "jumlah_ribu": 173.23,
+    "p0_avg": 4.22,
+    "lon": 115.07216500750002,
+    "lat": -8.456490049499934
+  },
+  {
+    "provinsi": "NUSA TENGGARA BARAT",
+    "jumlah_ribu": 654.57,
+    "p0_avg": 11.78,
+    "lon": 117.57593901800004,
+    "lat": -8.590475657999946
+  },
+  {
+    "provinsi": "NUSA TENGGARA TIMUR",
+    "jumlah_ribu": 1088.8,
+    "p0_avg": 19.25,
+    "lon": 122.05410036350003,
+    "lat": -9.497110564999957
+  },
+  {
+    "provinsi": "KALIMANTAN BARAT",
+    "jumlah_ribu": 330.96,
+    "p0_avg": 6.47,
+    "lon": 111.50241852800005,
+    "lat": -0.5314621514999375
+  },
+  {
+    "provinsi": "KALIMANTAN TENGAH",
+    "jumlah_ribu": 147.81,
+    "p0_avg": 5.11,
+    "lon": 113.29128566450004,
+    "lat": -1.3853465069999513
+  },
+  {
+    "provinsi": "KALIMANTAN SELATAN",
+    "jumlah_ribu": 172.74,
+    "p0_avg": 3.9,
+    "lon": 115.21749891100006,
+    "lat": -2.7436189594999405
+  },
+  {
+    "provinsi": "KALIMANTAN TIMUR",
+    "jumlah_ribu": 199.73,
+    "p0_avg": 6.06,
+    "lon": 116.41404935350005,
+    "lat": 0.07793029550002695
+  },
+  {
+    "provinsi": "KALIMANTAN UTARA",
+    "jumlah_ribu": 42.57,
+    "p0_avg": 5.54,
+    "lon": 116.27669686800004,
+    "lat": 2.754707624000048
+  },
+  {
+    "provinsi": "SULAWESI UTARA",
+    "jumlah_ribu": 173.86,
+    "p0_avg": 7.26,
+    "lon": 125.01633844850011,
+    "lat": 2.4219594715000317
+  },
+  {
+    "provinsi": "SULAWESI TENGAH",
+    "jumlah_ribu": 356.19,
+    "p0_avg": 11.33,
+    "lon": 121.65082237600006,
+    "lat": -1.166807651499937
+  },
+  {
+    "provinsi": "SULAWESI SELATAN",
+    "jumlah_ribu": 698.11,
+    "p0_avg": 8.14,
+    "lon": 120.59621902500004,
+    "lat": -4.690013602499931
+  },
+  {
+    "provinsi": "SULAWESI TENGGARA",
+    "jumlah_ribu": 304.44,
+    "p0_avg": 11.73,
+    "lon": 122.47332209550007,
+    "lat": -4.392690369499945
+  },
+  {
+    "provinsi": "GORONTALO",
+    "jumlah_ribu": 162.76,
+    "p0_avg": 13.48,
+    "lon": 122.35472916800006,
+    "lat": 0.6761316955000325
+  },
+  {
+    "provinsi": "SULAWESI BARAT",
+    "jumlah_ribu": 152.31,
+    "p0_avg": 9.97,
+    "lon": 119.31594801050005,
+    "lat": -2.201198456499952
+  },
+  {
+    "provinsi": "MALUKU",
+    "jumlah_ribu": 287.77,
+    "p0_avg": 18.95,
+    "lon": 130.35671582950005,
+    "lat": -5.530174415499943
+  },
+  {
+    "provinsi": "MALUKU UTARA",
+    "jumlah_ribu": 77.27,
+    "p0_avg": 6.54,
+    "lon": 126.93802432100006,
+    "lat": 0.07971477500004198
+  },
+  {
+    "provinsi": "PAPUA BARAT",
+    "jumlah_ribu": 106.91,
+    "p0_avg": 23.05,
+    "lon": 133.89829149400003,
+    "lat": -2.4848743009999876
+  },
+  {
+    "provinsi": "PAPUA BARAT DAYA",
+    "jumlah_ribu": 103.58,
+    "p0_avg": 21.8,
+    "lon": 131.60810394350005,
+    "lat": -1.1270455799999586
+  },
+  {
+    "provinsi": "PAPUA",
+    "jumlah_ribu": 171.39,
+    "p0_avg": 24.66,
+    "lon": 137.8995570020001,
+    "lat": -2.372209276999939
+  },
+  {
+    "provinsi": "PAPUA SELATAN",
+    "jumlah_ribu": 105.54,
+    "p0_avg": 22.55,
+    "lon": 139.33030490300007,
+    "lat": -6.846167803499952
+  },
+  {
+    "provinsi": "PAPUA TENGAH",
+    "jumlah_ribu": 302.32,
+    "p0_avg": 31.36,
+    "lon": 136.46972261600007,
+    "lat": -3.9617698259999656
+  },
+  {
+    "provinsi": "PAPUA PEGUNUNGAN",
+    "jumlah_ribu": 337.33,
+    "p0_avg": 29.79,
+    "lon": 139.35611984650006,
+    "lat": -4.136753845499953
+  }
+]

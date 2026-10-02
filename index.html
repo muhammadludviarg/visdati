@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wajah Kemiskinan Indonesia: Potret, Sebab, dan Pergerakannya</title>
     
-    <!-- Memuat Plotly.js lewat CDN (tanpa npm/build tools supaya ringan untuk GitHub Pages) -->
-    <script src="https://cdn.plot.ly/plotly-2.35.0.min.js"></script>
+    <!-- Memuat D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     
     <!-- Menghubungkan file CSS kustom -->
     <link rel="stylesheet" href="css/style.css">
@@ -28,11 +28,20 @@
             <div id="chart-scene1" class="chart-container"></div>
         </section>
 
-        <!-- Scene 2: Analisis Multivariat (PCA & Parallel Coordinates) -->
+        <!-- Scene 2: Analisis Multivariat (PCA & Radar Chart) -->
         <section id="scene2" class="viz-section">
             <h2>2. Provinsi Mana yang Kondisinya Mirip, dan Mana yang Berbeda Sendirian?</h2>
-            <p class="narasi">Pengelompokan provinsi berdasarkan karakteristik sosial-ekonomi menggunakan PCA.</p>
-            <div id="chart-scene2" class="chart-container"></div>
+            <p class="narasi">Pengelompokan provinsi berdasarkan karakteristik sosial-ekonomi menggunakan PCA. Klik titik pada scatter plot atau cari provinsi melalui dropdown untuk melihat profil detail di radar chart.</p>
+            <div class="kontrol">
+                <label for="dropdown-provinsi">🔍 Cari Provinsi:</label>
+                <select id="dropdown-provinsi">
+                    <option value="">-- Pilih Provinsi --</option>
+                </select>
+            </div>
+            <div id="chart-scene2" class="chart-container dua-kolom">
+                <div id="scatter-pca"></div>
+                <div id="radar-chart"></div>
+            </div>
         </section>
 
         <!-- Scene 3: Peta Simbol Proporsional (Jumlah Penduduk Miskin Absolut) -->

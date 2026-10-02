@@ -15,20 +15,23 @@ async function initApp() {
     console.log("Memuat data aplikasi...");
     try {
         // Memuat file-file JSON dan GeoJSON dari folder data/olahan/
+        const cacheBuster = "?v=" + new Date().getTime();
         const [
             kabkotaRes, 
             geojsonRes, 
             multivariatRes, 
             pcaMuatanRes, 
             deretWaktuRes, 
-            komoditasRes
+            komoditasRes,
+            provinsiSimbolRes
         ] = await Promise.all([
-            fetch('data/olahan/kabkota_kemiskinan.json'),
-            fetch('data/olahan/kabkota.geojson'),
-            fetch('data/olahan/provinsi_multivariat.json'),
-            fetch('data/olahan/provinsi_pca_muatan.json'),
-            fetch('data/olahan/provinsi_kemiskinan_deret_waktu.json'),
-            fetch('data/olahan/komoditas_kemiskinan.json')
+            fetch('data/olahan/kabkota_kemiskinan.json' + cacheBuster),
+            fetch('data/olahan/kabkota.geojson' + cacheBuster),
+            fetch('data/olahan/provinsi_multivariat.json' + cacheBuster),
+            fetch('data/olahan/provinsi_pca_muatan.json' + cacheBuster),
+            fetch('data/olahan/provinsi_kemiskinan_deret_waktu.json' + cacheBuster),
+            fetch('data/olahan/komoditas_kemiskinan.json' + cacheBuster),
+            fetch('data/olahan/provinsi_simbol.json' + cacheBuster)
         ]);
 
         // Parsing hasil fetch ke format JSON
@@ -38,6 +41,7 @@ async function initApp() {
         appData.provinsiPcaMuatan = await pcaMuatanRes.json();
         appData.provinsiDeretWaktu = await deretWaktuRes.json();
         appData.komoditas = await komoditasRes.json();
+        appData.provinsiSimbol = await provinsiSimbolRes.json();
 
         console.log("Semua data berhasil dimuat ke memori browser!", appData);
 
