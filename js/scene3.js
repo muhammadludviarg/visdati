@@ -1,289 +1,448 @@
 // js/scene3.js
-// Scene 3: Marimekko Chart (Mosaic Plot) — Jumlah Penduduk Miskin vs Persentase Kemiskinan
+// Bagian 3: Anatomi Pengeluaran & Hierarki Garis Kemiskinan
 // ──────────────────────────────────────────────────────────────────────────────
-// Tujuan  : Menunjukkan bahwa provinsi dengan Persentase Kemiskinan tinggi
-//           belum tentu memiliki Jumlah Penduduk Miskin Absolut terbanyak.
-// Sumbu X : Lebar balok ∝ Jumlah Penduduk Miskin Absolut (ribu jiwa)
-// Sumbu Y : Tinggi balok ∝ Persentase Penduduk Miskin (P0)
-// Urutan  : Kiri → kanan = terbesar → terkecil (jumlah absolut)
+// Data: komoditas_kemiskinan.json (/data/olahan/)
+// Visualisasi:
+// 1. Treemap (Drill-down dengan pembagian Makanan vs Bukan Makanan)
+// 2. Collapsible Node-Link Tree (Pohon bercabang yang dapat di-expand/collapse)
+// 3. Tombol Toggle Elegan (Treemap ↔ Collapsible Tree) & Switcher Perkotaan/Perdesaan
+
+let scene3State = {
+    mode: "treemap",       // "treemap" | "tree"
+    wilayah: "Perkotaan",  // "Perkotaan" | "Perdesaan"
+    data: null,
+    treeRoot: null
+};
 
 function renderScene3() {
-    const raw = appData.provinsiSimbol; // [{provinsi, jumlah_ribu, p0_avg, lon, lat}, …]
+    // Ambil data komoditas
+    const raw = appData.komoditas;
     if (!raw || !raw.length) return;
+    scene3State.data = raw;
 
     const containerId = "#chart-scene3";
-    d3.select(containerId).selectAll("*").remove();
+    const container = d3.select(containerId);
+    if (container.empty()) return;
 
-    // ── Data: urutkan jumlah absolut terbesar → terkecil ─────────────────
-    const data = [...raw].sort((a, b) => b.jumlah_ribu - a.jumlah_ribu);
+    container.selectAll("*").remove();
 
-    const totalJumlah = d3.sum(data, d => d.jumlah_ribu);
-    const maxP0       = d3.max(data, d => d.p0_avg);
+    // ── 1. Header Toolbar (Toggle View & Wilayah) ─────────────────────────
+    const toolbar = container.append("div").attr("class", "scene3-toolbar");
 
-    // ── Dimensi & margin ─────────────────────────────────────────────────
-    const container = d3.select(containerId).node();
-    const fullW     = container.getBoundingClientRect().width || 1000;
-    const margin    = { top: 40, right: 24, bottom: 80, left: 60 };
-    const W         = fullW - margin.left - margin.right;
-    const H         = 500;
-    const totalH    = H + margin.top + margin.bottom;
+    // Kelompok Pemilih Wilayah
+    const wilayahGroup = toolbar.append("div").attr("class", "toolbar-group");
+    wilayahGroup.append("span").attr("class", "toolbar-label").text("Wilayah:");
 
-    const svg = d3.select(containerId).append("svg")
-        .attr("width",  fullW)
-        .attr("height", totalH)
+    ["Perkotaan", "Perdesaan"].forEach(w => {
+        wilayahGroup.append("button")
+            .attr("class", `btn-sub-toggle ${w === scene3State.wilayah ? 'active' : ''}`)
+            .text(w)
+            .on("click", function () {
+                scene3State.wilayah = w;
+                wilayahGroup.selectAll(".btn-sub-toggle").classed("active", false);
+                d3.select(this).classed("active", true);
+                renderActiveView();
+            });
+    });
+
+    // Kelompok Pemilih Perspektif Visual (Treemap vs Collapsible Tree)
+    const modeGroup = toolbar.append("div").attr("class", "toolbar-group mode-toggle-group");
+    modeGroup.append("span").attr("class", "toolbar-label").text("Tampilan:");
+
+    const modes = [
+        { key: "treemap", label: "Treemap Proporsional" },
+        { key: "tree", label: "Pohon Hierarki (Collapsible Tree)" }
+    ];
+
+    modes.forEach(m => {
+        modeGroup.append("button")
+            .attr("class", `btn-sub-toggle ${m.key === scene3State.mode ? 'active' : ''}`)
+            .text(m.label)
+            .on("click", function () {
+                scene3State.mode = m.key;
+                modeGroup.selectAll(".btn-sub-toggle").classed("active", false);
+                d3.select(this).classed("active", true);
+                renderActiveView();
+            });
+    });
+
+    // Wadah Visualisasi
+    container.append("div").attr("id", "scene3-view-canvas").attr("class", "chart-canvas");
+
+    // Jalankan render awal
+    renderActiveView();
+}
+
+function renderActiveView() {
+    const canvas = d3.select("#scene3-view-canvas");
+    canvas.selectAll("*").remove();
+
+    if (scene3State.mode === "treemap") {
+        renderTreemapView(canvas);
+    } else {
+        renderCollapsibleTreeView(canvas);
+    }
+}
+
+// ── Helper Bangun Data Hierarki Komoditas ─────────────────────────────────
+function buildKomoditasHierarchy(wilayah) {
+    const filtered = scene3State.data.filter(d => d.wilayah === wilayah);
+    const grouped = d3.group(filtered, d => d.kelompok);
+
+    const children = [];
+    for (const [kelompok, items] of grouped) {
+        const total = d3.sum(items, d => d.kontribusi_persen);
+        children.push({
+            name: kelompok,
+            totalPct: +total.toFixed(2),
+            children: items
+                .sort((a, b) => b.kontribusi_persen - a.kontribusi_persen)
+                .map((d, i) => ({
+                    name: d.komoditas,
+                    value: d.kontribusi_persen,
+                    kelompok: kelompok,
+                    ci: i
+                }))
+        });
+    }
+
+    return {
+        name: "Garis Kemiskinan",
+        children: children.sort((a, b) => b.totalPct - a.totalPct)
+    };
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  1. TREEMAP VIEW (Proporsi Luas Blok Makanan & Non-Makanan)
+// ══════════════════════════════════════════════════════════════════════════
+function renderTreemapView(canvas) {
+    const W = canvas.node().getBoundingClientRect().width || 900;
+    const H = 490;
+
+    const hierData = buildKomoditasHierarchy(scene3State.wilayah);
+    const root = d3.hierarchy(hierData)
+        .sum(d => d.value || 0)
+        .sort((a, b) => b.value - a.value);
+
+    // Navigasi Breadcrumb
+    const bc = canvas.append("div").attr("class", "tree-breadcrumb");
+
+    const svg = canvas.append("svg")
+        .attr("width", "100%")
+        .attr("height", H)
+        .attr("viewBox", `0 0 ${W} ${H}`)
         .style("display", "block");
+
+    const makananShades = [
+        "#1a8a7d", "#1e9e8f", "#22b2a1", "#2ec4b6", "#40cdbf",
+        "#55d6c8", "#6adfd1", "#80e8da", "#96efe3", "#aaf5eb"
+    ];
+    const bukanMakananShades = [
+        "#4a5568", "#5a6478", "#6b7280", "#7c839a", "#8b92a8",
+        "#6366a0", "#7171b0", "#5b5ea6", "#8686b8", "#9999c4"
+    ];
+
+    function getColor(kelompok, idx) {
+        const pal = kelompok === "Makanan" ? makananShades : bukanMakananShades;
+        return pal[idx % pal.length];
+    }
+
+    function draw(kelompokNode) {
+        svg.selectAll("*").remove();
+
+        const isTop = !kelompokNode;
+
+        if (isTop) {
+            bc.html(`<span class="bc-current">Semua Kelompok Komoditas</span> <span style="font-size:12px;color:#888;">(Klik kotak untuk drill-down)</span>`);
+        } else {
+            bc.html(`
+                <span class="bc-link" id="bc-btn-back">&lt; Kembali ke Semua Kelompok</span>
+                <span class="bc-sep">/</span>
+                <span class="bc-current">${kelompokNode.data.name}</span>
+                <span style="color:#aaa;font-size:12px"> (${kelompokNode.data.totalPct}%)</span>
+            `);
+            d3.select("#bc-btn-back").on("click", () => draw(null));
+        }
+
+        if (isTop) {
+            d3.treemap().size([W, H]).paddingOuter(4).paddingInner(2).paddingTop(26).round(true)(root);
+
+            root.children.forEach(kNode => {
+                const kw = kNode.x1 - kNode.x0;
+                const kh = kNode.y1 - kNode.y0;
+                const accent = kNode.data.name === "Makanan" ? "#2ec4b6" : "#7c839a";
+
+                // Background container kelompok
+                svg.append("rect")
+                    .attr("x", kNode.x0).attr("y", kNode.y0)
+                    .attr("width", kw).attr("height", kh)
+                    .attr("rx", 4)
+                    .attr("fill", "rgba(255,255,255,0.02)")
+                    .attr("stroke", accent)
+                    .attr("stroke-opacity", 0.4)
+                    .attr("stroke-width", 1.2)
+                    .style("cursor", "pointer")
+                    .on("click", () => draw(kNode));
+
+                svg.append("text")
+                    .attr("x", kNode.x0 + 8).attr("y", kNode.y0 + 17)
+                    .style("fill", accent).style("font-size", "12px").style("font-weight", "700")
+                    .text(`${kNode.data.name} — ${kNode.data.totalPct}%`);
+
+                kNode.leaves().forEach(leaf => {
+                    renderTreemapTile(leaf, kNode.data.name, () => draw(kNode));
+                });
+            });
+        } else {
+            const localHier = d3.hierarchy({
+                name: kelompokNode.data.name,
+                children: kelompokNode.data.children
+            }).sum(d => d.value || 0).sort((a, b) => b.value - a.value);
+
+            d3.treemap().size([W, H]).paddingOuter(6).paddingInner(3).round(true)(localHier);
+
+            localHier.leaves().forEach(leaf => {
+                renderTreemapTile(leaf, kelompokNode.data.name, null);
+            });
+        }
+    }
+
+    function renderTreemapTile(leaf, kelompok, clickCallback) {
+        const lx = leaf.x0, ly = leaf.y0;
+        const lw = leaf.x1 - leaf.x0, lh = leaf.y1 - leaf.y0;
+        if (lw < 2 || lh < 2) return;
+
+        const clr = getColor(kelompok, leaf.data.ci || 0);
+        const tile = svg.append("g").style("cursor", clickCallback ? "pointer" : "default");
+
+        const rect = tile.append("rect")
+            .attr("x", lx).attr("y", ly)
+            .attr("width", lw).attr("height", lh)
+            .attr("rx", 2)
+            .attr("fill", clr)
+            .attr("fill-opacity", 0.8)
+            .attr("stroke", "#121212")
+            .attr("stroke-width", 0.6);
+
+        if (lw > 34 && lh > 18) {
+            tile.append("text")
+                .attr("x", lx + 4).attr("y", ly + 14)
+                .style("fill", "#ffffff").style("font-size", lw > 80 ? "11px" : "9px")
+                .style("font-weight", "600").style("pointer-events", "none")
+                .text(leaf.data.name.length > lw / 7 ? leaf.data.name.slice(0, Math.floor(lw / 7)) + "…" : leaf.data.name);
+        }
+
+        if (lw > 34 && lh > 32) {
+            tile.append("text")
+                .attr("x", lx + 4).attr("y", ly + 28)
+                .style("fill", "rgba(255,255,255,0.65)").style("font-size", "9px")
+                .style("pointer-events", "none")
+                .text(`${leaf.data.value}%`);
+        }
+
+        const tooltip = d3.select(".d3-tooltip.map-tooltip");
+        tile.on("mouseover", function (event) {
+            rect.attr("fill-opacity", 1).attr("stroke", "#ffffff").attr("stroke-width", 1.2);
+            tooltip.html(`
+                <div style="font-weight:700;color:${clr};font-size:12px">${leaf.data.name}</div>
+                <div style="font-size:11px;color:#aaa">Kelompok: ${kelompok}</div>
+                <div style="font-size:11px;color:#fff">Kontribusi Garis Kemiskinan: <b>${leaf.data.value}%</b></div>
+            `).style("opacity", 1)
+            .style("left", (event.pageX + 15) + "px")
+            .style("top", (event.pageY - 30) + "px");
+        })
+        .on("mousemove", event => {
+            tooltip.style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 30) + "px");
+        })
+        .on("mouseleave", function () {
+            rect.attr("fill-opacity", 0.8).attr("stroke", "#121212").attr("stroke-width", 0.6);
+            tooltip.style("opacity", 0).style("left", "-1000px");
+        });
+
+        if (clickCallback) {
+            tile.on("click", clickCallback);
+        }
+    }
+
+    draw(null);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  2. COLLAPSIBLE NODE-LINK TREE VIEW (Pohon Hierarki Interaktif)
+// ══════════════════════════════════════════════════════════════════════════
+function renderCollapsibleTreeView(canvas) {
+    const W = canvas.node().getBoundingClientRect().width || 900;
+    const H = 540;
+    const margin = { top: 20, right: 120, bottom: 20, left: 100 };
+
+    const hierData = buildKomoditasHierarchy(scene3State.wilayah);
+
+    const svg = canvas.append("svg")
+        .attr("width", "100%")
+        .attr("height", H)
+        .attr("viewBox", `0 0 ${W} ${H}`)
+        .style("display", "block")
+        .style("background", "transparent");
 
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // ── Skala Y: persentase kemiskinan P0 ────────────────────────────────
-    // Tambah sedikit ruang di atas agar label tidak terpotong
-    const yDomain = Math.ceil(maxP0 / 5) * 5 + 5;
-    const yScale  = d3.scaleLinear().domain([0, yDomain]).range([H, 0]);
+    const innerW = W - margin.left - margin.right;
+    const innerH = H - margin.top - margin.bottom;
 
-    // ── Hitung posisi x kumulatif (Marimekko) ────────────────────────────
-    let xCursor = 0;
-    const bars = data.map(d => {
-        const w = (d.jumlah_ribu / totalJumlah) * W;
-        const entry = {
-            ...d,
-            x: xCursor,
-            w: w,
-            barH: H - yScale(d.p0_avg)   // tinggi balok dalam piksel
-        };
-        xCursor += w;
-        return entry;
-    });
+    const treeLayout = d3.tree().size([innerH, innerW]);
 
-    // ── Palet warna ──────────────────────────────────────────────────────
-    // Interpolasi warna dari biru teal → kuning emas → merah terang
-    // berdasarkan p0_avg agar kontras tinggi di latar gelap
-    const colorScale = d3.scaleSequential()
-        .domain([0, maxP0])
-        .interpolator(d3.interpolateTurbo);
+    let i = 0;
+    const root = d3.hierarchy(hierData, d => d.children);
+    root.x0 = innerH / 2;
+    root.y0 = 0;
 
-    // ── Tooltip ──────────────────────────────────────────────────────────
-    const tooltip = d3.select("body").append("div").attr("class", "d3-tooltip");
-
-    // Nama provinsi: huruf kapital tiap kata
-    function titleCase(s) {
-        return s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    // Awalan: biarkan cabang Makanan terbuka, tapi tutup Bukan Makanan jika terlalu panjang
+    // Atau biarkan terbuka di level 1 (Makanan & Bukan Makanan)
+    function collapse(d) {
+        if (d.children) {
+            d._children = d.children;
+            d._children.forEach(collapse);
+            d.children = null;
+        }
     }
 
-    // ── Render Balok Marimekko ───────────────────────────────────────────
-    const rects = g.selectAll("rect.marimekko-bar")
-        .data(bars).enter()
-        .append("rect").attr("class", "marimekko-bar")
-        .attr("x",      d => d.x)
-        .attr("y",      d => yScale(d.p0_avg))
-        .attr("width",  d => Math.max(d.w - 1.2, 0.8))  // gap 1.2 px antar balok
-        .attr("height", d => d.barH)
-        .attr("fill",   d => colorScale(d.p0_avg))
-        .attr("rx", 2)
-        .style("cursor", "pointer")
-        .style("transition", "opacity 0.15s");
-
-    // ── Label nama provinsi di dalam / atas balok (hanya yang cukup lebar) ─
-    g.selectAll("text.bar-label")
-        .data(bars.filter(d => d.w > 28)).enter()
-        .append("text").attr("class", "bar-label")
-        .attr("x", d => d.x + d.w / 2)
-        .attr("y", d => {
-            // Jika balok cukup tinggi, taruh di dalam; kalau tidak, di atas
-            return d.barH > 50 ? yScale(d.p0_avg) + 14 : yScale(d.p0_avg) - 5;
-        })
-        .attr("text-anchor", "middle")
-        .style("fill", d => d.barH > 50 ? "#fff" : "#ccc")
-        .style("font-size", d => d.w > 55 ? "10px" : "8px")
-        .style("font-weight", "600")
-        .style("pointer-events", "none")
-        .text(d => {
-            // Singkat jika balok sempit
-            const name = titleCase(d.provinsi);
-            if (d.w > 75) return name;
-            // Ambil kata terakhir saja
-            const parts = name.split(" ");
-            return parts[parts.length - 1];
+    // Collapse beberapa item cabang kedua jika diinginkan
+    if (root.children) {
+        // Biarkan Makanan terbuka, collapse Bukan Makanan sebagai demonstrasi awal
+        root.children.forEach((child, idx) => {
+            if (idx === 1 && child.children) {
+                child._children = child.children;
+                child.children = null;
+            }
         });
+    }
 
-    // ── Label persentase di tiap balok ────────────────────────────────────
-    g.selectAll("text.bar-pct")
-        .data(bars.filter(d => d.w > 22 && d.barH > 28)).enter()
-        .append("text").attr("class", "bar-pct")
-        .attr("x", d => d.x + d.w / 2)
-        .attr("y", d => yScale(d.p0_avg) + (d.barH > 50 ? 28 : 12))
-        .attr("text-anchor", "middle")
-        .style("fill", "rgba(255,255,255,0.75)")
-        .style("font-size", "9px")
-        .style("pointer-events", "none")
-        .text(d => d.p0_avg.toFixed(1) + "%");
+    const tooltip = d3.select(".d3-tooltip.map-tooltip");
 
-    // ── Sumbu Y ──────────────────────────────────────────────────────────
-    const yAxis = d3.axisLeft(yScale)
-        .ticks(6)
-        .tickFormat(d => d + "%")
-        .tickSize(0);
+    function updateTree(source) {
+        const treeData = treeLayout(root);
+        const nodes = treeData.descendants();
+        const links = treeData.links();
 
-    const yAxisG = g.append("g").call(yAxis);
-    yAxisG.select(".domain").remove();
-    yAxisG.selectAll("text")
-        .style("fill", "#b9b9b9").style("font-size", "11px");
+        // Normalisasi kedalaman horizontal (y)
+        nodes.forEach(d => { d.y = d.depth * (innerW / 2.3); });
 
-    // Label sumbu Y
-    g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -H / 2).attr("y", -44)
-        .attr("text-anchor", "middle")
-        .style("fill", "#e0e0e0").style("font-size", "12px").style("font-weight", "600")
-        .text("Persentase Penduduk Miskin (P0) →");
+        // 1. UPDATE NODES
+        const node = g.selectAll("g.tree-node")
+            .data(nodes, d => d.id || (d.id = ++i));
 
-    // Garis bantu horizontal tipis (hanya beberapa)
-    const yTicks = yScale.ticks(6);
-    g.selectAll("line.h-grid")
-        .data(yTicks).enter()
-        .append("line").attr("class", "h-grid")
-        .attr("x1", 0).attr("x2", W)
-        .attr("y1", d => yScale(d)).attr("y2", d => yScale(d))
-        .style("stroke", "rgba(255,255,255,0.06)")
-        .style("stroke-dasharray", "4,4");
+        const nodeEnter = node.enter().append("g")
+            .attr("class", "tree-node")
+            .attr("transform", () => `translate(${source.y0},${source.x0})`)
+            .style("cursor", "pointer")
+            .on("click", (event, d) => {
+                if (d.children) {
+                    d._children = d.children;
+                    d.children = null;
+                } else if (d._children) {
+                    d.children = d._children;
+                    d._children = null;
+                }
+                updateTree(d);
+            });
 
-    // ── Sumbu X (baseline) ───────────────────────────────────────────────
-    g.append("line")
-        .attr("x1", 0).attr("x2", W)
-        .attr("y1", H).attr("y2", H)
-        .style("stroke", "#4a4a4a");
+        nodeEnter.append("circle")
+            .attr("r", 1e-6)
+            .attr("fill", d => d._children ? "var(--aksen)" : (d.depth === 0 ? "#ffffff" : "#242424"))
+            .attr("stroke", d => d.depth === 1 ? (d.data.name === "Makanan" ? "#2ec4b6" : "#f4a261") : "var(--aksen)")
+            .attr("stroke-width", 1.8);
 
-    // Label sumbu X
-    g.append("text")
-        .attr("x", W / 2).attr("y", H + 52)
-        .attr("text-anchor", "middle")
-        .style("fill", "#e0e0e0").style("font-size", "12px").style("font-weight", "600")
-        .text("← Lebar Balok ∝ Jumlah Penduduk Miskin Absolut (Ribu Jiwa) →");
+        nodeEnter.append("text")
+            .attr("dy", "0.32em")
+            .attr("x", d => d.children || d._children ? -12 : 12)
+            .attr("text-anchor", d => d.children || d._children ? "end" : "start")
+            .text(d => {
+                const valText = d.data.value ? ` (${d.data.value}%)` : (d.data.totalPct ? ` (${d.data.totalPct}%)` : "");
+                return d.data.name + valText;
+            })
+            .style("fill", d => d.depth === 0 ? "#ffffff" : (d.depth === 1 ? "#2ec4b6" : "#d1d1d6"))
+            .style("font-size", d => d.depth <= 1 ? "12px" : "11px")
+            .style("font-weight", d => d.depth <= 1 ? "700" : "400")
+            .style("fill-opacity", 1e-6);
 
-    // Tick-mark kumulatif di sumbu X (setiap kelipatan tertentu ribu jiwa)
-    // Kita tampilkan penanda di batas balok beberapa provinsi besar
-    const cumulTicks = [];
-    let cumul = 0;
-    bars.forEach(d => {
-        cumul += d.jumlah_ribu;
-        cumulTicks.push({ cumul, x: d.x + d.w, provinsi: d.provinsi, jumlah: d.jumlah_ribu });
-    });
+        // Tooltip node tree
+        nodeEnter
+            .on("mouseover", function (event, d) {
+                if (d.data.value) {
+                    tooltip.html(`
+                        <div style="font-weight:700;color:var(--aksen);font-size:12px">${d.data.name}</div>
+                        <div style="font-size:11px;color:#aaa">Kategori: ${d.parent ? d.parent.data.name : "-"}</div>
+                        <div style="font-size:11px;color:#fff">Kontribusi: <b>${d.data.value}%</b></div>
+                    `).style("opacity", 1)
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+                }
+            })
+            .on("mousemove", event => {
+                tooltip.style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseleave", () => {
+                tooltip.style("opacity", 0).style("left", "-1000px");
+            });
 
-    // Tampilkan label jumlah di bawah untuk provinsi yang lebar ≥ 35 px
-    g.selectAll("text.x-tick-label")
-        .data(bars.filter(d => d.w >= 35)).enter()
-        .append("text").attr("class", "x-tick-label")
-        .attr("x", d => d.x + d.w / 2)
-        .attr("y", H + 18)
-        .attr("text-anchor", "middle")
-        .style("fill", "#888").style("font-size", "9px")
-        .text(d => d.jumlah_ribu.toLocaleString("id-ID", { maximumFractionDigits: 0 }));
+        // Transisi node enter ke posisi baru
+        const nodeUpdate = nodeEnter.merge(node).transition().duration(600)
+            .attr("transform", d => `translate(${d.y},${d.x})`);
 
-    // ── Interaksi: Hover Tooltip ─────────────────────────────────────────
-    rects
-        .on("mouseover", function(event, d) {
-            // Highlight balok ini, redupkan yang lain
-            rects.style("opacity", x => x.provinsi === d.provinsi ? 1 : 0.3);
-            d3.select(this)
-                .style("stroke", "#fff")
-                .style("stroke-width", 2);
+        nodeUpdate.select("circle")
+            .attr("r", d => d.depth === 0 ? 7 : (d.depth === 1 ? 6 : 4))
+            .attr("fill", d => d._children ? "var(--aksen)" : (d.depth === 0 ? "#ffffff" : "#242424"));
 
-            const pct = ((d.jumlah_ribu / totalJumlah) * 100).toFixed(1);
-            tooltip.html(
-                `<b style="color:#2ec4b6;font-size:13px">${titleCase(d.provinsi)}</b><br>` +
-                `<span style="color:#ccc">Jumlah Absolut:</span> <b>${d.jumlah_ribu.toLocaleString("id-ID")} ribu jiwa</b><br>` +
-                `<span style="color:#ccc">Persentase Kemiskinan:</span> <b>${d.p0_avg}%</b><br>` +
-                `<span style="color:#888;font-size:10px">Proporsi thd total: ${pct}%</span>`
-            )
-            .style("opacity", 1)
-            .style("left", (event.pageX + 16) + "px")
-            .style("top",  (event.pageY - 40) + "px");
-        })
-        .on("mousemove", function(event) {
-            tooltip
-                .style("left", (event.pageX + 16) + "px")
-                .style("top",  (event.pageY - 40) + "px");
-        })
-        .on("mouseleave", function() {
-            rects.style("opacity", 1)
-                .style("stroke", "none");
-            tooltip.style("opacity", 0).style("left", "-9999px");
+        nodeUpdate.select("text")
+            .style("fill-opacity", 1);
+
+        // Transisi node exit
+        const nodeExit = node.exit().transition().duration(500)
+            .attr("transform", () => `translate(${source.y},${source.x})`)
+            .remove();
+
+        nodeExit.select("circle").attr("r", 1e-6);
+        nodeExit.select("text").style("fill-opacity", 1e-6);
+
+        // 2. UPDATE LINKS
+        const link = g.selectAll("path.tree-link")
+            .data(links, d => d.target.id);
+
+        const linkEnter = link.enter().insert("path", "g")
+            .attr("class", "tree-link")
+            .attr("d", () => {
+                const o = { x: source.x0, y: source.y0 };
+                return diagonalLink({ source: o, target: o });
+            })
+            .attr("fill", "none")
+            .attr("stroke", "rgba(255, 255, 255, 0.18)")
+            .attr("stroke-width", 1.2);
+
+        linkEnter.merge(link).transition().duration(600)
+            .attr("d", diagonalLink)
+            .attr("stroke", d => d.target.data.kelompok === "Makanan" ? "rgba(46, 196, 182, 0.35)" : "rgba(244, 162, 97, 0.35)");
+
+        link.exit().transition().duration(500)
+            .attr("d", () => {
+                const o = { x: source.x, y: source.y };
+                return diagonalLink({ source: o, target: o });
+            })
+            .remove();
+
+        // Simpan posisi sebelumnya untuk transisi mulus
+        nodes.forEach(d => {
+            d.x0 = d.x;
+            d.y0 = d.y;
         });
-
-    // ── Anotasi: Highlight insight utama ─────────────────────────────────
-    // Cari provinsi dengan P0 tertinggi & jumlah terbesar
-    const topP0     = data.reduce((a, b) => a.p0_avg > b.p0_avg ? a : b);
-    const topJumlah = data[0]; // sudah sorted terbesar
-
-    const topP0Bar     = bars.find(b => b.provinsi === topP0.provinsi);
-    const topJumlahBar = bars.find(b => b.provinsi === topJumlah.provinsi);
-
-    // Anotasi: provinsi P0 tertinggi
-    if (topP0Bar && topP0Bar.w > 4) {
-        const ax = topP0Bar.x + topP0Bar.w / 2;
-        const ay = yScale(topP0.p0_avg) - 12;
-
-        // Garis penunjuk
-        g.append("line")
-            .attr("x1", ax).attr("x2", ax)
-            .attr("y1", ay).attr("y2", ay - 28)
-            .style("stroke", "#ff6b6b").style("stroke-width", 1.5)
-            .style("stroke-dasharray", "3,2");
-
-        g.append("text")
-            .attr("x", ax).attr("y", ay - 32)
-            .attr("text-anchor", "middle")
-            .style("fill", "#ff6b6b").style("font-size", "10px").style("font-weight", "bold")
-            .text("P0 Tertinggi ↓");
     }
 
-    // Anotasi: provinsi jumlah terbesar
-    if (topJumlahBar) {
-        const ax2 = topJumlahBar.x + topJumlahBar.w / 2;
-
-        g.append("text")
-            .attr("x", ax2).attr("y", H + 38)
-            .attr("text-anchor", "middle")
-            .style("fill", "#2ec4b6").style("font-size", "10px").style("font-weight", "bold")
-            .text("Jumlah Absolut Terbanyak ↑");
+    function diagonalLink({ source, target }) {
+        return `M ${source.y} ${source.x}
+                C ${(source.y + target.y) / 2} ${source.x},
+                  ${(source.y + target.y) / 2} ${target.x},
+                  ${target.y} ${target.x}`;
     }
 
-    // ── Legenda Warna ────────────────────────────────────────────────────
-    const legendW = Math.min(200, W * 0.25);
-    const legendH = 12;
-    const legendG = svg.append("g")
-        .attr("transform", `translate(${margin.left + W - legendW - 4}, ${margin.top - 32})`);
-
-    // Gradient bar
-    const defs   = svg.append("defs");
-    const gradId = "marimekko-grad-" + Math.random().toString(36).slice(2, 8);
-    const grad   = defs.append("linearGradient").attr("id", gradId);
-    const nStops = 10;
-    for (let i = 0; i <= nStops; i++) {
-        const t = i / nStops;
-        grad.append("stop")
-            .attr("offset",     (t * 100) + "%")
-            .attr("stop-color", d3.interpolateTurbo(t));
-    }
-
-    legendG.append("rect")
-        .attr("width", legendW).attr("height", legendH)
-        .attr("rx", 3)
-        .style("fill", `url(#${gradId})`);
-
-    legendG.append("text")
-        .attr("x", 0).attr("y", -3)
-        .style("fill", "#b9b9b9").style("font-size", "9px")
-        .text("Persentase Kemiskinan (P0)");
-
-    legendG.append("text")
-        .attr("x", 0).attr("y", legendH + 11)
-        .style("fill", "#888").style("font-size", "8px")
-        .text("0%");
-
-    legendG.append("text")
-        .attr("x", legendW).attr("y", legendH + 11)
-        .attr("text-anchor", "end")
-        .style("fill", "#888").style("font-size", "8px")
-        .text(maxP0.toFixed(1) + "%");
+    updateTree(root);
 }

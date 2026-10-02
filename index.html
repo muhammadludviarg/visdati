@@ -3,88 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wajah Kemiskinan Indonesia: Potret, Sebab, dan Pergerakannya</title>
+    <title>Wajah Kemiskinan Indonesia: Potret, Anatomi, dan Narasi</title>
     
-    <!-- Memuat D3.js -->
+    <!-- Google Fonts: Playfair Display (Editorial Serif) & Archivo (Clean Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Memuat D3.js v7 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     
-    <!-- Menghubungkan file CSS kustom -->
+    <!-- Menghubungkan Stylesheet Visual Journalism -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Header / Judul Utama Web -->
-    <header class="hero-section">
-        <h1>Wajah Kemiskinan Indonesia: Potret, Sebab, dan Pergerakannya</h1>
-        <p>Eksplorasi visual interaktif berbasis data Badan Pusat Statistik (BPS)</p>
-    </header>
-
-    <!-- Kontainer Utama: 6 Scene Berurutan Kebawah (Scrollytelling) -->
-    <main>
-        <!-- Scene 1: Peta Choropleth Kabupaten/Kota -->
-        <section id="scene1" class="viz-section">
-            <h2>1. Seperti Apa Peta Kemiskinan Indonesia Hari Ini?</h2>
-            <p class="narasi">Sebaran persentase penduduk miskin di 514 kabupaten/kota seluruh Indonesia.</p>
-            <div id="chart-scene1" class="chart-container"></div>
-        </section>
-
-        <!-- Scene 2: Analisis Multivariat (PCA & Radar Chart) -->
-        <section id="scene2" class="viz-section">
-            <h2>2. Provinsi Mana yang Kondisinya Mirip, dan Mana yang Berbeda Sendirian?</h2>
-            <p class="narasi">Pengelompokan provinsi berdasarkan karakteristik sosial-ekonomi menggunakan PCA. Klik titik pada scatter plot atau cari provinsi melalui dropdown untuk melihat profil detail di radar chart.</p>
-            <div class="kontrol">
-                <label for="dropdown-provinsi">🔍 Cari Provinsi:</label>
-                <select id="dropdown-provinsi">
-                    <option value="">-- Pilih Provinsi --</option>
-                </select>
+    <article class="journalism-article">
+        
+        <!-- ========================================================
+             PROLOG: HEADER ELEGAN DENGAN TIPOGRAFI JURNALISTIK
+             ======================================================== -->
+        <header class="article-header">
+            <span class="kicker">Jurnalistik Visual Data</span>
+            <h1 class="article-title">Wajah Kemiskinan Indonesia: Potret, Anatomi, dan Narasi</h1>
+            <p class="article-subhead">
+                Kemiskinan bukanlah angka tunggal yang datar. Ia adalah mozaik spasial dari disparitas wilayah, 
+                beban hidup riil masyarakat, serta jeratan harga bahan pangan pokok.
+            </p>
+            <div class="byline">
+                <span>Eksplorasi Data Berbasis Survei Sosial Ekonomi Nasional (Susenas) BPS</span>
             </div>
-            <div id="chart-scene2" class="chart-container dua-kolom">
-                <div id="scatter-pca"></div>
-                <div id="radar-chart"></div>
+            <div class="scroll-indicator">
+                <span>Gulir untuk membaca cerita</span>
+                <span class="arrow">↓</span>
+            </div>
+        </header>
+
+        <!-- ========================================================
+             BAGIAN 1: DI MANA KANTONG KEMISKINAN BERADA?
+             ======================================================== -->
+        <section class="story-chapter" id="chapter-1">
+            <div class="prose">
+                <span class="chapter-number">Bagian Satu</span>
+                <h2>Di Mana Kantong Kemiskinan Berada?</h2>
+                <p class="lead-p">
+                    Menilai kemiskinan di sebuah negara kepulauan seluas Indonesia menuntut kita untuk melihatnya dari dua kacamata 
+                    yang kerap menghasilkan kesimpulan bertolak belakang: <em>tingkat keparahan relatif</em> (persentase) versus 
+                    <em>beban populasi riil</em> (jumlah absolut).
+                </p>
+                <p>
+                    Ketika kita memetakan <strong>persentase penduduk miskin (P0)</strong> di 514 kabupaten dan kota, 
+                    wilayah Indonesia bagian timur—khususnya dataran tinggi Papua, Kepulauan Maluku, dan Nusa Tenggara Timur—langsung 
+                    mencuri perhatian. Di beberapa kabupaten pedalaman, angka kemiskinan melampaui <strong>30% hingga 40%</strong>, 
+                    menandakan bahwa hampir separuh populasi setempat hidup di bawah standar garis kelayakan minimum.
+                </p>
+            </div>
+
+            <!-- Visual 1: Peta Spasial (Choropleth & Bubble dengan Smooth Morph + Click-to-Zoom) -->
+            <div class="graphic-frame" id="frame-scene1">
+                <div class="graphic-header">
+                    <span class="graphic-title">Peta Spasial Kemiskinan Kabupaten/Kota (2025)</span>
+                    <div class="map-toolbar">
+                        <div class="toolbar-group">
+                            <span class="toolbar-label">Mode Peta:</span>
+                            <button class="btn-pill active" id="btn-koroplet" onclick="updateMap('koroplet')">Persentase (P0)</button>
+                            <button class="btn-pill" id="btn-bubble" onclick="updateMap('bubble')">Jumlah Jiwa (Absolut)</button>
+                        </div>
+                        <button class="btn-pill btn-pill-reset" id="btn-reset-zoom" onclick="resetMapZoom()">↺ Reset Zoom</button>
+                    </div>
+                </div>
+
+                <div id="chart-map" class="chart-canvas"></div>
+                <p class="graphic-caption">
+                    <em>Tip Interaksi:</em> Klik pada wilayah kabupaten/kota untuk melakukan zoom-in otomatis. Klik wilayah di sebelahnya untuk berpindah fokus (pan), atau klik latar belakang / tombol Reset Zoom untuk kembali ke peta Nusantara.
+                </p>
+            </div>
+
+            <div class="prose">
+                <p>
+                    Namun, persentase yang tinggi belum tentu berarti kantong manusia terbanyak berada di sana. 
+                    Ketika kita beralih ke <strong>jumlah absolut penduduk miskin</strong> (persepektif gelembung proporsional), 
+                    pusat gravitasi masalah langsung bergeser ke Pulau Jawa.
+                </p>
+                <p>
+                    Meskipun persentase kemiskinan di Jawa Timur, Jawa Barat, dan Jawa Tengah relatif terkendali di kisaran 7% hingga 10%, 
+                    kepadatan penduduk yang masif membuat jutaan jiwa berkumpul di wilayah-wilayah aglomerasi dan perdesaan Jawa. 
+                    Inilah paradoks klasik kemiskinan Indonesia: daerah dengan persentase tertinggi membutuhkan intervensi kesetaraan struktural, 
+                    sedangkan daerah dengan jumlah absolut terbesar menuntut kapasitas logistik dan anggaran bantuan sosial skala raksasa.
+                </p>
             </div>
         </section>
 
-        <!-- Scene 3: Peta Simbol Proporsional (Jumlah Penduduk Miskin Absolut) -->
-        <section id="scene3" class="viz-section">
-            <h2>3. Provinsi yang Menonjol Tadi, Seberapa Besar Sebenarnya Masalahnya?</h2>
-            <p class="narasi">Visualisasi jumlah absolut penduduk miskin untuk melihat beban riil di lapangan.</p>
-            <div id="chart-scene3" class="chart-container"></div>
+        <!-- ========================================================
+             BAGIAN 2: KARAKTERISTIK DAN PEMICU (SCENE 2 & SCENE 5)
+             ======================================================== -->
+        <section class="story-chapter" id="chapter-2">
+            <div class="prose">
+                <span class="chapter-number">Bagian Dua</span>
+                <h2>Karakteristik dan Pemicu</h2>
+                <p class="lead-p">
+                    Apa yang membedakan provinsi yang rentan miskin dengan yang relatif sejahtera? 
+                    Kemiskinan bukanlah fenomena acak, melainkan akumulasi dari ketimpangan akses terhadap modal manusia, 
+                    kualitas infrastruktur dasar, dan struktur penyerapan tenaga kerja.
+                </p>
+                <p>
+                    Melalui reduksi dimensi <strong>Principal Component Analysis (PCA)</strong>, kita dapat melihat bagaimana 
+                    38 provinsi mengelompok berdasarkan karakteristik sosio-ekonominya. Sementara itu, <strong>Matriks Korelasi 10 Indikator</strong> 
+                    secara gamblang memperlihatkan bahwa akses terhadap sanitasi layak dan rata-rata lama sekolah merupakan faktor 
+                    yang paling berkorelasi negatif kuat terhadap kemiskinan.
+                </p>
+            </div>
+
+            <!-- Visual 2: Multivariat Dashboard (PCA Scatter + Radar Comparison + Correlation Heatmap) -->
+            <div class="graphic-frame dua-kolom-frame" id="frame-scene2">
+                <div class="graphic-header graphic-header-stacked">
+                    <span class="graphic-title">Profil Multivariat & Klaster Kemiripan Antarprovinsi</span>
+                    <div class="toolbar-group">
+                        <label for="dropdown-provinsi" class="toolbar-label">🔍 Telusuri / Bandingkan Provinsi:</label>
+                        <select id="dropdown-provinsi">
+                            <option value="">-- Pilih Provinsi --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="multivariate-layout">
+                    <!-- Baris Atas: Scatter PCA + Radar Chart -->
+                    <div class="pca-radar-grid">
+                        <div class="sub-panel">
+                            <div class="sub-panel-title">Pemetaan Komponen Utama (PCA)</div>
+                            <div id="scatter-pca" class="chart-canvas"></div>
+                        </div>
+                        <div class="sub-panel">
+                            <div class="sub-panel-title">Profil Multidimensi (Radar Chart)</div>
+                            <div id="radar-chart" class="chart-canvas"></div>
+                        </div>
+                    </div>
+
+                    <!-- Baris Bawah: Matriks Korelasi (Heatmap) -->
+                    <div class="heatmap-subcontainer">
+                        <div class="sub-panel-title" style="margin-bottom: 0.75rem;">Matriks Korelasi 10 Variabel Sosial-Ekonomi (Pearson r)</div>
+                        <div id="chart-scene5" class="chart-canvas"></div>
+                    </div>
+                </div>
+
+                <p class="graphic-caption">
+                    <em>Tip Interaksi:</em> Gunakan seleksi kotak (brush) pada scatter PCA atau klik nama provinsi untuk menumpuk profil perbandingan di radar chart. Arahkan kursor ke sel heatmap untuk membaca kekuatan korelasi antarvariabel.
+                </p>
+            </div>
+
+            <div class="prose">
+                <p>
+                    Provinsi-provinsi di kawasan timur yang berjarak jauh dari pusat pertumbuhan ekonomi umumnya 
+                    terperangkap pada kuadran dengan lama sekolah di bawah 9 tahun dan minimnya akses air minum perpipaan. 
+                    Sebaliknya, daerah perkotaan maju menikmati korelasi positif dengan pendapatan per kapita tinggi, 
+                    kendati tetap menghadapi tantangan berupa tingkat pengangguran terbuka terdidik.
+                </p>
+            </div>
         </section>
 
-        <!-- Scene 4: Hierarki Garis Kemiskinan (Treemap / Sunburst) -->
-        <section id="scene4" class="viz-section">
-            <h2>4. Sebenarnya, Apa yang Membuat Seseorang Disebut Miskin?</h2>
-            <p class="narasi">Komposisi garis kemiskinan dari komoditas makanan dan bukan makanan.</p>
-            <div id="chart-scene4" class="chart-container"></div>
+        <!-- ========================================================
+             BAGIAN 3: ANATOMI PENGELUARAN (SCENE 3: TREEMAP & TREE)
+             ======================================================== -->
+        <section class="story-chapter" id="chapter-3">
+            <div class="prose">
+                <span class="chapter-number">Bagian Tiga</span>
+                <h2>Anatomi Pengeluaran: Beban Garis Kemiskinan</h2>
+                <p class="lead-p">
+                    Di balik garis kemiskinan rupiah yang ditetapkan oleh pemerintah, terdapat daftar kebutuhan riil 
+                    yang harus dipenuhi seseorang setiap bulannya agar tidak tergolong miskin. Komposisi ini membuka tabir 
+                    tentang apa yang paling menguras kantong masyarakat rentan.
+                </p>
+                <p>
+                    Secara konsisten, <strong>komoditas makanan menyumbang lebih dari 73%</strong> dari total garis kemiskinan. 
+                    Di antara ratusan komoditas, <strong>beras</strong> menjadi kontributor tunggal yang tak tergantikan, 
+                    menyumbang lebih dari 20% pengeluaran di perkotaan dan hingga 24% di perdesaan. Tepat di posisi kedua, 
+                    muncul <strong>rokok kretek filter</strong>—sebuah ironi sosial di mana pengeluaran tembakau mengalahkan 
+                    alokasi untuk protein hewani seperti telur dan daging ayam.
+                </p>
+            </div>
+
+            <!-- Visual 3: Hierarki Garis Kemiskinan (Treemap & Collapsible Tree) -->
+            <div class="graphic-frame" id="frame-scene3">
+                <div class="graphic-header">
+                    <span class="graphic-title">Komposisi Komoditas Penyusun Garis Kemiskinan (Maret 2026)</span>
+                </div>
+
+                <!-- Kontainer scene 3 yang memuat Treemap dan Collapsible Tree -->
+                <div id="chart-scene3"></div>
+
+                <p class="graphic-caption">
+                    <em>Dua Sudut Pandang Hierarki:</em> Beralihlah antara <strong>Treemap</strong> untuk membaca proporsi luas pangsa pengeluaran, atau <strong>Pohon Hierarki (Tree)</strong> untuk mengeksplorasi cabang klasifikasi secara interaktif dengan mengklik lingkaran node.
+                </p>
+            </div>
+
+            <div class="prose">
+                <p>
+                    Struktur pengeluaran ini membuktikan kerentanan ekstrem masyarakat berpenghasilan rendah terhadap 
+                    gejolak harga pangan (inflasi pangan). Sedikit saja harga beras melonjak, ribuan keluarga yang berada di batas 
+                    garis kemiskinan akan langsung tergelincir jatuh ke dalam kategori miskin.
+                </p>
+            </div>
         </section>
 
-        <!-- Scene 5: Heatmap Korelasi Antarindikator -->
-        <section id="scene5" class="viz-section">
-            <h2>5. Faktor Apa yang Paling Berkaitan dengan Tingginya Kemiskinan?</h2>
-            <p class="narasi">Matriks korelasi antara indikator kesejahteraan, pendidikan, dan infrastruktur.</p>
-            <div id="chart-scene5" class="chart-container"></div>
-        </section>
+        <!-- ========================================================
+             EPILOG / FOOTER ARTIKEL
+             ======================================================== -->
+        <footer class="article-footer">
+            <div class="footer-inner">
+                <h3>Catatan Metodologi & Sumber Data</h3>
+                <p>
+                    Seluruh data yang disajikan dalam publikasi visual ini diolah dari data mikro Survei Sosial Ekonomi Nasional (Susenas) 
+                    dan Survei Angkatan Kerja Nasional (Sakernas) yang diterbitkan oleh Badan Pusat Statistik (BPS) Republik Indonesia.
+                </p>
+                <p>
+                    Garis Kemiskinan (GK) mencerminkan nilai rupiah pengeluaran minimum yang dibutuhkan seseorang untuk memenuhi 
+                    kebutuhan pangan setara 2.100 kkal per hari serta kebutuhan minimum bukan makanan seperti perumahan, sandang, pendidikan, dan kesehatan.
+                </p>
+                <p class="footer-copy">
+                    Dibuat untuk Ujian Akhir Semester Visualisasi Data dan Informasi — Politeknik Statistika STIS.
+                </p>
+            </div>
+        </footer>
 
-        <!-- Scene 6: Deret Waktu & Aliran Pergerakan Kategori (Sankey) -->
-        <section id="scene6" class="viz-section">
-            <h2>6. Apakah Wilayah Miskin Tetap Miskin, atau Berubah dari Waktu ke Waktu?</h2>
-            <p class="narasi">Dinamika perpindahan kategori status kemiskinan provinsi dalam rentang waktu tertentu.</p>
-            <div id="chart-scene6" class="chart-container"></div>
-        </section>
-    </main>
+    </article>
 
-    <!-- Footer / Catatan Kaki Wajib Sumber Data -->
-    <footer>
-        <p>Sumber Data Utama: Badan Pusat Statistik (BPS) | Dibangun untuk Ujian Akhir Semester Visualisasi Data dan Informasi STIS</p>
-    </footer>
-
-    <!-- Menghubungkan skrip logika JavaScript per scene -->
+    <!-- Skrip Aplikasi -->
     <script src="js/main.js"></script>
     <script src="js/scene1.js"></script>
     <script src="js/scene2.js"></script>
     <script src="js/scene3.js"></script>
-    <script src="js/scene4.js"></script>
     <script src="js/scene5.js"></script>
-    <script src="js/scene6.js"></script>
 </body>
 </html>
