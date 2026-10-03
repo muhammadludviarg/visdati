@@ -264,7 +264,116 @@ body {
   color: var(--aksen);
 }
 
+
+/* ── MAP TIME SLIDER PANEL ──────────────────────────────────────────────── */
+.map-time-panel {
+  max-width: var(--lebar-grafik);
+  margin: 0 auto 0.5rem auto;
+  padding: 1rem 1.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.map-time-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.map-time-label-start,
+.map-time-label-end {
+  font-size: 0.78rem;
+  color: #6e6e78;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.map-slider-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Custom Range Input ── */
+input[type="range"]#map-year-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  /* Filled track via gradient trick */
+  background: linear-gradient(
+    to right,
+    var(--aksen) 0%,
+    var(--aksen) calc((var(--val, 2026) - 2007) / 19 * 100%),
+    rgba(255,255,255,0.12) calc((var(--val, 2026) - 2007) / 19 * 100%),
+    rgba(255,255,255,0.12) 100%
+  );
+}
+
+input[type="range"]#map-year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border: 2.5px solid var(--aksen);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 0 0 0px rgba(46, 196, 182, 0);
+}
+
+input[type="range"]#map-year-slider::-webkit-slider-thumb:hover,
+input[type="range"]#map-year-slider:active::-webkit-slider-thumb {
+  box-shadow: 0 0 0 5px rgba(46, 196, 182, 0.22);
+  transform: scale(1.15);
+}
+
+input[type="range"]#map-year-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border: 2.5px solid var(--aksen);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.map-slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.map-slider-ticks span {
+  font-size: 0.7rem;
+  color: #555560;
+}
+
+/* Badge tahun aktif */
+.map-year-badge {
+  background: var(--aksen);
+  color: #000;
+  font-weight: 800;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  padding: 0.22rem 0.72rem;
+  border-radius: 8px;
+  min-width: 56px;
+  text-align: center;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+  transition: background 0.2s ease;
+}
+
 /* ── TOOLBAR & BUTTONS ELEGAN ──────────────────────────────────────────── */
+
 .map-toolbar, .scene3-toolbar {
   display: flex;
   align-items: center;
@@ -317,18 +426,57 @@ body {
 
 /* Dropdown styling */
 select {
-  background: #242426;
+  background: #1e1e22;
   color: var(--teks-utama);
   border: 1px solid var(--garis-terang);
   border-radius: 6px;
   padding: 0.4rem 0.8rem;
   font-size: 0.84rem;
   outline: none;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  max-width: 280px;
 }
 
-select:focus {
+select:focus, select:hover {
   border-color: var(--aksen);
 }
+
+/* ── SELECTOR GRUP LINE CHART TREN PROVINSI ─────────────────────────────── */
+.tren-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tren-selector-group select {
+  min-width: 200px;
+  background: #1e1e22;
+  border: 1px solid rgba(46, 196, 182, 0.35);
+  color: #f5f5f7;
+  font-size: 0.83rem;
+  padding: 0.38rem 2rem 0.38rem 0.75rem;
+  border-radius: 8px;
+  /* Custom arrow icon */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%232ec4b6' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tren-selector-group select:focus,
+.tren-selector-group select:hover {
+  border-color: var(--aksen);
+  box-shadow: 0 0 0 2px rgba(46, 196, 182, 0.12);
+  outline: none;
+}
+
 
 /* ── LAYOUT KHUSUS MULTIVARIAT (SCENE 2 & 5) ───────────────────────────── */
 .multivariate-layout {

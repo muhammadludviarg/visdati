@@ -19,7 +19,8 @@ const appData = {
 const sceneRendered = {
     makro: false,
     scene1Koroplet: false,
-    scene1Bubble: false,
+    scene1Marimekko: false,
+    scene1DesaKota: false,
     scene2: false,
     scene3Treemap: false,
     scene3Tree: false,
@@ -40,7 +41,10 @@ async function initApp() {
             provinsiSimbolRes,
             trenRes,
             desaKotaRes,
-            teksRes
+            teksRes,
+            kemiskinanHistorisProvRes,
+            desaKotaHistorisRes,
+            historisLengkapRes
         ] = await Promise.all([
             fetch('data/olahan/kabkota_kemiskinan.json' + cacheBuster),
             fetch('data/olahan/kabkota.geojson' + cacheBuster),
@@ -50,7 +54,10 @@ async function initApp() {
             fetch('data/olahan/provinsi_simbol.json' + cacheBuster),
             d3.csv('data/olahan/tren_kemiskinan.csv' + cacheBuster),
             d3.csv('data/olahan/desa_kota.csv' + cacheBuster),
-            fetch('data/olahan/data_teks_kemiskinan.json' + cacheBuster)
+            fetch('data/olahan/data_teks_kemiskinan.json' + cacheBuster),
+            d3.csv('data/olahan/kemiskinan_historis_provinsi.csv' + cacheBuster),
+            d3.csv('data/olahan/desa_kota_historis.csv' + cacheBuster),
+            d3.csv('data/olahan/kemiskinan_historis_lengkap.csv' + cacheBuster)
         ]);
 
         appData.kabkota = await kabkotaRes.json();
@@ -60,7 +67,7 @@ async function initApp() {
         appData.komoditas = await komoditasRes.json();
         appData.provinsiSimbol = await provinsiSimbolRes.json();
         
-        // Formating data tren CSV
+        // Formating data tren CSV (nasional, legacy)
         appData.trenKemiskinan = trenRes.map(d => ({
             tahun: +d.tahun,
             persentase: +d.persentase,
@@ -68,7 +75,7 @@ async function initApp() {
             anotasi: d.anotasi || null
         }));
 
-        // Formating data desa_kota CSV
+        // Formating data desa_kota CSV (legacy)
         appData.desaKota = desaKotaRes.map(d => ({
             provinsi: d.provinsi,
             p0_kota: +d.p0_kota,
@@ -76,6 +83,35 @@ async function initApp() {
         }));
 
         appData.dataTeksKemiskinan = await teksRes.json();
+
+        // Formating kemiskinan historis lengkap CSV
+        appData.kemiskinanHistorisLengkap = historisLengkapRes.map(d => ({
+            provinsi: d.provinsi,
+            nama_daerah: d.nama_daerah,
+            tingkat: (d.tingkat || '').trim().toLowerCase(),
+            tahun: +d.tahun,
+            p0: d.p0 === "" || d.p0 === null || isNaN(+d.p0) ? NaN : +d.p0,
+            jumlah_ribu: d.jumlah_ribu === "" || d.jumlah_ribu === null || isNaN(+d.jumlah_ribu) ? NaN : +d.jumlah_ribu
+        }));
+
+        // Formating kemiskinan historis provinsi dari dataset master
+        appData.kemiskinanHistorisProvinsi = appData.kemiskinanHistorisLengkap
+            .filter(d => d.tingkat === 'provinsi')
+            .map(d => ({
+                provinsi: d.provinsi,
+                tahun: d.tahun,
+                p0: d.p0,
+                jumlah_ribu: d.jumlah_ribu
+            }));
+
+        // Formating desa_kota historis CSV
+        appData.desaKotaHistoris = desaKotaHistorisRes.map(d => ({
+            provinsi: d.provinsi,
+            tipe_daerah: d.tipe_daerah,
+            tahun: +d.tahun,
+            p0: +d.p0,
+            jumlah_ribu: +d.jumlah_ribu
+        }));
 
         console.log("Semua data berhasil dimuat ke memori browser!", appData);
 
@@ -116,11 +152,19 @@ function setupScrollObservers() {
                     }
                 }
 
-                // Bagian 2: Resolusi Spasial - Bubble (Peta 2)
-                if (targetId === "frame-scene1-bubble" && !sceneRendered.scene1Bubble) {
-                    if (typeof initBubbleMap === 'function') {
-                        initBubbleMap('#chart-map-bubble');
-                        sceneRendered.scene1Bubble = true;
+                // Bagian 2: Resolusi Spasial - Marimekko Chart (Beban Absolut & Persentase)
+                if (targetId === "frame-scene1-marimekko" && !sceneRendered.scene1Marimekko) {
+                    if (typeof initMarimekkoChart === 'function') {
+                        initMarimekkoChart('#chart-marimekko');
+                        sceneRendered.scene1Marimekko = true;
+                    }
+                }
+
+                // Bagian 2: Resolusi Spasial - Dumbbell (Desa vs Kota)
+                if (targetId === "frame-scene1-desa-kota" && !sceneRendered.scene1DesaKota) {
+                    if (typeof initDumbbellChart === 'function') {
+                        initDumbbellChart('#chart-dumbbell');
+                        sceneRendered.scene1DesaKota = true;
                     }
                 }
 
@@ -162,7 +206,8 @@ function setupScrollObservers() {
         "frame-teks-brs", 
         "frame-tren-kemiskinan", 
         "frame-scene1-koroplet", 
-        "frame-scene1-bubble", 
+        "frame-scene1-marimekko", 
+        "frame-scene1-desa-kota",
         "frame-scene2", 
         "frame-scene3-treemap", 
         "frame-scene3-tree"
@@ -191,8 +236,11 @@ window.addEventListener("resize", () => {
         if (sceneRendered.scene1Koroplet && typeof initKoropletMap === 'function') {
             initKoropletMap('#chart-map-koroplet');
         }
-        if (sceneRendered.scene1Bubble && typeof initBubbleMap === 'function') {
-            initBubbleMap('#chart-map-bubble');
+        if (sceneRendered.scene1Marimekko && typeof initMarimekkoChart === 'function') {
+            initMarimekkoChart('#chart-marimekko');
+        }
+        if (sceneRendered.scene1DesaKota && typeof initDumbbellChart === 'function') {
+            initDumbbellChart('#chart-dumbbell');
         }
         if (sceneRendered.scene2 && typeof renderScene2 === 'function') {
             renderScene2();

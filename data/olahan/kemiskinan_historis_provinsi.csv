@@ -1,0 +1,781 @@
+provinsi,tahun,p0,jumlah_ribu
+Aceh,2007,26.65,1083.7
+Aceh,2008,23.53,959.7
+Aceh,2009,21.8,892.86
+Aceh,2010,20.98,861.85
+Aceh,2011,19.57,894.81
+Aceh,2012,19.46,909.04
+Aceh,2013,17.6,840.71
+Aceh,2014,18.05,881.26
+Aceh,2015,17.08,851.59
+Aceh,2016,16.73,848.44
+Aceh,2017,16.89,872.61
+Aceh,2018,15.97,839.49
+Aceh,2019,15.32,819.44
+Aceh,2020,14.99,814.91
+Aceh,2021,15.33,834.24
+Aceh,2022,14.64,806.82
+Aceh,2023,14.45,806.75
+Aceh,2024,14.23,804.53
+Aceh,2025,12.33,704.69
+Aceh,2026,12.34,713.78
+Bali,2007,6.63,229.1
+Bali,2008,6.17,215.7
+Bali,2009,5.13,181.72
+Bali,2010,4.88,174.93
+Bali,2011,4.2,166.23
+Bali,2012,4.18,168.78
+Bali,2013,3.95,162.52
+Bali,2014,4.53,185.2
+Bali,2015,4.74,196.71
+Bali,2016,4.25,178.18
+Bali,2017,4.25,180.13
+Bali,2018,4.01,171.76
+Bali,2019,3.79,163.85
+Bali,2020,3.78,165.19
+Bali,2021,4.53,201.97
+Bali,2022,4.57,205.68
+Bali,2023,4.25,193.78
+Bali,2024,4.0,184.43
+Bali,2025,3.72,173.24
+Bali,2026,3.44,162.01
+Banten,2007,9.07,886.2
+Banten,2008,8.15,816.7
+Banten,2009,7.64,788.07
+Banten,2010,7.16,758.16
+Banten,2011,6.32,690.49
+Banten,2012,5.85,652.8
+Banten,2013,5.74,656.25
+Banten,2014,5.35,622.84
+Banten,2015,5.9,702.4
+Banten,2016,5.42,658.11
+Banten,2017,5.45,675.04
+Banten,2018,5.24,661.36
+Banten,2019,5.09,654.46
+Banten,2020,5.92,775.99
+Banten,2021,6.66,867.23
+Banten,2022,6.16,814.02
+Banten,2023,6.17,826.13
+Banten,2024,5.84,791.61
+Banten,2025,5.63,772.78
+Banten,2026,5.38,746.73
+Bengkulu,2007,22.13,370.6
+Bengkulu,2008,20.64,352.0
+Bengkulu,2009,18.59,324.13
+Bengkulu,2010,18.3,324.93
+Bengkulu,2011,17.5,303.6
+Bengkulu,2012,17.7,311.66
+Bengkulu,2013,18.34,327.35
+Bengkulu,2014,17.48,320.95
+Bengkulu,2015,17.88,334.07
+Bengkulu,2016,17.32,328.61
+Bengkulu,2017,16.45,316.98
+Bengkulu,2018,15.43,301.81
+Bengkulu,2019,15.23,302.3
+Bengkulu,2020,15.03,302.58
+Bengkulu,2021,15.22,306.0
+Bengkulu,2022,14.62,297.23
+Bengkulu,2023,14.04,288.46
+Bengkulu,2024,13.56,281.36
+Bengkulu,2025,12.08,252.97
+Bengkulu,2026,11.83,250.11
+DI Yogyakarta,2007,18.99,633.5
+DI Yogyakarta,2008,18.32,616.3
+DI Yogyakarta,2009,17.23,585.78
+DI Yogyakarta,2010,16.83,577.3
+DI Yogyakarta,2011,16.08,560.88
+DI Yogyakarta,2012,16.05,565.32
+DI Yogyakarta,2013,15.43,550.2
+DI Yogyakarta,2014,15.0,544.87
+DI Yogyakarta,2015,14.91,550.23
+DI Yogyakarta,2016,13.34,494.94
+DI Yogyakarta,2017,13.02,488.53
+DI Yogyakarta,2018,12.13,460.1
+DI Yogyakarta,2019,11.7,448.47
+DI Yogyakarta,2020,12.28,475.72
+DI Yogyakarta,2021,12.8,506.45
+DI Yogyakarta,2022,11.34,454.76
+DI Yogyakarta,2023,11.04,448.47
+DI Yogyakarta,2024,10.83,445.55
+DI Yogyakarta,2025,10.23,425.82
+DI Yogyakarta,2026,9.7,408.87
+DKI Jakarta,2007,4.61,405.7
+DKI Jakarta,2008,4.29,379.6
+DKI Jakarta,2009,3.62,323.17
+DKI Jakarta,2010,3.48,312.18
+DKI Jakarta,2011,3.75,363.42
+DKI Jakarta,2012,3.69,363.2
+DKI Jakarta,2013,3.55,354.19
+DKI Jakarta,2014,3.92,393.98
+DKI Jakarta,2015,3.93,398.92
+DKI Jakarta,2016,3.75,384.3
+DKI Jakarta,2017,3.77,389.69
+DKI Jakarta,2018,3.57,373.12
+DKI Jakarta,2019,3.47,365.55
+DKI Jakarta,2020,4.53,480.86
+DKI Jakarta,2021,4.72,501.92
+DKI Jakarta,2022,4.69,502.04
+DKI Jakarta,2023,4.44,477.83
+DKI Jakarta,2024,4.3,464.93
+DKI Jakarta,2025,4.28,464.87
+DKI Jakarta,2026,3.96,432.62
+Gorontalo,2007,27.35,241.9
+Gorontalo,2008,24.88,221.6
+Gorontalo,2009,25.01,224.62
+Gorontalo,2010,23.19,209.89
+Gorontalo,2011,18.75,198.27
+Gorontalo,2012,17.33,186.91
+Gorontalo,2013,17.51,192.59
+Gorontalo,2014,17.44,194.17
+Gorontalo,2015,18.32,206.84
+Gorontalo,2016,17.72,203.19
+Gorontalo,2017,17.65,205.37
+Gorontalo,2018,16.81,198.51
+Gorontalo,2019,15.52,186.03
+Gorontalo,2020,15.22,185.02
+Gorontalo,2021,15.61,186.29
+Gorontalo,2022,15.42,185.44
+Gorontalo,2023,15.15,183.71
+Gorontalo,2024,14.57,177.99
+Gorontalo,2025,13.24,162.74
+Gorontalo,2026,12.16,150.6
+Indonesia,2007,16.58,37168.3
+Indonesia,2008,15.42,34963.3
+Indonesia,2009,14.15,32529.97
+Indonesia,2010,13.33,31023.39
+Indonesia,2011,12.49,30018.93
+Indonesia,2012,11.96,29132.4
+Indonesia,2013,11.37,28066.6
+Indonesia,2014,11.25,28280.01
+Indonesia,2015,11.22,28592.79
+Indonesia,2016,10.86,28005.39
+Indonesia,2017,10.64,27771.22
+Indonesia,2018,9.82,25949.8
+Indonesia,2019,9.41,25144.72
+Indonesia,2020,9.78,26424.02
+Indonesia,2021,10.14,27542.77
+Indonesia,2022,9.54,26161.16
+Indonesia,2023,9.36,25898.55
+Indonesia,2024,9.03,25219.2
+Indonesia,2025,8.47,23854.56
+Indonesia,2026,8.07,22929.74
+Jambi,2007,10.27,281.9
+Jambi,2008,9.32,260.3
+Jambi,2009,8.77,249.69
+Jambi,2010,8.34,241.61
+Jambi,2011,8.65,272.67
+Jambi,2012,8.42,271.67
+Jambi,2013,8.07,266.15
+Jambi,2014,7.92,263.8
+Jambi,2015,8.86,300.71
+Jambi,2016,8.41,289.8
+Jambi,2017,8.19,286.55
+Jambi,2018,7.92,281.69
+Jambi,2019,7.6,274.32
+Jambi,2020,7.58,277.8
+Jambi,2021,8.09,293.86
+Jambi,2022,7.62,279.37
+Jambi,2023,7.58,280.68
+Jambi,2024,7.1,265.42
+Jambi,2025,7.19,270.94
+Jambi,2026,6.67,253.73
+Jawa Barat,2007,13.55,5457.9
+Jawa Barat,2008,13.01,5322.4
+Jawa Barat,2009,11.96,4983.57
+Jawa Barat,2010,11.27,4773.72
+Jawa Barat,2011,10.65,4648.63
+Jawa Barat,2012,10.09,4477.53
+Jawa Barat,2013,9.52,4297.04
+Jawa Barat,2014,9.44,4327.07
+Jawa Barat,2015,9.53,4435.7
+Jawa Barat,2016,8.95,4224.33
+Jawa Barat,2017,8.71,4168.44
+Jawa Barat,2018,7.45,3615.79
+Jawa Barat,2019,6.91,3399.16
+Jawa Barat,2020,7.88,3920.23
+Jawa Barat,2021,8.4,4195.34
+Jawa Barat,2022,8.06,4070.98
+Jawa Barat,2023,7.62,3888.6
+Jawa Barat,2024,7.46,3848.67
+Jawa Barat,2025,7.02,3654.74
+Jawa Barat,2026,6.54,3436.48
+Jawa Tengah,2007,20.43,6557.2
+Jawa Tengah,2008,19.23,6189.6
+Jawa Tengah,2009,17.72,5725.69
+Jawa Tengah,2010,16.56,5369.16
+Jawa Tengah,2011,15.76,5107.36
+Jawa Tengah,2012,15.34,4977.36
+Jawa Tengah,2013,14.56,4732.95
+Jawa Tengah,2014,14.46,4836.45
+Jawa Tengah,2015,13.58,4577.04
+Jawa Tengah,2016,13.27,4506.89
+Jawa Tengah,2017,13.01,4450.72
+Jawa Tengah,2018,11.32,3897.2
+Jawa Tengah,2019,10.8,3743.23
+Jawa Tengah,2020,11.41,3980.9
+Jawa Tengah,2021,11.79,4109.75
+Jawa Tengah,2022,10.93,3831.44
+Jawa Tengah,2023,10.77,3791.5
+Jawa Tengah,2024,10.47,3704.33
+Jawa Tengah,2025,9.48,3366.69
+Jawa Tengah,2026,9.21,3285.43
+Jawa Timur,2007,19.98,7155.3
+Jawa Timur,2008,18.51,6651.3
+Jawa Timur,2009,16.68,6022.59
+Jawa Timur,2010,15.26,5529.3
+Jawa Timur,2011,14.23,5356.21
+Jawa Timur,2012,13.4,5070.98
+Jawa Timur,2013,12.55,4771.26
+Jawa Timur,2014,12.42,4786.79
+Jawa Timur,2015,12.34,4789.12
+Jawa Timur,2016,12.05,4703.3
+Jawa Timur,2017,11.77,4617.01
+Jawa Timur,2018,10.98,4332.59
+Jawa Timur,2019,10.37,4112.25
+Jawa Timur,2020,11.09,4419.1
+Jawa Timur,2021,11.4,4572.73
+Jawa Timur,2022,10.38,4181.29
+Jawa Timur,2023,10.35,4188.81
+Jawa Timur,2024,9.79,3982.69
+Jawa Timur,2025,9.5,3875.88
+Jawa Timur,2026,9.06,3712.23
+Kalimantan Barat,2007,12.91,584.3
+Kalimantan Barat,2008,11.07,508.8
+Kalimantan Barat,2009,9.3,434.77
+Kalimantan Barat,2010,9.02,428.76
+Kalimantan Barat,2011,8.6,380.11
+Kalimantan Barat,2012,8.17,363.31
+Kalimantan Barat,2013,8.24,369.01
+Kalimantan Barat,2014,8.54,401.51
+Kalimantan Barat,2015,8.03,383.7
+Kalimantan Barat,2016,7.87,381.35
+Kalimantan Barat,2017,7.88,387.43
+Kalimantan Barat,2018,7.77,387.08
+Kalimantan Barat,2019,7.49,378.41
+Kalimantan Barat,2020,7.17,366.77
+Kalimantan Barat,2021,7.15,367.89
+Kalimantan Barat,2022,6.73,350.25
+Kalimantan Barat,2023,6.71,353.35
+Kalimantan Barat,2024,6.32,336.08
+Kalimantan Barat,2025,6.16,330.95
+Kalimantan Barat,2026,5.78,313.37
+Kalimantan Selatan,2007,7.01,233.5
+Kalimantan Selatan,2008,6.48,218.9
+Kalimantan Selatan,2009,5.12,175.98
+Kalimantan Selatan,2010,5.21,181.96
+Kalimantan Selatan,2011,5.29,194.62
+Kalimantan Selatan,2012,5.06,189.88
+Kalimantan Selatan,2013,4.77,181.74
+Kalimantan Selatan,2014,4.68,182.88
+Kalimantan Selatan,2015,4.99,198.44
+Kalimantan Selatan,2016,4.85,195.7
+Kalimantan Selatan,2017,4.73,193.92
+Kalimantan Selatan,2018,4.54,189.03
+Kalimantan Selatan,2019,4.55,192.48
+Kalimantan Selatan,2020,4.38,187.87
+Kalimantan Selatan,2021,4.83,208.11
+Kalimantan Selatan,2022,4.49,195.7
+Kalimantan Selatan,2023,4.29,188.93
+Kalimantan Selatan,2024,4.11,183.31
+Kalimantan Selatan,2025,3.84,172.72
+Kalimantan Selatan,2026,3.63,165.41
+Kalimantan Tengah,2007,9.38,210.3
+Kalimantan Tengah,2008,8.71,200.0
+Kalimantan Tengah,2009,7.02,165.85
+Kalimantan Tengah,2010,6.77,164.22
+Kalimantan Tengah,2011,6.56,146.91
+Kalimantan Tengah,2012,6.51,148.05
+Kalimantan Tengah,2013,5.93,136.95
+Kalimantan Tengah,2014,6.03,146.32
+Kalimantan Tengah,2015,5.94,147.7
+Kalimantan Tengah,2016,5.66,143.49
+Kalimantan Tengah,2017,5.37,139.16
+Kalimantan Tengah,2018,5.17,136.93
+Kalimantan Tengah,2019,4.98,134.59
+Kalimantan Tengah,2020,4.82,132.94
+Kalimantan Tengah,2021,5.16,140.04
+Kalimantan Tengah,2022,5.28,145.1
+Kalimantan Tengah,2023,5.11,142.17
+Kalimantan Tengah,2024,5.17,145.63
+Kalimantan Tengah,2025,5.19,147.8
+Kalimantan Tengah,2026,5.09,146.71
+Kalimantan Timur,2007,11.04,324.8
+Kalimantan Timur,2008,9.51,286.4
+Kalimantan Timur,2009,7.73,239.22
+Kalimantan Timur,2010,7.66,243.0
+Kalimantan Timur,2011,6.77,247.9
+Kalimantan Timur,2012,6.68,253.34
+Kalimantan Timur,2013,6.06,237.96
+Kalimantan Timur,2014,6.42,253.6
+Kalimantan Timur,2015,6.23,212.89
+Kalimantan Timur,2016,6.11,212.92
+Kalimantan Timur,2017,6.19,220.17
+Kalimantan Timur,2018,6.03,218.9
+Kalimantan Timur,2019,5.94,219.92
+Kalimantan Timur,2020,6.1,230.26
+Kalimantan Timur,2021,6.54,241.77
+Kalimantan Timur,2022,6.31,236.25
+Kalimantan Timur,2023,6.11,231.07
+Kalimantan Timur,2024,5.78,221.34
+Kalimantan Timur,2025,5.17,199.71
+Kalimantan Timur,2026,5.14,200.64
+Kalimantan Utara,2007,,
+Kalimantan Utara,2008,,
+Kalimantan Utara,2009,,
+Kalimantan Utara,2010,,
+Kalimantan Utara,2011,,
+Kalimantan Utara,2012,,
+Kalimantan Utara,2013,,
+Kalimantan Utara,2014,,
+Kalimantan Utara,2015,6.24,39.69
+Kalimantan Utara,2016,6.23,41.12
+Kalimantan Utara,2017,7.22,49.47
+Kalimantan Utara,2018,7.09,50.35
+Kalimantan Utara,2019,6.63,48.78
+Kalimantan Utara,2020,6.8,51.79
+Kalimantan Utara,2021,7.36,52.86
+Kalimantan Utara,2022,6.77,49.46
+Kalimantan Utara,2023,6.45,47.97
+Kalimantan Utara,2024,6.32,47.83
+Kalimantan Utara,2025,5.54,42.57
+Kalimantan Utara,2026,5.18,40.54
+Kepulauan Bangka Belitung,2007,9.54,95.1
+Kepulauan Bangka Belitung,2008,8.58,86.7
+Kepulauan Bangka Belitung,2009,7.46,76.63
+Kepulauan Bangka Belitung,2010,6.51,67.75
+Kepulauan Bangka Belitung,2011,5.75,72.06
+Kepulauan Bangka Belitung,2012,5.53,71.36
+Kepulauan Bangka Belitung,2013,5.21,69.22
+Kepulauan Bangka Belitung,2014,5.36,71.64
+Kepulauan Bangka Belitung,2015,5.4,74.09
+Kepulauan Bangka Belitung,2016,5.22,72.76
+Kepulauan Bangka Belitung,2017,5.2,74.09
+Kepulauan Bangka Belitung,2018,5.25,76.26
+Kepulauan Bangka Belitung,2019,4.62,68.38
+Kepulauan Bangka Belitung,2020,4.53,68.39
+Kepulauan Bangka Belitung,2021,4.9,72.71
+Kepulauan Bangka Belitung,2022,4.45,66.78
+Kepulauan Bangka Belitung,2023,4.52,68.69
+Kepulauan Bangka Belitung,2024,4.55,69.95
+Kepulauan Bangka Belitung,2025,5.0,77.71
+Kepulauan Bangka Belitung,2026,4.75,74.61
+Kepulauan Riau,2007,10.3,148.4
+Kepulauan Riau,2008,9.18,136.4
+Kepulauan Riau,2009,8.27,128.21
+Kepulauan Riau,2010,8.05,129.66
+Kepulauan Riau,2011,7.4,129.56
+Kepulauan Riau,2012,7.11,131.22
+Kepulauan Riau,2013,6.46,126.66
+Kepulauan Riau,2014,6.7,127.8
+Kepulauan Riau,2015,6.24,122.4
+Kepulauan Riau,2016,5.98,120.41
+Kepulauan Riau,2017,6.06,125.37
+Kepulauan Riau,2018,6.2,131.68
+Kepulauan Riau,2019,5.9,128.46
+Kepulauan Riau,2020,5.92,131.97
+Kepulauan Riau,2021,6.12,144.46
+Kepulauan Riau,2022,6.24,151.68
+Kepulauan Riau,2023,5.69,142.5
+Kepulauan Riau,2024,5.37,138.3
+Kepulauan Riau,2025,4.44,117.28
+Kepulauan Riau,2026,4.09,111.22
+Lampung,2007,22.19,1661.7
+Lampung,2008,20.98,1591.6
+Lampung,2009,20.22,1558.28
+Lampung,2010,18.94,1479.93
+Lampung,2011,16.93,1298.71
+Lampung,2012,16.18,1253.83
+Lampung,2013,14.86,1163.06
+Lampung,2014,14.28,1142.92
+Lampung,2015,14.35,1163.49
+Lampung,2016,14.29,1169.6
+Lampung,2017,13.69,1131.73
+Lampung,2018,13.14,1097.05
+Lampung,2019,12.62,1063.66
+Lampung,2020,12.34,1049.32
+Lampung,2021,12.62,1083.93
+Lampung,2022,11.57,1002.41
+Lampung,2023,11.11,970.67
+Lampung,2024,10.69,941.23
+Lampung,2025,10.0,887.02
+Lampung,2026,9.31,831.89
+Maluku,2007,31.14,404.7
+Maluku,2008,29.66,391.3
+Maluku,2009,28.23,380.01
+Maluku,2010,27.74,378.63
+Maluku,2011,23.0,360.32
+Maluku,2012,21.78,350.23
+Maluku,2013,19.49,321.84
+Maluku,2014,19.13,316.11
+Maluku,2015,19.51,328.41
+Maluku,2016,19.18,327.72
+Maluku,2017,18.45,320.51
+Maluku,2018,18.12,320.08
+Maluku,2019,17.69,317.69
+Maluku,2020,17.44,318.18
+Maluku,2021,17.87,321.81
+Maluku,2022,15.97,290.57
+Maluku,2023,16.42,301.61
+Maluku,2024,16.05,297.68
+Maluku,2025,15.38,287.76
+Maluku,2026,14.91,281.54
+Maluku Utara,2007,11.97,109.9
+Maluku Utara,2008,11.28,105.1
+Maluku Utara,2009,10.36,98.0
+Maluku Utara,2010,9.42,91.07
+Maluku Utara,2011,9.18,97.31
+Maluku Utara,2012,8.47,91.79
+Maluku Utara,2013,7.5,83.44
+Maluku Utara,2014,7.3,82.64
+Maluku Utara,2015,6.84,79.9
+Maluku Utara,2016,6.33,74.68
+Maluku Utara,2017,6.35,76.47
+Maluku Utara,2018,6.64,81.46
+Maluku Utara,2019,6.77,84.6
+Maluku Utara,2020,6.78,86.37
+Maluku Utara,2021,6.89,87.16
+Maluku Utara,2022,6.23,79.87
+Maluku Utara,2023,6.46,83.8
+Maluku Utara,2024,6.32,83.09
+Maluku Utara,2025,5.81,77.27
+Maluku Utara,2026,5.79,77.85
+Nusa Tenggara Barat,2007,24.99,1118.6
+Nusa Tenggara Barat,2008,23.81,1080.6
+Nusa Tenggara Barat,2009,22.78,1050.95
+Nusa Tenggara Barat,2010,21.55,1009.35
+Nusa Tenggara Barat,2011,19.73,894.77
+Nusa Tenggara Barat,2012,18.63,852.64
+Nusa Tenggara Barat,2013,17.97,830.85
+Nusa Tenggara Barat,2014,17.25,820.82
+Nusa Tenggara Barat,2015,17.1,823.89
+Nusa Tenggara Barat,2016,16.48,804.44
+Nusa Tenggara Barat,2017,16.07,793.78
+Nusa Tenggara Barat,2018,14.75,737.46
+Nusa Tenggara Barat,2019,14.56,735.96
+Nusa Tenggara Barat,2020,13.97,713.89
+Nusa Tenggara Barat,2021,14.14,746.66
+Nusa Tenggara Barat,2022,13.68,731.94
+Nusa Tenggara Barat,2023,13.85,751.23
+Nusa Tenggara Barat,2024,12.91,709.01
+Nusa Tenggara Barat,2025,11.78,654.57
+Nusa Tenggara Barat,2026,11.17,628.5
+Nusa Tenggara Timur,2007,27.51,1163.6
+Nusa Tenggara Timur,2008,25.65,1098.3
+Nusa Tenggara Timur,2009,23.31,1013.15
+Nusa Tenggara Timur,2010,23.03,1014.09
+Nusa Tenggara Timur,2011,21.23,1012.9
+Nusa Tenggara Timur,2012,20.88,1012.52
+Nusa Tenggara Timur,2013,20.03,993.56
+Nusa Tenggara Timur,2014,19.82,994.67
+Nusa Tenggara Timur,2015,22.61,1159.84
+Nusa Tenggara Timur,2016,22.19,1149.92
+Nusa Tenggara Timur,2017,21.85,1150.79
+Nusa Tenggara Timur,2018,21.35,1142.17
+Nusa Tenggara Timur,2019,21.09,1146.32
+Nusa Tenggara Timur,2020,20.9,1153.76
+Nusa Tenggara Timur,2021,20.99,1169.31
+Nusa Tenggara Timur,2022,20.05,1131.62
+Nusa Tenggara Timur,2023,19.96,1141.11
+Nusa Tenggara Timur,2024,19.48,1127.57
+Nusa Tenggara Timur,2025,18.6,1088.78
+Nusa Tenggara Timur,2026,17.52,1037.64
+Papua,2007,40.78,793.4
+Papua,2008,37.08,733.1
+Papua,2009,37.53,760.35
+Papua,2010,36.8,761.62
+Papua,2011,31.98,944.79
+Papua,2012,31.11,966.59
+Papua,2013,31.13,1017.36
+Papua,2014,30.05,924.4
+Papua,2015,28.17,859.15
+Papua,2016,28.54,911.33
+Papua,2017,27.62,897.69
+Papua,2018,27.74,917.63
+Papua,2019,27.53,926.36
+Papua,2020,26.64,911.37
+Papua,2021,26.86,920.44
+Papua,2022,26.56,922.12
+Papua,2023,26.03,915.15
+Papua,2024,17.26,152.91
+Papua,2025,19.16,171.38
+Papua,2026,18.39,165.98
+Papua Barat,2007,39.31,266.8
+Papua Barat,2008,35.12,246.5
+Papua Barat,2009,35.71,256.84
+Papua Barat,2010,34.88,256.25
+Papua Barat,2011,31.92,249.84
+Papua Barat,2012,28.2,229.99
+Papua Barat,2013,26.67,224.27
+Papua Barat,2014,27.13,229.43
+Papua Barat,2015,25.82,225.36
+Papua Barat,2016,25.43,225.8
+Papua Barat,2017,25.1,228.38
+Papua Barat,2018,23.01,214.47
+Papua Barat,2019,22.17,211.5
+Papua Barat,2020,21.37,208.58
+Papua Barat,2021,21.84,219.07
+Papua Barat,2022,21.33,218.78
+Papua Barat,2023,20.49,214.98
+Papua Barat,2024,21.66,110.16
+Papua Barat,2025,20.66,106.9
+Papua Barat,2026,18.68,98.46
+Papua Barat Daya,2007,,
+Papua Barat Daya,2008,,
+Papua Barat Daya,2009,,
+Papua Barat Daya,2010,,
+Papua Barat Daya,2011,,
+Papua Barat Daya,2012,,
+Papua Barat Daya,2013,,
+Papua Barat Daya,2014,,
+Papua Barat Daya,2015,,
+Papua Barat Daya,2016,,
+Papua Barat Daya,2017,,
+Papua Barat Daya,2018,,
+Papua Barat Daya,2019,,
+Papua Barat Daya,2020,,
+Papua Barat Daya,2021,,
+Papua Barat Daya,2022,,
+Papua Barat Daya,2023,,
+Papua Barat Daya,2024,18.13,102.27
+Papua Barat Daya,2025,17.95,103.57
+Papua Barat Daya,2026,16.49,97.51
+Papua Pegunungan,2007,,
+Papua Pegunungan,2008,,
+Papua Pegunungan,2009,,
+Papua Pegunungan,2010,,
+Papua Pegunungan,2011,,
+Papua Pegunungan,2012,,
+Papua Pegunungan,2013,,
+Papua Pegunungan,2014,,
+Papua Pegunungan,2015,,
+Papua Pegunungan,2016,,
+Papua Pegunungan,2017,,
+Papua Pegunungan,2018,,
+Papua Pegunungan,2019,,
+Papua Pegunungan,2020,,
+Papua Pegunungan,2021,,
+Papua Pegunungan,2022,,
+Papua Pegunungan,2023,,
+Papua Pegunungan,2024,32.97,365.43
+Papua Pegunungan,2025,30.03,337.32
+Papua Pegunungan,2026,26.34,300.06
+Papua Selatan,2007,,
+Papua Selatan,2008,,
+Papua Selatan,2009,,
+Papua Selatan,2010,,
+Papua Selatan,2011,,
+Papua Selatan,2012,,
+Papua Selatan,2013,,
+Papua Selatan,2014,,
+Papua Selatan,2015,,
+Papua Selatan,2016,,
+Papua Selatan,2017,,
+Papua Selatan,2018,,
+Papua Selatan,2019,,
+Papua Selatan,2020,,
+Papua Selatan,2021,,
+Papua Selatan,2022,,
+Papua Selatan,2023,,
+Papua Selatan,2024,17.44,92.2
+Papua Selatan,2025,19.71,105.53
+Papua Selatan,2026,18.54,100.61
+Papua Tengah,2007,,
+Papua Tengah,2008,,
+Papua Tengah,2009,,
+Papua Tengah,2010,,
+Papua Tengah,2011,,
+Papua Tengah,2012,,
+Papua Tengah,2013,,
+Papua Tengah,2014,,
+Papua Tengah,2015,,
+Papua Tengah,2016,,
+Papua Tengah,2017,,
+Papua Tengah,2018,,
+Papua Tengah,2019,,
+Papua Tengah,2020,,
+Papua Tengah,2021,,
+Papua Tengah,2022,,
+Papua Tengah,2023,,
+Papua Tengah,2024,29.76,308.48
+Papua Tengah,2025,28.9,302.31
+Papua Tengah,2026,30.41,321.28
+Riau,2007,11.2,574.5
+Riau,2008,10.63,566.7
+Riau,2009,9.48,527.49
+Riau,2010,8.65,500.26
+Riau,2011,8.47,482.05
+Riau,2012,8.22,483.07
+Riau,2013,7.72,469.28
+Riau,2014,8.12,499.88
+Riau,2015,8.42,531.39
+Riau,2016,7.98,515.4
+Riau,2017,7.78,514.62
+Riau,2018,7.39,500.44
+Riau,2019,7.08,490.72
+Riau,2020,6.82,483.39
+Riau,2021,7.12,500.81
+Riau,2022,6.78,485.03
+Riau,2023,6.68,485.66
+Riau,2024,6.67,492.25
+Riau,2025,6.16,460.96
+Riau,2026,6.19,470.8
+Sulawesi Barat,2007,19.03,189.9
+Sulawesi Barat,2008,16.73,171.1
+Sulawesi Barat,2009,15.29,158.23
+Sulawesi Barat,2010,13.58,141.33
+Sulawesi Barat,2011,13.89,164.86
+Sulawesi Barat,2012,13.24,160.46
+Sulawesi Barat,2013,12.3,154.0
+Sulawesi Barat,2014,12.27,153.89
+Sulawesi Barat,2015,12.4,160.48
+Sulawesi Barat,2016,11.74,152.73
+Sulawesi Barat,2017,11.3,149.76
+Sulawesi Barat,2018,11.25,151.78
+Sulawesi Barat,2019,11.02,151.4
+Sulawesi Barat,2020,10.87,152.02
+Sulawesi Barat,2021,11.29,157.19
+Sulawesi Barat,2022,11.75,165.72
+Sulawesi Barat,2023,11.49,164.14
+Sulawesi Barat,2024,11.21,162.19
+Sulawesi Barat,2025,10.41,152.31
+Sulawesi Barat,2026,10.0,148.06
+Sulawesi Selatan,2007,14.11,1083.4
+Sulawesi Selatan,2008,13.34,1031.7
+Sulawesi Selatan,2009,12.31,963.57
+Sulawesi Selatan,2010,11.6,913.43
+Sulawesi Selatan,2011,10.29,832.91
+Sulawesi Selatan,2012,10.11,825.79
+Sulawesi Selatan,2013,9.54,787.66
+Sulawesi Selatan,2014,10.28,864.3
+Sulawesi Selatan,2015,9.39,797.72
+Sulawesi Selatan,2016,9.4,807.03
+Sulawesi Selatan,2017,9.38,813.07
+Sulawesi Selatan,2018,9.06,792.63
+Sulawesi Selatan,2019,8.69,767.8
+Sulawesi Selatan,2020,8.72,776.83
+Sulawesi Selatan,2021,8.78,784.98
+Sulawesi Selatan,2022,8.63,777.44
+Sulawesi Selatan,2023,8.7,788.85
+Sulawesi Selatan,2024,8.06,736.48
+Sulawesi Selatan,2025,7.6,698.13
+Sulawesi Selatan,2026,7.24,669.63
+Sulawesi Tengah,2007,22.42,557.4
+Sulawesi Tengah,2008,20.75,524.7
+Sulawesi Tengah,2009,18.98,489.84
+Sulawesi Tengah,2010,18.07,474.99
+Sulawesi Tengah,2011,15.83,423.63
+Sulawesi Tengah,2012,15.4,418.64
+Sulawesi Tengah,2013,14.67,405.42
+Sulawesi Tengah,2014,13.93,392.65
+Sulawesi Tengah,2015,14.66,421.62
+Sulawesi Tengah,2016,14.45,420.52
+Sulawesi Tengah,2017,14.14,417.87
+Sulawesi Tengah,2018,14.01,420.21
+Sulawesi Tengah,2019,13.48,410.36
+Sulawesi Tengah,2020,12.92,398.73
+Sulawesi Tengah,2021,13.0,404.44
+Sulawesi Tengah,2022,12.33,388.35
+Sulawesi Tengah,2023,12.41,395.66
+Sulawesi Tengah,2024,11.77,379.76
+Sulawesi Tengah,2025,10.92,356.19
+Sulawesi Tengah,2026,10.46,345.06
+Sulawesi Tenggara,2007,21.33,465.4
+Sulawesi Tenggara,2008,19.53,435.9
+Sulawesi Tenggara,2009,18.93,434.34
+Sulawesi Tenggara,2010,17.05,400.7
+Sulawesi Tenggara,2011,14.56,330.0
+Sulawesi Tenggara,2012,13.71,316.33
+Sulawesi Tenggara,2013,12.83,301.71
+Sulawesi Tenggara,2014,14.05,342.25
+Sulawesi Tenggara,2015,12.9,321.88
+Sulawesi Tenggara,2016,12.88,326.86
+Sulawesi Tenggara,2017,12.81,331.71
+Sulawesi Tenggara,2018,11.63,307.1
+Sulawesi Tenggara,2019,11.24,302.58
+Sulawesi Tenggara,2020,11.0,301.82
+Sulawesi Tenggara,2021,11.66,318.7
+Sulawesi Tenggara,2022,11.17,309.79
+Sulawesi Tenggara,2023,11.43,321.53
+Sulawesi Tenggara,2024,11.21,319.71
+Sulawesi Tenggara,2025,10.54,304.43
+Sulawesi Tenggara,2026,10.02,293.47
+Sulawesi Utara,2007,11.42,250.1
+Sulawesi Utara,2008,10.1,223.5
+Sulawesi Utara,2009,9.79,219.57
+Sulawesi Utara,2010,9.1,206.72
+Sulawesi Utara,2011,8.51,194.9
+Sulawesi Utara,2012,8.18,189.12
+Sulawesi Utara,2013,7.88,184.4
+Sulawesi Utara,2014,8.75,208.23
+Sulawesi Utara,2015,8.65,208.54
+Sulawesi Utara,2016,8.34,202.82
+Sulawesi Utara,2017,8.1,198.88
+Sulawesi Utara,2018,7.8,193.31
+Sulawesi Utara,2019,7.66,191.7
+Sulawesi Utara,2020,7.62,192.37
+Sulawesi Utara,2021,7.77,196.35
+Sulawesi Utara,2022,7.28,185.14
+Sulawesi Utara,2023,7.38,189.0
+Sulawesi Utara,2024,7.25,186.85
+Sulawesi Utara,2025,6.71,173.84
+Sulawesi Utara,2026,6.32,164.78
+Sumatera Barat,2007,11.9,529.2
+Sumatera Barat,2008,10.67,477.2
+Sumatera Barat,2009,9.54,429.25
+Sumatera Barat,2010,9.5,430.02
+Sumatera Barat,2011,9.04,442.09
+Sumatera Barat,2012,8.19,404.74
+Sumatera Barat,2013,8.14,407.47
+Sumatera Barat,2014,7.41,379.2
+Sumatera Barat,2015,7.31,379.61
+Sumatera Barat,2016,7.09,371.56
+Sumatera Barat,2017,6.87,364.51
+Sumatera Barat,2018,6.65,357.13
+Sumatera Barat,2019,6.42,348.22
+Sumatera Barat,2020,6.28,344.23
+Sumatera Barat,2021,6.63,370.67
+Sumatera Barat,2022,5.92,335.21
+Sumatera Barat,2023,5.95,340.37
+Sumatera Barat,2024,5.97,345.73
+Sumatera Barat,2025,5.35,312.35
+Sumatera Barat,2026,5.27,311.14
+Sumatera Selatan,2007,19.15,1331.8
+Sumatera Selatan,2008,17.73,1249.6
+Sumatera Selatan,2009,16.28,1167.87
+Sumatera Selatan,2010,15.47,1125.73
+Sumatera Selatan,2011,14.24,1074.81
+Sumatera Selatan,2012,13.78,1057.03
+Sumatera Selatan,2013,14.24,1110.37
+Sumatera Selatan,2014,13.91,1100.83
+Sumatera Selatan,2015,14.25,1145.63
+Sumatera Selatan,2016,13.54,1101.19
+Sumatera Selatan,2017,13.19,1086.92
+Sumatera Selatan,2018,12.8,1068.27
+Sumatera Selatan,2019,12.71,1073.74
+Sumatera Selatan,2020,12.66,1081.58
+Sumatera Selatan,2021,12.84,1113.76
+Sumatera Selatan,2022,11.9,1044.69
+Sumatera Selatan,2023,11.78,1045.68
+Sumatera Selatan,2024,10.97,984.24
+Sumatera Selatan,2025,10.15,919.6
+Sumatera Selatan,2026,9.5,869.97
+Sumatera Utara,2007,13.9,1768.5
+Sumatera Utara,2008,12.55,1613.8
+Sumatera Utara,2009,11.51,1499.68
+Sumatera Utara,2010,11.31,1490.89
+Sumatera Utara,2011,11.33,1481.31
+Sumatera Utara,2012,10.67,1407.25
+Sumatera Utara,2013,10.06,1339.16
+Sumatera Utara,2014,9.38,1286.67
+Sumatera Utara,2015,10.53,1463.67
+Sumatera Utara,2016,10.35,1455.95
+Sumatera Utara,2017,10.22,1453.87
+Sumatera Utara,2018,9.22,1324.98
+Sumatera Utara,2019,8.83,1282.04
+Sumatera Utara,2020,8.75,1283.29
+Sumatera Utara,2021,9.01,1343.86
+Sumatera Utara,2022,8.42,1268.19
+Sumatera Utara,2023,8.15,1239.71
+Sumatera Utara,2024,7.99,1228.01
+Sumatera Utara,2025,7.36,1140.25
+Sumatera Utara,2026,7.1,1110.37

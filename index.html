@@ -77,14 +77,20 @@
                 </p>
             </div>
 
-            <!-- Elemen Visual 1B: Line Chart Tren Kemiskinan Historis (1996 - 2026) dengan Anotasi Krisis -->
+            <!-- Elemen Visual 1B: Line Chart Tren Kemiskinan Historis dengan Selector Provinsi -->
             <div class="graphic-frame" id="frame-tren-kemiskinan">
                 <div class="graphic-header">
-                    <span class="graphic-title">Tren Historis Persentase Penduduk Miskin Indonesia (1996–2026)</span>
+                    <span class="graphic-title" id="tren-chart-title">Tren Historis Persentase Penduduk Miskin (2007–2026)</span>
+                    <div class="tren-selector-group">
+                        <label for="dropdown-tren-provinsi" class="toolbar-label">🗺 Pilih wilayah:</label>
+                        <select id="dropdown-tren-provinsi" onchange="updateTrenChart(this.value)">
+                            <option value="Indonesia" selected>Indonesia (Nasional)</option>
+                        </select>
+                    </div>
                 </div>
                 <div id="chart-tren-kemiskinan" class="chart-canvas"></div>
                 <p class="graphic-caption">
-                    <em>Kerentanan Historis:</em> Perhatikan lonjakan tajam pada <strong>Krisis Moneter Asia 1998</strong> (mencapai 24.23%) dan hambatan pada <strong>Pandemi COVID-19 2020</strong> (naik ke 9.78%), membuktikan kerentanan populasi dekat-miskin terhadap krisis makro.
+                    <em>Tip:</em> Gunakan dropdown di atas untuk menampilkan tren kemiskinan per provinsi. Arahkan kursor ke titik pada grafik untuk melihat data detail. <span id="tren-krisis-note">Anotasi merah menandai <strong>Krisis Moneter 1998</strong> dan <strong>Pandemi COVID-19 2020</strong>.</span>
                 </p>
             </div>
 
@@ -109,10 +115,28 @@
                 </p>
             </div>
 
+            <!-- ── PANEL SLIDER WAKTU (Shared untuk kedua peta) ── -->
+            <div class="map-time-panel">
+                <div class="map-time-inner">
+                    <span class="map-time-label-start">2007</span>
+                    <div class="map-slider-wrap">
+                        <input type="range" id="map-year-slider"
+                            min="2007" max="2025" value="2025" step="1"
+                            oninput="onMapYearSlide(this.value)">
+                        <div class="map-slider-ticks">
+                            <span>2007</span><span>2010</span><span>2013</span><span>2016</span>
+                            <span>2019</span><span>2022</span><span>2025</span>
+                        </div>
+                    </div>
+                    <span class="map-time-label-end">2025</span>
+                    <div class="map-year-badge" id="map-year-badge">2025</div>
+                </div>
+            </div>
+
             <!-- Visual Peta 1: Peta Koroplet (Persentase P0) -->
             <div class="graphic-frame" id="frame-scene1-koroplet">
                 <div class="graphic-header">
-                    <span class="graphic-title">Peta Koroplet: Persentase Penduduk Miskin Kabupaten/Kota (P0, 2025)</span>
+                    <span class="graphic-title" id="koroplet-map-title">Peta Koroplet: Persentase Penduduk Miskin Kabupaten/Kota (P0, 2025)</span>
                     <div class="map-toolbar">
                         <button class="btn-pill btn-pill-reset" onclick="resetKoropletZoom()">↺ Reset Zoom</button>
                     </div>
@@ -120,29 +144,42 @@
 
                 <div id="chart-map-koroplet" class="chart-canvas"></div>
                 <p class="graphic-caption">
-                    <em>Interaksi Peta Koroplet:</em> Klik pada wilayah kabupaten/kota untuk zoom-in bounding box otomatis. Klik wilayah di sebelahnya untuk berpindah fokus (pan), atau klik tombol Reset Zoom untuk kembali ke pandangan penuh Nusantara.
+                    <em>Interaksi Peta Koroplet:</em> Geser <strong>slider tahun</strong> di atas untuk melihat perubahan pola kemiskinan dari 2007 hingga 2026. Klik wilayah kabupaten/kota untuk zoom-in, atau tombol Reset Zoom untuk kembali ke pandangan Nusantara.
                 </p>
             </div>
 
-            <!-- Kalimat Pengantar Jembatan Koroplet → Bubble -->
+            <!-- Kalimat Pengantar Jembatan Koroplet → Marimekko -->
             <div class="prose">
                 <p class="lead-p" style="font-size: 1.18rem; color: #e5e5ea; border-left: 3px solid var(--aksen-oranye); padding-left: 1.25rem; margin: 2.5rem 0;">
-                    <strong>Persentase kadang menipu.</strong> Jika hanya melihat tingkat keparahan relatif (P0), daerah di Indonesia bagian timur seperti dataran tinggi Papua, Maluku, dan NTT mencatatkan persentase yang tampak mendominasi. Namun, saat kita melihat dari perspektif <strong>jumlah absolut penduduk miskin (seperti pada peta bubble di bawah)</strong>, konsentrasi populasi terbanyak jutaan jiwa miskin justru berada di Pulau Jawa akibat tingginya kepadatan penduduk.
+                    <strong>Persentase kadang menipu.</strong> Jika hanya melihat tingkat keparahan relatif ($P_0$), daerah di Indonesia bagian timur mencatatkan persentase yang tampak mendominasi. Namun, saat kita melihat dari perspektif <strong>beban populasi miskin absolut (seperti pada Grafik Marimekko di bawah)</strong>, lebar setiap balok menunjukkan jumlah jiwa miskin dan tingginya menunjukkan persentase kemiskinan. Luas area balok menggambarkan beban riil provinsi tersebut.
                 </p>
             </div>
 
-            <!-- Visual Peta 2: Peta Bubble (Jumlah Absolut Ribu Jiwa) -->
-            <div class="graphic-frame" id="frame-scene1-bubble">
+            <!-- Visual 2: Marimekko Chart (Variable Width Bar Chart per Provinsi) -->
+            <div class="graphic-frame" id="frame-scene1-marimekko">
                 <div class="graphic-header">
-                    <span class="graphic-title">Peta Bubble: Beban Absolut Jumlah Penduduk Miskin (Ribu Jiwa)</span>
-                    <div class="map-toolbar">
-                        <button class="btn-pill btn-pill-reset" onclick="resetBubbleZoom()">↺ Reset Zoom</button>
-                    </div>
+                    <span class="graphic-title" id="marimekko-title">Grafik Marimekko: Beban Absolut & Persentase Kemiskinan per Provinsi (2025)</span>
                 </div>
 
-                <div id="chart-map-bubble" class="chart-canvas"></div>
+                <div id="chart-marimekko" class="chart-canvas"></div>
                 <p class="graphic-caption">
-                    <em>Interaksi Peta Bubble:</em> Lingkaran proporsional mencerminkan jumlah absolut ribu jiwa penduduk miskin di tiap kabupaten/kota. Arahkan kursor atau klik bubble untuk melihat detail angka riil.
+                    <em>Interaksi Grafik Marimekko:</em> <strong>Lebar balok (Sumbu X)</strong> mewakili beban populasi miskin absolut (jiwa), sedangkan <strong>tinggi balok (Sumbu Y)</strong> mewakili persentase kemiskinan ($P_0$). Arahkan kursor ke balok untuk melihat detail kontribusi provinsi terhadap beban nasional. Slider tahun juga berlaku di sini.
+                </p>
+            </div>
+
+            <!-- Visual 3: Dumbbell Plot Perbandingan Desa vs Kota -->
+            <div class="graphic-frame" id="frame-scene1-desa-kota">
+                <div class="graphic-header">
+                    <span class="graphic-title" id="dumbbell-title">Disparitas Desa vs Kota: Persentase Penduduk Miskin (2025)</span>
+                </div>
+                <div id="chart-dumbbell" class="chart-canvas" style="min-height: 500px;"></div>
+                <div class="map-toolbar" style="justify-content: center; margin-top: 10px;">
+                    <span style="font-size: 11px; color: #a8dadc;">● Perdesaan</span>
+                    <span style="margin: 0 10px; color: #555;">|</span>
+                    <span style="font-size: 11px; color: #f4a261;">● Perkotaan</span>
+                </div>
+                <p class="graphic-caption">
+                    <em>Dumbbell Plot:</em> Menunjukkan kesenjangan (gap) kemiskinan antara wilayah perdesaan dan perkotaan di setiap provinsi. Garis penghubung yang panjang menandakan disparitas tinggi. Titik akan otomatis bergeser mengikuti <strong>slider tahun</strong> di atas.
                 </p>
             </div>
 
