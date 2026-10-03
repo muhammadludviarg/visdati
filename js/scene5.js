@@ -130,12 +130,12 @@ async function renderScene5() {
 
   // Margin yang cukup untuk label sumbu Y & X
   const margin = {
-    top: 155,
-    right: 30,
+    top: 160,
+    right: 170,
     bottom: 80,
     left: 235,
   };
-  const maxMatrixSize = Math.min(fullW - margin.left - margin.right, 520);
+  const maxMatrixSize = Math.min(fullW - margin.left - margin.right, 640);
   const W = Math.max(maxMatrixSize, 300);
   const H = W; // Matriks persegi
 
@@ -172,7 +172,7 @@ async function renderScene5() {
   const colorScale = d3
     .scaleLinear()
     .domain([-1, 0, 1])
-    .range(["#e63946", "#242424", "#2ec4b6"]);
+    .range(["#FF9A00", "#333333", "#0066CC"]);
 
   // Tooltip
   const tooltip = d3.select("body").append("div").attr("class", "d3-tooltip");
@@ -190,7 +190,7 @@ async function renderScene5() {
     .attr("height", yScale.bandwidth())
     .attr("rx", 2)
     .attr("fill", (d) => colorScale(d.val))
-    .style("stroke", "#141414")
+    .style("stroke", "#262626")
     .style("stroke-width", 1)
     .style("cursor", "pointer")
     .style("transition", "opacity 0.15s");
@@ -206,7 +206,13 @@ async function renderScene5() {
     .attr("text-anchor", "middle")
     .style("font-size", xScale.bandwidth() > 40 ? "11px" : "9px")
     .style("font-weight", "600")
-    .style("fill", (d) => (Math.abs(d.val) > 0.4 ? "#ffffff" : "#a0a0a0"))
+    .style("fill", (d) =>
+      Math.abs(d.val) <= 0.4
+        ? "#BDBDBD"
+        : d3.lab(colorScale(d.val)).l > 60
+          ? "#262626"
+          : "#F2F2F2",
+    )
     .style("pointer-events", "none")
     .text((d) => (d.val === 1 ? "1.00" : d.val.toFixed(2)));
 
@@ -226,29 +232,16 @@ async function renderScene5() {
 
   xAxisG
     .selectAll("text")
-    .style("fill", "#e0e0e0")
+    .style("fill", "#F2F2F2")
     .style("font-size", "10px")
-    .style("font-family", "'Archivo', sans-serif")
+    .style("font-family", "'Plus Jakarta Sans', sans-serif")
     .style("font-weight", "500")
     .attr("text-anchor", "start")
-    .attr("transform", "rotate(40)")
-    .attr("dx", "6px")
-    .attr("dy", "-2px")
-    .each(function (d) {
-      const text = d3.select(this);
-      const variable = variables.find((v) => v.label === d);
-      const lines = variable?.lines || [d];
-
-      text.text(null);
-
-      lines.forEach((line, i) => {
-        text
-          .append("tspan")
-          .attr("x", 0)
-          .attr("dy", i === 0 ? "0em" : "1.1em")
-          .text(line);
-      });
-    });
+    .attr("transform", "rotate(-45)")
+    .attr("x", 0)
+    .attr("y", -4)
+    .attr("dx", "0.4em")
+    .attr("dy", "0em");
 
   // Sumbu Y — di bagian KIRI
   const yAxis = d3.axisLeft(yScale).tickSize(0);
@@ -262,9 +255,9 @@ async function renderScene5() {
 
   yAxisG
     .selectAll("text")
-    .style("fill", "#e0e0e0")
+    .style("fill", "#F2F2F2")
     .style("font-size", "10px")
-    .style("font-family", "'Archivo', sans-serif")
+    .style("font-family", "'Plus Jakarta Sans', sans-serif")
     .style("font-weight", "500")
     .attr("text-anchor", "end");
 
@@ -274,7 +267,7 @@ async function renderScene5() {
       cells.style("opacity", (x) =>
         x.varX === d.varX && x.varY === d.varY ? 1 : 0.4,
       );
-      d3.select(this).style("stroke", "#ffffff").style("stroke-width", 2);
+      d3.select(this).style("stroke", "#F2F2F2").style("stroke-width", 2);
 
       const statusKorelasi =
         d.val > 0.6
@@ -288,14 +281,14 @@ async function renderScene5() {
                 : "Korelasi Negatif Kuat";
 
       const colorText =
-        d.val > 0 ? "#2ec4b6" : d.val < 0 ? "#e63946" : "#ffffff";
+        d.val > 0 ? "#599CDE" : d.val < 0 ? "#FF9A00" : "#F2F2F2";
 
       tooltip
         .html(
           `<div style="font-size:11px;color:#bbb;margin-bottom:2px">Hubungan Korelasi</div>` +
-            `<div style="font-weight:bold;color:#fff">${d.varY}</div>` +
+            `<div style="font-weight:bold;color:#F2F2F2">${d.varY}</div>` +
             `<div style="font-size:11px;color:#aaa">dengan</div>` +
-            `<div style="font-weight:bold;color:#fff;margin-bottom:6px">${d.varX}</div>` +
+            `<div style="font-weight:bold;color:#F2F2F2;margin-bottom:6px">${d.varX}</div>` +
             `<div style="font-size:13px;color:${colorText}">Nilai r = <b>${d.val.toFixed(3)}</b></div>` +
             `<div style="font-size:10px;color:#999;margin-top:2px">${statusKorelasi}</div>`,
         )
@@ -311,7 +304,7 @@ async function renderScene5() {
     .on("mouseleave", function () {
       cells
         .style("opacity", 1)
-        .style("stroke", "#141414")
+        .style("stroke", "#262626")
         .style("stroke-width", 1);
       tooltip.style("opacity", 0).style("left", "-9999px");
     });
@@ -330,9 +323,9 @@ async function renderScene5() {
   const gradId = "heatmap-grad-diverging";
   const grad = defs.append("linearGradient").attr("id", gradId);
 
-  grad.append("stop").attr("offset", "0%").attr("stop-color", "#e63946");
-  grad.append("stop").attr("offset", "50%").attr("stop-color", "#242424");
-  grad.append("stop").attr("offset", "100%").attr("stop-color", "#2ec4b6");
+  grad.append("stop").attr("offset", "0%").attr("stop-color", "#FF9A00");
+  grad.append("stop").attr("offset", "50%").attr("stop-color", "#333333");
+  grad.append("stop").attr("offset", "100%").attr("stop-color", "#0066CC");
 
   legG
     .append("rect")
@@ -345,7 +338,7 @@ async function renderScene5() {
     .append("text")
     .attr("x", 0)
     .attr("y", legH + 13)
-    .style("fill", "#e63946")
+    .style("fill", "#FF9A00")
     .style("font-size", "10px")
     .style("font-weight", "bold")
     .text("-1.0 (Negatif Kuat)");
@@ -355,7 +348,7 @@ async function renderScene5() {
     .attr("x", legW / 2)
     .attr("y", legH + 13)
     .attr("text-anchor", "middle")
-    .style("fill", "#888")
+    .style("fill", "#BDBDBD")
     .style("font-size", "10px")
     .text("0 (Netral)");
 
@@ -364,7 +357,7 @@ async function renderScene5() {
     .attr("x", legW)
     .attr("y", legH + 13)
     .attr("text-anchor", "end")
-    .style("fill", "#2ec4b6")
+    .style("fill", "#599CDE")
     .style("font-size", "10px")
     .style("font-weight", "bold")
     .text("+1.0 (Positif Kuat)");

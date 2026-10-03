@@ -1,334 +1,680 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wajah Kemiskinan Indonesia: Lensa Resolusi Multi-Skala</title>
-    
-    <!-- Google Fonts: Playfair Display (Editorial Serif) & Archivo (Clean Sans) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Google Fonts: Plus Jakarta Sans (isi) + Playfair Display (judul) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Memuat D3.js v7 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    
+
     <!-- D3 Cloud: layout khusus word cloud -->
-<script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
 
     <!-- Menghubungkan Stylesheet Visual Journalism -->
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <article class="journalism-article">
-        
-        <!-- ========================================================
+      <!-- ========================================================
              PROLOG: LENSA RESOLUSI KEMISKINAN
              ======================================================== -->
-        <header class="article-header">
-            <span class="kicker">Jurnalistik Visual Data</span>
-            <h1 class="article-title">Wajah Kemiskinan Indonesia: Lensa Resolusi Multi-Skala</h1>
-            <p class="article-subhead">
-                Kemiskinan sering diukur sebagai satu persen agregat tunggal. Namun, untuk benar-benar memahami akarnya, 
-                kita harus melihatnya melalui tingkatan resolusi yang berbeda: dari bahasa kebijakan makro negara, 
-                disparitas geospasial antardaerah, hingga struktur mikroskopis komoditas pengeluaran rumah tangga.
-            </p>
-            <div class="byline">
-                <span>Eksplorasi Data Berbasis Survei Sosial Ekonomi Nasional (Susenas) & Sakernas BPS</span>
-            </div>
-            <div class="scroll-indicator">
-                <span>Gulir untuk membuka lensa narasi</span>
-                <span class="arrow">↓</span>
-            </div>
-        </header>
+      <header class="article-header">
+        <h1 class="article-title">
+          Wajah Kemiskinan Indonesia: Lensa Resolusi Multi-Skala
+        </h1>
+        <p class="article-subhead">
+          Pada Maret 2026, persentase penduduk miskin Indonesia turun menjadi
+          8,07 persen. Apakah itu berarti kemiskinan hampir teratasi? Jawabannya
+          bergantung pada seberapa dekat kita melihat. Tulisan ini memeriksa
+          satu angka yang sama melalui tiga lensa: bahasa negara, peta wilayah,
+          dan dapur rumah tangga.
+        </p>
+        <div class="byline">
+          <span
+            >Eksplorasi Data Berbasis Survei Sosial Ekonomi Nasional (Susenas) &
+            Sakernas BPS</span
+          >
+        </div>
+      </header>
 
-        <!-- ========================================================
+      <!-- ========================================================
              BAGIAN 1: RESOLUSI MAKRO (Bahasa Negara & Tren Historis)
              ======================================================== -->
-        <section class="story-chapter" id="chapter-makro">
-            <div class="prose">
-                <span class="chapter-number">Resolusi 1 · Makro</span>
-                <h2>Bahasa Negara dan Pembacaan Statistik Agregat</h2>
-                <p class="lead-p">
-                    Pada tingkat paling tinggi, pemerintah mengukur keberhasilan penanggulangan kemiskinan melalui 
-                    indikator makro agregat. Angka persentase nasional menjadi tolok ukur efektivitas kebijakan anggaran, 
-                    bantuan sosial, dan stabilitas pertumbuhan ekonomi secara nasional.
-                </p>
-                <p>
-                    Namun, bagaimana negara membingkai narasi resmi kemiskinan tersebut? Analisis pemrosesan teks terhadap dokumen 
-                    <strong>Berita Resmi Statistik (BRS) BPS</strong> mengungkapkan kepungan diksi birokratis yang mengunci perhatian publik 
-                    pada istilah-istilah seperti <em>"persentase"</em>, <em>"menurun"</em>, <em>"garis kemiskinan"</em>, dan <em>"makanan"</em>.
-                </p>
-            </div>
+      <section class="story-chapter" id="chapter-makro">
+        <div class="prose">
+          <h2>Bahasa Negara dan Pembacaan Statistik Agregat</h2>
+          <p class="lead-p">
+            Cara paling cepat menilai kemiskinan adalah dengan satu angka
+            nasional. Pemerintah memakainya sebagai tolok ukur keberhasilan
+            kebijakan, dan angka itu memang terus turun. Tetapi sebelum menilai
+            angkanya, kita perlu bertanya lebih dulu: bagaimana negara bercerita
+            tentang kemiskinan?
+          </p>
+        </div>
 
-            <!-- Elemen Visual 1A: Network Graph / D3 Word Cloud Ko-okurensi Teks BRS BPS -->
-            <div class="graphic-frame" id="frame-teks-brs">
-                <div class="graphic-header">
-                    <span class="graphic-title">Network Visual Diksi Dominan Berita Resmi Statistik (BRS) BPS</span>
-                </div>
-                <div id="chart-teks-brs" class="chart-canvas"></div>
-                <p class="graphic-caption">
-                    <em>Network Diksi Bahasa Negara:</em> Visualisasi interaktif D3.js ini memetakan frekuensi dan keterhubungan term kunci dari rilis resmi BPS. Kata <strong>"persentase"</strong> (teal) dan <strong>"menurun"</strong> mendominasi narasi resmi, disamping komoditas <strong>"makanan"</strong> (oranye) sebagai pembentuk garis kemiskinan. Seret kata untuk mengeksplorasi jaringannya.
-                </p>
+        <!-- Elemen Visual 1A: Awan Kata Berita Resmi Statistik (tata letak 2 kolom: 3/4 visual, 1/4 teks) -->
+        <div class="split-layout">
+          <div class="graphic-frame" id="frame-teks-brs">
+            <div class="graphic-header">
+              <span class="graphic-title"
+                >Awan Kata: Diksi Dominan dalam Berita Resmi Statistik BPS</span
+              >
             </div>
+            <div id="chart-teks-brs" class="chart-canvas"></div>
+            <p class="graphic-caption">
+              <em>Awan Kata Bahasa Negara:</em> Ukuran kata mencerminkan
+              seberapa sering ia muncul dalam rilis resmi BPS. Kata
+              <strong>"persentase"</strong> (biru) dan
+              <strong>"menurun"</strong> mendominasi narasi resmi, disamping
+              komoditas <strong>"makanan"</strong> (oranye) sebagai pembentuk
+              garis kemiskinan. Seret kata untuk mengeksplorasinya.
+            </p>
+          </div>
+          <aside class="split-text">
+            <p>
+              Analisis teks terhadap
+              <strong>Berita Resmi Statistik</strong> Badan Pusat Statistik
+              menunjukkan kosakata yang konsisten: <em>"persentase"</em>,
+              <em>"menurun"</em>, <em>"garis kemiskinan"</em>, dan
+              <em>"makanan"</em>. Ceritanya adalah cerita tentang angka yang
+              bergerak turun.
+            </p>
+          </aside>
+        </div>
 
-            <div class="prose">
-                <p>
-                    Secara statistik agregat, Indonesia memang mencatatkan tren penurunan persentase kemiskinan dari 17,47% pada tahun 1996 
-                    menjadi 8,07% pada tahun 2026. Namun, kurva histori jangka panjang mengungkapkan betapa rapuhnya angka penurunan ini saat dihantam guncangan eksternal.
-                </p>
+        <div class="prose">
+          <p>
+            Cerita penurunan itu memang punya dasar. Grafik di bawah menunjukkan
+            persentase penduduk miskin turun dari tahun ke tahun. Namun
+            perhatikan titik tahun 2020: satu guncangan, yaitu pandemi, cukup
+            untuk membalik arah kurva. Penurunan ini nyata, tetapi tidak sekokoh
+            yang tersirat dari bahasa resminya.
+          </p>
+        </div>
+
+        <!-- Elemen Visual 1B: Line Chart Tren Kemiskinan Historis dengan Selector Provinsi -->
+        <div class="graphic-frame" id="frame-tren-kemiskinan">
+          <div class="graphic-header">
+            <span class="graphic-title" id="tren-chart-title"
+              >Tren Historis Persentase Penduduk Miskin Indonesia
+              (1996–2025)</span
+            >
+            <div class="tren-selector-group">
+              <label for="dropdown-tren-provinsi" class="toolbar-label"
+                >Wilayah:</label
+              >
+              <select
+                id="dropdown-tren-provinsi"
+                onchange="updateTrenChart(this.value)"
+              >
+                <option value="Indonesia" selected>Indonesia (Nasional)</option>
+              </select>
             </div>
+          </div>
+          <div id="chart-tren-kemiskinan" class="chart-canvas"></div>
+          <p class="graphic-caption">
+            <em>Tip:</em> Gunakan dropdown di atas untuk menampilkan tren
+            kemiskinan per provinsi. Arahkan kursor ke titik pada grafik untuk
+            melihat data detail.
+            <span id="tren-krisis-note"
+              >Penanda biru menandai <strong>Krisis Moneter 1998</strong> dan
+              <strong>Pandemi COVID-19 2020</strong>.</span
+            >
+          </p>
+        </div>
 
-            <!-- Elemen Visual 1B: Line Chart Tren Kemiskinan Historis dengan Selector Provinsi -->
-            <div class="graphic-frame" id="frame-tren-kemiskinan">
-                <div class="graphic-header">
-                    <span class="graphic-title" id="tren-chart-title">Tren Historis Persentase Penduduk Miskin (2007–2026)</span>
-                    <div class="tren-selector-group">
-                        <label for="dropdown-tren-provinsi" class="toolbar-label">🗺 Pilih wilayah:</label>
-                        <select id="dropdown-tren-provinsi" onchange="updateTrenChart(this.value)">
-                            <option value="Indonesia" selected>Indonesia (Nasional)</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="chart-tren-kemiskinan" class="chart-canvas"></div>
-                <p class="graphic-caption">
-                    <em>Tip:</em> Gunakan dropdown di atas untuk menampilkan tren kemiskinan per provinsi. Arahkan kursor ke titik pada grafik untuk melihat data detail. <span id="tren-krisis-note">Anotasi merah menandai <strong>Krisis Moneter 1998</strong> dan <strong>Pandemi COVID-19 2020</strong>.</span>
-                </p>
-            </div>
+        <div class="prose">
+          <p
+            class="lead-p"
+            style="
+              border-left: 3px solid var(--aksen-oranye);
+              padding-left: 1.25rem;
+            "
+          >
+            Tetapi angka nasional hanyalah rata-rata dari 38 provinsi dan
+            ratusan kabupaten/kota.
+            <strong>Di mana tepatnya kemiskinan itu berada?</strong>
+          </p>
+        </div>
+      </section>
 
-            <div class="prose">
-                <p>
-                    Angka rata-rata nasional yang tampak membaik seolah menghaluskan kenyataan bahwa ada kontras mendalam 
-                    saat kita memperbesar skala pengamatan ke tingkat wilayah.
-                </p>
-            </div>
-        </section>
-
-        <!-- ========================================================
+      <!-- ========================================================
              BAGIAN 2: RESOLUSI SPASIAL (Peta Interaktif & Perbandingan Desa-Kota)
              ======================================================== -->
-        <section class="story-chapter" id="chapter-spasial">
-            <div class="prose">
-                <span class="chapter-number">Resolusi 2 · Spasial</span>
-                <h2>Menyingkap Disparitas Geospasial dan Paradoks Wilayah</h2>
-                <p class="lead-p">
-                    Ketika lensa diturunkan ke skala geospasial (kabupaten/kota), muncul perdebatan mendasar: 
-                    apakah kita fokus pada <em>tingkat keparahan relatif</em> (persentase) atau <em>beban populasi riil</em> (jumlah absolut)?
-                </p>
+      <section class="story-chapter" id="chapter-spasial">
+        <div class="prose">
+          <h2>Menyingkap Disparitas Geospasial dan Paradoks Wilayah</h2>
+          <p class="lead-p">
+            Begitu lensa diturunkan ke kabupaten/kota, rata-rata itu pecah. Dan
+            di sini muncul dua cara membaca yang bisa menghasilkan jawaban
+            berbeda: seberapa <em>besar proporsinya</em> (persentase), atau
+            seberapa <em>banyak orangnya</em> (jumlah jiwa)?
+          </p>
+        </div>
+
+        <!-- ── PANEL SLIDER WAKTU (Shared untuk kedua peta) ── -->
+        <div class="map-time-panel">
+          <div class="map-time-inner">
+            <span class="map-time-label-start">2007</span>
+            <div class="map-slider-wrap">
+              <input
+                type="range"
+                id="map-year-slider"
+                min="2007"
+                max="2025"
+                value="2025"
+                step="1"
+                oninput="onMapYearSlide(this.value)"
+              />
+              <div class="map-slider-ticks">
+                <span>2007</span><span>2010</span><span>2013</span
+                ><span>2016</span> <span>2019</span><span>2022</span
+                ><span>2025</span>
+              </div>
+            </div>
+            <span class="map-time-label-end">2025</span>
+            <div class="map-year-badge" id="map-year-badge">2025</div>
+          </div>
+        </div>
+
+        <!-- Visual Peta 1: Peta Koroplet (Persentase P0) -->
+        <div class="graphic-frame" id="frame-scene1-koroplet">
+          <div class="graphic-header">
+            <span class="graphic-title" id="koroplet-map-title"
+              >Peta Koroplet: Persentase Penduduk Miskin Kabupaten/Kota (P0,
+              2025)</span
+            >
+            <div class="map-toolbar">
+              <button
+                class="btn-pill btn-pill-reset"
+                onclick="resetKoropletZoom()"
+              >
+                Reset Zoom
+              </button>
+            </div>
+          </div>
+
+          <div id="chart-map-koroplet" class="chart-canvas"></div>
+
+          <p class="sumber-data">
+            <strong>Sumber: BPS.</strong> "Persentase Penduduk Miskin (P0)
+            Menurut Kabupaten/Kota (Persen), 2025", tahun data 2025.
+            <a
+              href="https://www.bps.go.id/id/statistics-table/2/NjIxIzI=/persentase-penduduk-miskin--p0--menurut-kabupaten-kota--persen-.html"
+              >https://www.bps.go.id/id/statistics-table/2/NjIxIzI=/persentase-penduduk-miskin--p0--menurut-kabupaten-kota--persen-.html</a
+            >
+            (diakses 28 September 2026).
+            <!-- TAMBAHKAN: judul, tahun, tautan, tanggal akses tabel historis P0 kabupaten/kota 2007-2024 untuk slider tahun, serta sumber berkas batas wilayah (GeoJSON) -->
+          </p>
+          <p class="graphic-caption">
+            <em>Interaksi Peta Koroplet:</em> Geser
+            <strong>slider tahun</strong> di atas untuk melihat perubahan pola
+            kemiskinan dari 2007 hingga 2025. Klik wilayah kabupaten/kota untuk
+            zoom-in, atau tombol Reset Zoom untuk kembali ke pandangan
+            Nusantara.
+          </p>
+        </div>
+
+        <!-- Kalimat Pengantar Jembatan Koroplet → Marimekko -->
+        <div class="prose">
+          <p
+            class="lead-p"
+            style="
+              font-size: 1.18rem;
+              border-left: 3px solid var(--aksen-oranye);
+              padding-left: 1.25rem;
+              margin: 2.5rem 0;
+            "
+          >
+            <strong>Persentase dan jumlah bisa bercerita berbeda.</strong> Peta
+            di atas menunjukkan proporsi: wilayah timur Indonesia tampak paling
+            parah. Grafik Marimekko di bawah menambahkan dimensi lain. Tinggi
+            balok adalah persentase penduduk miskin (P<sub>0</sub>), lebar balok
+            adalah jumlah jiwa miskin, sehingga luas balok menggambarkan beban
+            riil provinsi tersebut.
+          </p>
+        </div>
+
+        <!-- Visual 2: Marimekko Chart (Variable Width Bar Chart per Provinsi) -->
+        <div class="graphic-frame" id="frame-scene1-marimekko">
+          <div class="graphic-header">
+            <span class="graphic-title" id="marimekko-title"
+              >Grafik Marimekko: Beban Absolut & Persentase Kemiskinan per
+              Provinsi (2025)</span
+            >
+          </div>
+
+          <div id="chart-marimekko" class="chart-canvas"></div>
+
+          <div class="sumber-data">
+            <strong>Sumber: BPS.</strong>
+            <ol>
+              <li>
+                "Persentase Penduduk Miskin (P0) Menurut Provinsi dan Daerah
+                (Persen), 2025", tahun data 2025.
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/MTkyIzI=/persentase-penduduk-miskin--p0--menurut-provinsi-dan-daerah--persen-.html"
+                  >https://www.bps.go.id/id/statistics-table/2/MTkyIzI=/persentase-penduduk-miskin--p0--menurut-provinsi-dan-daerah--persen-.html</a
+                >
+                (diakses 28 September 2026).
+              </li>
+              <li>
+                "Jumlah Penduduk Miskin (Ribu Jiwa) Menurut Provinsi dan Daerah,
+                2025", tahun data 2025.
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/MTg1IzI=/jumlah-penduduk-miskin--ribu-jiwa--menurut-provinsi-dan-daerah.html"
+                  >https://www.bps.go.id/id/statistics-table/2/MTg1IzI=/jumlah-penduduk-miskin--ribu-jiwa--menurut-provinsi-dan-daerah.html</a
+                >
+                (diakses 28 September 2026).
+              </li>
+            </ol>
+          </div>
+
+          <p class="graphic-caption">
+            <em>Interaksi Grafik Marimekko:</em>
+            <strong>Lebar balok (Sumbu X)</strong> mewakili beban populasi
+            miskin absolut (jiwa), sedangkan
+            <strong>tinggi balok (Sumbu Y)</strong> mewakili persentase
+            kemiskinan (P<sub>0</sub>). Arahkan kursor ke balok untuk melihat
+            detail kontribusi provinsi terhadap beban nasional. Slider tahun
+            juga berlaku di sini.
+          </p>
+        </div>
+
+        <!-- Visual 3: Dumbbell Plot Desa vs Kota (tata letak 2 kolom, dibalik: teks kiri 1/4, visual kanan 3/4) -->
+        <div class="split-layout split-reverse">
+          <aside class="split-text">
+            <p>
+              Bahkan di dalam satu provinsi, kemiskinan tidak merata. Garis
+              batas yang paling sering memisahkan nasib bukanlah batas provinsi,
+              melainkan batas antara <strong>kota dan desa</strong>.
+            </p>
+          </aside>
+          <div class="graphic-frame" id="frame-scene1-desa-kota">
+            <div class="graphic-header">
+              <span class="graphic-title" id="dumbbell-title"
+                >Disparitas Desa vs Kota: Persentase Penduduk Miskin
+                (2025)</span
+              >
+            </div>
+            <div
+              id="chart-dumbbell"
+              class="chart-canvas"
+              style="min-height: 500px"
+            ></div>
+            <div
+              class="map-toolbar"
+              style="justify-content: center; margin-top: 10px"
+            >
+              <span style="font-size: 11px; color: #599cde">● Perdesaan</span>
+              <span style="margin: 0 10px; color: #555">|</span>
+              <span style="font-size: 11px; color: #00d4d4">● Perkotaan</span>
             </div>
 
-            <!-- ── PANEL SLIDER WAKTU (Shared untuk kedua peta) ── -->
-            <div class="map-time-panel">
-                <div class="map-time-inner">
-                    <span class="map-time-label-start">2007</span>
-                    <div class="map-slider-wrap">
-                        <input type="range" id="map-year-slider"
-                            min="2007" max="2025" value="2025" step="1"
-                            oninput="onMapYearSlide(this.value)">
-                        <div class="map-slider-ticks">
-                            <span>2007</span><span>2010</span><span>2013</span><span>2016</span>
-                            <span>2019</span><span>2022</span><span>2025</span>
-                        </div>
-                    </div>
-                    <span class="map-time-label-end">2025</span>
-                    <div class="map-year-badge" id="map-year-badge">2025</div>
-                </div>
-            </div>
+            <p class="sumber-data">
+              <strong>Sumber: BPS.</strong> "Persentase Penduduk Miskin (P0)
+              Menurut Provinsi dan Daerah (Persen), 2025", tahun data 2025.
+              <a
+                href="https://www.bps.go.id/id/statistics-table/2/MTkyIzI=/persentase-penduduk-miskin--p0--menurut-provinsi-dan-daerah--persen-.html"
+                >https://www.bps.go.id/id/statistics-table/2/MTkyIzI=/persentase-penduduk-miskin--p0--menurut-provinsi-dan-daerah--persen-.html</a
+              >
+              (diakses 28 September 2026).
+            </p>
 
-            <!-- Visual Peta 1: Peta Koroplet (Persentase P0) -->
-            <div class="graphic-frame" id="frame-scene1-koroplet">
-                <div class="graphic-header">
-                    <span class="graphic-title" id="koroplet-map-title">Peta Koroplet: Persentase Penduduk Miskin Kabupaten/Kota (P0, 2025)</span>
-                    <div class="map-toolbar">
-                        <button class="btn-pill btn-pill-reset" onclick="resetKoropletZoom()">↺ Reset Zoom</button>
-                    </div>
-                </div>
+            <p class="graphic-caption">
+              <em>Dumbbell Plot:</em> Menunjukkan kesenjangan (gap) kemiskinan
+              antara wilayah perdesaan dan perkotaan di setiap provinsi. Garis
+              penghubung yang panjang menandakan disparitas tinggi. Titik akan
+              otomatis bergeser mengikuti <strong>slider tahun</strong> di atas.
+            </p>
+          </div>
+        </div>
 
-                <div id="chart-map-koroplet" class="chart-canvas"></div>
-                <p class="graphic-caption">
-                    <em>Interaksi Peta Koroplet:</em> Geser <strong>slider tahun</strong> di atas untuk melihat perubahan pola kemiskinan dari 2007 hingga 2026. Klik wilayah kabupaten/kota untuk zoom-in, atau tombol Reset Zoom untuk kembali ke pandangan Nusantara.
-                </p>
-            </div>
+        <div class="prose">
+          <p
+            class="lead-p"
+            style="
+              font-size: 1.18rem;
+              border-left: 3px solid var(--aksen);
+              padding-left: 1.25rem;
+              margin: 2.5rem 0;
+            "
+          >
+            Kita sekarang tahu <em>di mana</em> kemiskinan berada dan
+            <em>berapa banyak</em> orang yang terdampak. Pertanyaan berikutnya
+            lebih sulit:
+            <strong
+              >apa yang membuat wilayah tertentu sulit keluar dari
+              kemiskinan?</strong
+            >
+          </p>
+        </div>
+      </section>
 
-            <!-- Kalimat Pengantar Jembatan Koroplet → Marimekko -->
-            <div class="prose">
-                <p class="lead-p" style="font-size: 1.18rem; color: #e5e5ea; border-left: 3px solid var(--aksen-oranye); padding-left: 1.25rem; margin: 2.5rem 0;">
-                    <strong>Persentase kadang menipu.</strong> Jika hanya melihat tingkat keparahan relatif ($P_0$), daerah di Indonesia bagian timur mencatatkan persentase yang tampak mendominasi. Namun, saat kita melihat dari perspektif <strong>beban populasi miskin absolut (seperti pada Grafik Marimekko di bawah)</strong>, lebar setiap balok menunjukkan jumlah jiwa miskin dan tingginya menunjukkan persentase kemiskinan. Luas area balok menggambarkan beban riil provinsi tersebut.
-                </p>
-            </div>
-
-            <!-- Visual 2: Marimekko Chart (Variable Width Bar Chart per Provinsi) -->
-            <div class="graphic-frame" id="frame-scene1-marimekko">
-                <div class="graphic-header">
-                    <span class="graphic-title" id="marimekko-title">Grafik Marimekko: Beban Absolut & Persentase Kemiskinan per Provinsi (2025)</span>
-                </div>
-
-                <div id="chart-marimekko" class="chart-canvas"></div>
-                <p class="graphic-caption">
-                    <em>Interaksi Grafik Marimekko:</em> <strong>Lebar balok (Sumbu X)</strong> mewakili beban populasi miskin absolut (jiwa), sedangkan <strong>tinggi balok (Sumbu Y)</strong> mewakili persentase kemiskinan ($P_0$). Arahkan kursor ke balok untuk melihat detail kontribusi provinsi terhadap beban nasional. Slider tahun juga berlaku di sini.
-                </p>
-            </div>
-
-            <!-- Visual 3: Dumbbell Plot Perbandingan Desa vs Kota -->
-            <div class="graphic-frame" id="frame-scene1-desa-kota">
-                <div class="graphic-header">
-                    <span class="graphic-title" id="dumbbell-title">Disparitas Desa vs Kota: Persentase Penduduk Miskin (2025)</span>
-                </div>
-                <div id="chart-dumbbell" class="chart-canvas" style="min-height: 500px;"></div>
-                <div class="map-toolbar" style="justify-content: center; margin-top: 10px;">
-                    <span style="font-size: 11px; color: #a8dadc;">● Perdesaan</span>
-                    <span style="margin: 0 10px; color: #555;">|</span>
-                    <span style="font-size: 11px; color: #f4a261;">● Perkotaan</span>
-                </div>
-                <p class="graphic-caption">
-                    <em>Dumbbell Plot:</em> Menunjukkan kesenjangan (gap) kemiskinan antara wilayah perdesaan dan perkotaan di setiap provinsi. Garis penghubung yang panjang menandakan disparitas tinggi. Titik akan otomatis bergeser mengikuti <strong>slider tahun</strong> di atas.
-                </p>
-            </div>
-
-            <div class="prose">
-                <p>
-                    Disparitas spasial ini menggarisbawahi kebutuhan akan intervensi yang terarah: daerah dengan persentase kemiskinan tinggi 
-                    membutuhkan pembangunan infrastruktur dasar dan pelayanan publik mendasar, sementara wilayah dengan jumlah absolut masif 
-                    menuntut program jaring pengaman sosial yang adaptif terhadap dinamika perkotaan dan perdesaan.
-                </p>
-            </div>
-        </section>
-
-        <!-- ========================================================
+      <!-- ========================================================
              BAGIAN 3: RESOLUSI EKOSISTEM & MIKRO (Multivariat & Treemap Pengeluaran)
              ======================================================== -->
-        <section class="story-chapter" id="chapter-mikro">
-            <div class="prose">
-                <span class="chapter-number">Resolusi 3 · Ekosistem & Mikro</span>
-                <h2>Ekosistem Pemampu dan Anatomi Pengeluaran Rumah Tangga</h2>
-                <p class="lead-p">
-                    Memperbesar lensa lebih jauh membawa kita ke tingkat ekosistem penunjang dan struktur mikro rumah tangga. 
-                    Kemiskinan tidak berdiri di ruang hampa, melainkan saling terkait dengan kualitas pendidikan, sanitasi, dan akses air bersih.
-                </p>
-                <p>
-                    Melalui pemetaan komponen utama (PCA) dan matriks korelasi, terlihat jelas bahwa akses sanitasi layak dan rata-rata 
-                    lama sekolah merupakan variabel dengan korelasi negatif paling kuat terhadap kemiskinan.
-                </p>
-            </div>
+      <section class="story-chapter" id="chapter-mikro">
+        <div class="prose">
+          <h2>Ekosistem Pemampu dan Anatomi Pengeluaran Rumah Tangga</h2>
+          <p class="lead-p">
+            Kemiskinan tidak berdiri sendiri. Ia berjalan beriringan dengan
+            pendidikan, sanitasi, dan akses air bersih. Dasbor di bawah menaruh
+            38 provinsi dalam satu ruang: provinsi yang berdekatan di peta
+            komponen utama memiliki profil sosial-ekonomi yang mirip.
+          </p>
+          <p>
+            Matriks korelasi menunjukkan pola yang jelas. Akses sanitasi layak
+            memiliki hubungan negatif terkuat dengan persentase penduduk miskin
+            (r = −0,80), disusul rata-rata lama sekolah dan akses air minum
+            layak (sekitar −0,57). Ada pula pola yang tak terduga: tingkat
+            pengangguran justru berkorelasi lemah dan negatif (−0,20), sedangkan
+            partisipasi angkatan kerja berkorelasi positif (0,59). Artinya,
+            orang miskin bukan terutama mereka yang tidak bekerja, melainkan
+            mereka yang bekerja tetapi penghasilannya tidak cukup. Ini hubungan
+            antarprovinsi dan belum membuktikan sebab-akibat.
+          </p>
+        </div>
 
-            <!-- Visual Multivariat Dashboard (PCA Scatter + Radar Comparison + Correlation Heatmap) -->
-            <div class="graphic-frame dua-kolom-frame" id="frame-scene2">
-                <div class="graphic-header graphic-header-stacked">
-                    <div class="header-main-info">
-                        <span class="graphic-title">Ekosistem Sosio-Ekonomi & Klaster Kemiripan Antarprovinsi</span>
-                    </div>
-                    <div class="toolbar-group">
-                        <label for="dropdown-provinsi" class="toolbar-label">🔍 Pilih / Tambah Provinsi:</label>
-                        <select id="dropdown-provinsi">
-                            <option value="">-- Pilih Provinsi --</option>
-                        </select>
-                    </div>
+        <!-- Visual Multivariat Dashboard (PCA Scatter + Radar Comparison + Correlation Heatmap) -->
+        <div class="graphic-frame dua-kolom-frame" id="frame-scene2">
+          <div class="graphic-header graphic-header-stacked">
+            <div class="header-main-info">
+              <span class="graphic-title"
+                >Ekosistem Sosio-Ekonomi & Klaster Kemiripan Antarprovinsi</span
+              >
+            </div>
+            <div class="toolbar-group">
+              <label for="dropdown-provinsi" class="toolbar-label"
+                >Pilih / Tambah Provinsi:</label
+              >
+              <select id="dropdown-provinsi">
+                <option value="">-- Pilih Provinsi --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Kontainer Lencana (Badges) Provinsi Terpilih -->
+          <div
+            id="selected-provinces-container"
+            class="selected-provinces-wrapper"
+          >
+            <!-- Diisi secara dinamis oleh JavaScript JS/scene2.js -->
+          </div>
+
+          <div class="multivariate-layout">
+            <!-- Baris Atas: Scatter PCA + Radar Chart -->
+            <div class="pca-radar-grid">
+              <div class="sub-panel">
+                <div class="sub-panel-title">Pemetaan Komponen Utama (PCA)</div>
+                <div id="scatter-pca" class="chart-canvas"></div>
+              </div>
+              <div class="sub-panel">
+                <div class="sub-panel-title">
+                  Profil Multidimensi (Radar Chart)
                 </div>
-
-                <!-- Kontainer Lencana (Badges) Provinsi Terpilih -->
-                <div id="selected-provinces-container" class="selected-provinces-wrapper">
-                    <!-- Diisi secara dinamis oleh JavaScript JS/scene2.js -->
-                </div>
-
-                <div class="multivariate-layout">
-                    <!-- Baris Atas: Scatter PCA + Radar Chart -->
-                    <div class="pca-radar-grid">
-                        <div class="sub-panel">
-                            <div class="sub-panel-title">Pemetaan Komponen Utama (PCA)</div>
-                            <div id="scatter-pca" class="chart-canvas"></div>
-                        </div>
-                        <div class="sub-panel">
-                            <div class="sub-panel-title">Profil Multidimensi (Radar Chart)</div>
-                            <div id="radar-chart" class="chart-canvas"></div>
-                        </div>
-                    </div>
-
-                    <!-- Baris Bawah: Matriks Korelasi (Heatmap) -->
-                    <div class="heatmap-subcontainer">
-                        <div class="sub-panel-title" style="margin-bottom: 0.75rem;">Matriks Korelasi 10 Variabel Sosial-Ekonomi (Pearson r)</div>
-                        <div id="chart-scene5" class="chart-canvas"></div>
-                    </div>
-                </div>
-
-                <p class="graphic-caption">
-                    <em>Tip Interaksi:</em> Gunakan seleksi kotak (brush) pada scatter PCA atau pilih nama provinsi di atas untuk menumpuk profil perbandingan di radar chart. Arahkan kursor ke sel heatmap untuk membaca kekuatan korelasi.
-                </p>
+                <div id="radar-chart" class="chart-canvas"></div>
+              </div>
             </div>
 
-            <div class="prose">
-                <p>
-                    Di tingkat paling mikro, garis kemiskinan ditentukan oleh konsumsi riil harian. 
-                    Lebih dari <strong>73% pengeluaran masyarakat miskin habis untuk kelompok makanan</strong>, dengan beras dan 
-                    rokok kretek filter sebagai komoditas utama. Kerentanan ini membuat guncangan harga pangan pokok berdampak langsung 
-                    pada kesejahteraan keluarga di garis batas.
-                </p>
+            <p class="graphic-caption">
+              <em>Tip Interaksi:</em> Gunakan seleksi kotak (brush) pada scatter
+              PCA atau pilih nama provinsi di atas untuk menumpuk profil
+              perbandingan di radar chart. Arahkan kursor ke sel heatmap untuk
+              membaca kekuatan korelasi.
+            </p>
+
+            <!-- Baris Bawah: Matriks Korelasi (Heatmap) -->
+            <div class="heatmap-subcontainer">
+              <div class="sub-panel-title" style="margin-bottom: 0.75rem">
+                Matriks Korelasi 10 Variabel Sosial-Ekonomi (Pearson r)
+              </div>
+              <p class="hint-geser">
+                Geser ke samping untuk melihat seluruh matriks.
+              </p>
+              <div id="chart-scene5" class="chart-canvas"></div>
             </div>
+          </div>
 
-            <!-- Visual 1: Treemap Komoditas Pengeluaran -->
-            <div class="graphic-frame" id="frame-scene3-treemap">
-                <div class="graphic-header">
-                    <span class="graphic-title">Anatomi Komoditas: Treemap Proporsional Pengeluaran (Maret 2026)</span>
-                    <div class="toolbar-group" id="treemap-wilayah-group">
-                        <span class="toolbar-label">Wilayah:</span>
-                        <button class="btn-sub-toggle active" onclick="setTreemapWilayah('Perkotaan')">Perkotaan</button>
-                        <button class="btn-sub-toggle" onclick="setTreemapWilayah('Perdesaan')">Perdesaan</button>
-                    </div>
-                </div>
+          <div class="sumber-data">
+            <strong>Sumber: BPS.</strong> Seluruh tahun data 2025, diakses 28
+            September 2026. Pemetaan komponen utama dan korelasi Pearson
+            dihitung ulang oleh penulis dari tabel-tabel berikut:
+            <ol>
+              <li>
+                "Persentase Penduduk Miskin (P0) Menurut Provinsi dan Daerah
+                (Persen), 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/MTkyIzI=/persentase-penduduk-miskin--p0--menurut-provinsi-dan-daerah--persen-.html"
+                  >https://www.bps.go.id/id/statistics-table/2/MTkyIzI=/persentase-penduduk-miskin--p0--menurut-provinsi-dan-daerah--persen-.html</a
+                >
+              </li>
+              <li>
+                "Indeks Kedalaman Kemiskinan (P1) Menurut Provinsi dan Daerah
+                (Persen), 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/NTAzIzI=/indeks-kedalaman-kemiskinan--p1--menurut-provinsi-dan-daerah--persen-.html"
+                  >https://www.bps.go.id/id/statistics-table/2/NTAzIzI=/indeks-kedalaman-kemiskinan--p1--menurut-provinsi-dan-daerah--persen-.html</a
+                >
+              </li>
+              <li>
+                "Indeks Keparahan Kemiskinan (P2) Menurut Provinsi dan Daerah
+                (Persen), 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/NTA0IzI=/indeks-keparahan-kemiskinan--p2--menurut-provinsi-dan-daerah--persen-.html"
+                  >https://www.bps.go.id/id/statistics-table/2/NTA0IzI=/indeks-keparahan-kemiskinan--p2--menurut-provinsi-dan-daerah--persen-.html</a
+                >
+              </li>
+              <li>
+                "Rata-rata Pengeluaran per Kapita Sebulan Makanan dan Bukan
+                Makanan di Daerah Perkotaan dan Perdesaan Menurut Provinsi
+                (rupiah), 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/3/V1ZKMWVrSTNOek5ZZUZOcVZEZGFValJvV0hWalFUMDkjMyMwMDAw/rata-rata-pengeluaran-per-kapita-sebulan-makanan-dan-bukan-makanan-di-daerah-perkotaan-dan-perdesaan-menurut-provinsi--rupiah-.html?year=2025"
+                  >https://www.bps.go.id/id/statistics-table/3/V1ZKMWVrSTNOek5ZZUZOcVZEZGFValJvV0hWalFUMDkjMyMwMDAw/rata-rata-pengeluaran-per-kapita-sebulan-makanan-dan-bukan-makanan-di-daerah-perkotaan-dan-perdesaan-menurut-provinsi--rupiah-.html?year=2025</a
+                >
+              </li>
+              <li>
+                "Rata-Rata Lama Sekolah Penduduk Umur 15 Tahun ke Atas Menurut
+                Provinsi, 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/MTQyOSMy/rata-rata-lama-sekolah-penduduk-umur-15-tahun-ke-atas-menurut-provinsi.html"
+                  >https://www.bps.go.id/id/statistics-table/2/MTQyOSMy/rata-rata-lama-sekolah-penduduk-umur-15-tahun-ke-atas-menurut-provinsi.html</a
+                >
+              </li>
+              <li>
+                "Persentase Rumah Tangga yang Memiliki Akses terhadap Sanitasi
+                Layak Menurut Provinsi dan Klasifikasi Desa (Persen), 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/ODM0IzI=/persentase-rumah-tangga-yang-memiliki-akses-terhadap-sanitasi-layak-menurut-provinsi-dan-klasifikasi-desa--persen-.html"
+                  >https://www.bps.go.id/id/statistics-table/2/ODM0IzI=/persentase-rumah-tangga-yang-memiliki-akses-terhadap-sanitasi-layak-menurut-provinsi-dan-klasifikasi-desa--persen-.html</a
+                >
+              </li>
+              <li>
+                "Persentase Rumah Tangga yang Memiliki Akses terhadap Sumber Air
+                Minum Layak Menurut Provinsi dan Klasifikasi Desa (Persen),
+                2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/2/ODU0IzI=/persentase-rumah-tangga-yang-memiliki-akses-terhadap-sumber-air-minum-layak-menurut-provinsi-dan-klasifikasi-desa--persen-.html"
+                  >https://www.bps.go.id/id/statistics-table/2/ODU0IzI=/persentase-rumah-tangga-yang-memiliki-akses-terhadap-sumber-air-minum-layak-menurut-provinsi-dan-klasifikasi-desa--persen-.html</a
+                >
+              </li>
+              <li>
+                "Tingkat Pengangguran Terbuka (TPT) dan Tingkat Partisipasi
+                Angkatan Kerja (TPAK) Menurut Provinsi, 2025" —
+                <a
+                  href="https://www.bps.go.id/id/statistics-table/3/V2pOVWJWcHJURGg0U2pONFJYaExhVXB0TUhacVFUMDkjMyMwMDAw/tingkat-pengangguran-terbuka--tpt--dan-tingkat-partisipasi-angkatan-kerja--tpak--menurut-provinsi.html?year=2025"
+                  >https://www.bps.go.id/id/statistics-table/3/V2pOVWJWcHJURGg0U2pONFJYaExhVXB0TUhacVFUMDkjMyMwMDAw/tingkat-pengangguran-terbuka--tpt--dan-tingkat-partisipasi-angkatan-kerja--tpak--menurut-provinsi.html?year=2025</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
 
-                <div id="chart-scene3-treemap" class="chart-canvas"></div>
+        <div class="prose">
+          <p>
+            Faktor-faktor tadi terlihat dari jauh, pada skala provinsi. Untuk
+            merasakannya, kita masuk ke dapur rumah tangga. Garis kemiskinan
+            pada akhirnya adalah soal apa yang dibeli sehari-hari. Lebih dari
+            <strong
+              >73 persen pengeluaran penduduk miskin habis untuk makanan</strong
+            >, dengan beras dan rokok kretek filter sebagai komoditas utama.
+            Rumah tangga di garis batas nyaris tidak punya ruang untuk menyerap
+            guncangan harga pangan.
+          </p>
+        </div>
 
-                <p class="graphic-caption">
-                    <em>Treemap Proporsional:</em> Luas kotak mencerminkan pangsa persentase pengeluaran komoditas terhadap Garis Kemiskinan. Klik pada blok kelompok (Makanan / Bukan Makanan) untuk melakukan drill-down rincian komoditas.
-                </p>
+        <!-- Visual 1: Treemap Komoditas Pengeluaran -->
+        <div class="graphic-frame" id="frame-scene3-treemap">
+          <div class="graphic-header">
+            <span class="graphic-title"
+              >Anatomi Komoditas: Treemap Proporsional Pengeluaran (Maret
+              2026)</span
+            >
+            <div class="toolbar-group" id="treemap-wilayah-group">
+              <span class="toolbar-label">Wilayah:</span>
+              <button
+                class="btn-sub-toggle active"
+                onclick="setTreemapWilayah('Perkotaan')"
+              >
+                Perkotaan
+              </button>
+              <button
+                class="btn-sub-toggle"
+                onclick="setTreemapWilayah('Perdesaan')"
+              >
+                Perdesaan
+              </button>
             </div>
+          </div>
 
-            <!-- Kalimat Pengantar Jembatan Treemap → Collapsible Tree -->
-            <div class="prose">
-                <p class="lead-p" style="font-size: 1.18rem; color: #e5e5ea; border-left: 3px solid var(--aksen); padding-left: 1.25rem; margin: 2.5rem 0;">
-                    Melihat pengeluaran dari proporsi luas Treemap memberikan gambaran seketika mengenai dominasi komoditas makanan. Namun, bagaimana komoditas tersebut terstruktur dalam hubungan hierarki? <strong>Pohon hierarki bercabang di bawah ini (Collapsible Tree)</strong> memperlihatkan rincian cabang yang dapat dibuka dan ditutup (expand/collapse) untuk mengeksplorasi setiap simpul komponen pembentuk Garis Kemiskinan.
-                </p>
+          <div id="chart-scene3-treemap" class="chart-canvas"></div>
+
+          <p class="sumber-data">
+            <strong>Sumber: BPS.</strong> "Berita Resmi Statistik: Profil
+            kemiskinan di Indonesia Maret 2026", tahun data Maret 2026.
+            <a
+              href="https://www.bps.go.id/id/pressrelease/2026/08/05/2594/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html"
+              >https://www.bps.go.id/id/pressrelease/2026/08/05/2594/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html</a
+            >
+            (diakses 28 September 2026).
+          </p>
+
+          <p class="graphic-caption">
+            <em>Treemap Proporsional:</em> Luas kotak mencerminkan pangsa
+            persentase pengeluaran komoditas terhadap Garis Kemiskinan. Klik
+            pada blok kelompok (Makanan / Bukan Makanan) untuk melakukan
+            drill-down rincian komoditas.
+          </p>
+        </div>
+
+        <!-- Kalimat Pengantar Jembatan Treemap → Collapsible Tree -->
+        <div class="prose">
+          <p
+            class="lead-p"
+            style="border-left: 3px solid var(--aksen); padding-left: 1.25rem"
+          >
+            Melihat pengeluaran dari proporsi luas Treemap memberikan gambaran
+            seketika mengenai dominasi komoditas makanan. Namun, bagaimana
+            komoditas tersebut terstruktur dalam hubungan hierarki?
+            <strong
+              >Pohon hierarki bercabang di bawah ini (Collapsible Tree)</strong
+            >
+            memperlihatkan rincian cabang yang dapat dibuka dan ditutup
+            (expand/collapse) untuk mengeksplorasi setiap simpul komponen
+            pembentuk Garis Kemiskinan.
+          </p>
+        </div>
+
+        <!-- Visual 2: Collapsible Node-Link Tree Komoditas Pengeluaran -->
+        <div class="graphic-frame" id="frame-scene3-tree">
+          <div class="graphic-header">
+            <span class="graphic-title"
+              >Anatomi Komoditas: Pohon Hierarki Bercabang (Collapsible
+              Tree)</span
+            >
+            <div class="toolbar-group" id="tree-wilayah-group">
+              <span class="toolbar-label">Wilayah:</span>
+              <button
+                class="btn-sub-toggle active"
+                onclick="setTreeWilayah('Perkotaan')"
+              >
+                Perkotaan
+              </button>
+              <button
+                class="btn-sub-toggle"
+                onclick="setTreeWilayah('Perdesaan')"
+              >
+                Perdesaan
+              </button>
             </div>
+          </div>
 
-            <!-- Visual 2: Collapsible Node-Link Tree Komoditas Pengeluaran -->
-            <div class="graphic-frame" id="frame-scene3-tree">
-                <div class="graphic-header">
-                    <span class="graphic-title">Anatomi Komoditas: Pohon Hierarki Bercabang (Collapsible Tree)</span>
-                    <div class="toolbar-group" id="tree-wilayah-group">
-                        <span class="toolbar-label">Wilayah:</span>
-                        <button class="btn-sub-toggle active" onclick="setTreeWilayah('Perkotaan')">Perkotaan</button>
-                        <button class="btn-sub-toggle" onclick="setTreeWilayah('Perdesaan')">Perdesaan</button>
-                    </div>
-                </div>
+          <div id="chart-scene3-tree" class="chart-canvas"></div>
 
-                <div id="chart-scene3-tree" class="chart-canvas"></div>
+          <p class="sumber-data">
+            <strong>Sumber: BPS.</strong> "Berita Resmi Statistik: Profil
+            kemiskinan di Indonesia Maret 2026", tahun data Maret 2026.
+            <a
+              href="https://www.bps.go.id/id/pressrelease/2026/08/05/2594/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html"
+              >https://www.bps.go.id/id/pressrelease/2026/08/05/2594/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html</a
+            >
+            (diakses 28 September 2026).
+          </p>
 
-                <p class="graphic-caption">
-                    <em>Pohon Hierarki Interaktif:</em> Klik pada lingkaran simpul (node) untuk membuka (expand) atau menyembunyikan (collapse) cabang komoditas.
-                </p>
-            </div>
-        </section>
+          <p class="graphic-caption">
+            <em>Pohon Hierarki Interaktif:</em> Klik pada lingkaran simpul
+            (node) untuk membuka (expand) atau menyembunyikan (collapse) cabang
+            komoditas.
+          </p>
+        </div>
+      </section>
 
-        <!-- ========================================================
+      <!-- ========================================================
              EPILOG & METODOLOGI
              ======================================================== -->
-        <footer class="article-footer">
-            <div class="footer-inner">
-                <h3>Catatan Metodologi & Sumber Data</h3>
-                <p>
-                    Seluruh data yang disajikan dalam publikasi visual ini diolah dari data mikro Survei Sosial Ekonomi Nasional (Susenas) 
-                    dan Survei Angkatan Kerja Nasional (Sakernas) yang diterbitkan oleh Badan Pusat Statistik (BPS) Republik Indonesia.
-                </p>
-                <p>
-                    Garis Kemiskinan (GK) mencerminkan nilai rupiah pengeluaran minimum yang dibutuhkan seseorang untuk memenuhi 
-                    kebutuhan pangan setara 2.100 kkal per hari serta kebutuhan minimum bukan makanan seperti perumahan, sandang, pendidikan, dan kesehatan.
-                </p>
-                <p class="footer-copy">
-                    Dibuat untuk Ujian Akhir Semester Visualisasi Data dan Informasi — Politeknik Statistika STIS.
-                </p>
-            </div>
-        </footer>
+      <footer class="article-footer">
+        <div class="footer-inner">
+          <h3>Catatan Metodologi & Sumber Data</h3>
+          <p>
+            Seluruh data yang disajikan dalam publikasi visual ini diolah dari
+            data mikro Survei Sosial Ekonomi Nasional (Susenas) dan Survei
+            Angkatan Kerja Nasional (Sakernas) yang diterbitkan oleh Badan Pusat
+            Statistik (BPS) Republik Indonesia.
+          </p>
+          <p>
+            Garis Kemiskinan (GK) mencerminkan nilai rupiah pengeluaran minimum
+            yang dibutuhkan seseorang untuk memenuhi kebutuhan pangan setara
+            2.100 kkal per hari serta kebutuhan minimum bukan makanan seperti
+            perumahan, sandang, pendidikan, dan kesehatan.
+          </p>
+          <p>
+            Kode sumber dan data olahan tersedia di repositori publik:
+            <a
+              href="https://github.com/muhammadludviarg/visdati"
+              target="_blank"
+              rel="noopener"
+              >github.com/muhammadludviarg/visdati</a
+            >.
+          </p>
 
+
+          <p class="footer-copy">
+            Muhammad Ludvi Argorahayu (3SD1)
+            <a href="mailto:222313248@stis.ac.id">222313248@stis.ac.id</a> —
+            Politeknik Statistika STIS.
+          </p>
+        </div>
+      </footer>
     </article>
 
     <!-- Skrip Aplikasi -->
@@ -338,5 +684,5 @@
     <script src="js/scene3.js"></script>
     <script src="js/scene5.js"></script>
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>

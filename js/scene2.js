@@ -62,12 +62,12 @@ function renderScene2() {
 
   // Palet warna untuk tiap provinsi yang dibandingkan
   const colorPalette = [
-    "#2ec4b6", // teal (aksen utama)
-    "#ff9f1c", // oranye
-    "#e71d36", // merah
-    "#a8dadc", // biru muda
-    "#c8b6ff", // ungu muda
-    "#b7e4c7", // hijau muda
+    "#FF9A00", // oranye (aksen utama)
+    "#599CDE", // biru terang
+    "#C5E1A5", // hijau muda
+    "#F2F2F2", // putih lembut
+    "#0066CC", // biru
+    "#FFC266", // oranye muda
   ];
 
   // ─── BERSIHKAN KONTAINER ────────────────────────────────────────────
@@ -126,7 +126,7 @@ function renderScene2() {
     .call(d3.axisBottom(xS).ticks(6).tickSize(0))
     .call((g) => g.select(".domain").style("stroke", "#4a4a4a"))
     .selectAll("text")
-    .style("fill", "#b9b9b9");
+    .style("fill", "#BDBDBD");
 
   svgS
     .append("g")
@@ -134,21 +134,21 @@ function renderScene2() {
     .call(d3.axisLeft(yS).ticks(6).tickSize(0))
     .call((g) => g.select(".domain").style("stroke", "#4a4a4a"))
     .selectAll("text")
-    .style("fill", "#b9b9b9");
+    .style("fill", "#BDBDBD");
 
   svgS
     .append("text")
     .attr("x", wS - mS.left - mS.right)
     .attr("y", yS(0) - 10)
     .attr("text-anchor", "end")
-    .style("fill", "#b9b9b9")
+    .style("fill", "#BDBDBD")
     .style("font-size", "11px")
     .text("PC1 →");
   svgS
     .append("text")
     .attr("x", 10)
     .attr("y", 10)
-    .style("fill", "#b9b9b9")
+    .style("fill", "#BDBDBD")
     .style("font-size", "11px")
     .text("↑ PC2");
   svgS
@@ -172,7 +172,7 @@ function renderScene2() {
     .attr("cy", (d) => yS(d.PC2))
     .attr("r", 5)
     .style("fill", "var(--aksen)")
-    .style("stroke", "#141414")
+    .style("stroke", "#262626")
     .style("stroke-width", 1.5)
     .style("opacity", 0.8)
     .style("cursor", "pointer");
@@ -187,7 +187,7 @@ function renderScene2() {
 
   function dotColor(d) {
     if (compareMap.has(d.kunci)) return colorPalette[compareMap.get(d.kunci)];
-    if (brushedKeys.has(d.kunci)) return "#f4a261";
+    if (brushedKeys.has(d.kunci)) return "#FF9A00";
     return "var(--aksen)";
   }
 
@@ -201,7 +201,7 @@ function renderScene2() {
         .style("fill", dotColor(d))
         .attr("r", isCompare ? 7 : isBrushed ? 5 : hasAny ? 4 : 5)
         .style("opacity", isActive ? 1 : hasAny ? 0.15 : 0.8)
-        .style("stroke", isCompare ? "#ffffff" : "#141414")
+        .style("stroke", isCompare ? "#F2F2F2" : "#262626")
         .style("stroke-width", isCompare ? 2 : 1.5);
     });
   }
@@ -210,7 +210,7 @@ function renderScene2() {
     .on("mouseover", function (event, d) {
       if (!compareMap.has(d.kunci)) {
         d3.select(this)
-          .style("fill", "#ff9f1c")
+          .style("fill", "#FF9A00")
           .attr("r", 7)
           .style("opacity", 1);
       }
@@ -368,7 +368,7 @@ function renderScene2() {
       const cos = Math.cos(angleSlice * i - Math.PI / 2);
       return Math.abs(cos) < 0.1 ? "middle" : cos > 0 ? "start" : "end";
     })
-    .style("fill", "#b9b9b9")
+    .style("fill", "#BDBDBD")
     .style("font-size", "10px")
     .style("font-weight", "500")
     .each(function (d, i) {
@@ -511,7 +511,7 @@ function renderScene2() {
         .append("span")
         .attr("class", "selected-provinces-hint")
         .html(
-          "💡 Belum ada provinsi dibandingkan. Pilih provinsi dari menu dropdown di atas atau seleksi (brush) titik pada peta PCA.",
+          "Belum ada provinsi dibandingkan. Pilih provinsi dari menu dropdown di atas atau seleksi (brush) titik pada peta PCA.",
         );
       return;
     }
