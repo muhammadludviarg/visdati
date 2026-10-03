@@ -667,7 +667,6 @@
             >.
           </p>
 
-
           <p class="footer-copy">
             Muhammad Ludvi Argorahayu (3SD1)
             <a href="mailto:222313248@stis.ac.id">222313248@stis.ac.id</a> —
@@ -684,5 +683,38 @@
     <script src="js/scene3.js"></script>
     <script src="js/scene5.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/mobile-fit.js"></script>
+    <script>
+      // Kirim formulir kontak tanpa memuat ulang halaman
+      (function () {
+        var form = document.getElementById("kontak-form");
+        var status = document.getElementById("kontak-status");
+        if (!form) return;
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (form.action.indexOf("GANTI_DENGAN_ID") !== -1) {
+            status.textContent = "Formulir belum dihubungkan ke Formspree.";
+            return;
+          }
+          status.textContent = "Mengirim...";
+          fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: { Accept: "application/json" },
+          })
+            .then(function (res) {
+              if (res.ok) {
+                status.textContent = "Pesan terkirim. Terima kasih.";
+                form.reset();
+              } else {
+                status.textContent = "Gagal mengirim. Coba lagi sebentar lagi.";
+              }
+            })
+            .catch(function () {
+              status.textContent = "Gagal mengirim. Periksa koneksi internet.";
+            });
+        });
+      })();
+    </script>
   </body>
 </html>

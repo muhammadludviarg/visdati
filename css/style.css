@@ -32,8 +32,7 @@
   --pad-x: clamp(1.25rem, 5vw, 5rem);
 
   /* Huruf judul: serif klasik, cadangan Times New Roman */
-  --font-serif:
-    "Playfair Display", "Times New Roman", Times, Georgia, serif;
+  --font-serif: "Playfair Display", "Times New Roman", Times, Georgia, serif;
   --font-sans:
     "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
@@ -870,11 +869,19 @@ select:hover {
 }
 
 .hint-geser {
-  display: none;
+  display: none; /* ditampilkan oleh mobile-fit.js hanya bila grafik perlu digeser */
   margin: 0 0 0.5rem;
   font-size: 0.78rem;
   color: var(--teks-sub);
   font-style: italic;
+}
+
+.hint-geser.mf-aktif {
+  display: block;
+}
+
+.pca-radar-grid > * {
+  min-width: 0;
 }
 
 /* ── TAUTAN DI FOOTER ──────────────────────────────────────────────────── */
@@ -1001,9 +1008,6 @@ select:hover {
 }
 
 @media (max-width: 820px) {
-  .hint-geser {
-    display: block;
-  }
   body {
     font-size: 1rem;
   }
@@ -1011,12 +1015,19 @@ select:hover {
     padding: 3rem 1rem 1.5rem;
   }
   .chart-canvas {
-    min-height: 360px;
+    min-height: 220px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* grafik yang perlu digeser: biarkan jari menggeser halaman, bukan menyeret isi grafik */
+  .chart-canvas.bisa-geser svg {
+    touch-action: pan-x pan-y !important;
   }
 }
 
 @media (max-width: 640px) {
   #chart-teks-brs {
-    min-height: 320px;
+    min-height: 220px;
   }
 }

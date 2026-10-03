@@ -346,9 +346,16 @@ async function renderCollapsibleTreeView(containerId = "#chart-scene3-tree") {
 
   container.selectAll("*").remove();
 
-  const W = container.node().getBoundingClientRect().width || 900;
+  // Lebar rancangan minimum 760: di HP label tetap muat, lalu gambar
+  // diperkecil atau digeser oleh mobile-fit.js
+  const W = Math.max(
+    container.node().getBoundingClientRect().width || 900,
+    760,
+  );
   const H = 540;
-  const margin = { top: 20, right: 120, bottom: 20, left: 100 };
+  // left 170: ruang untuk label akar "Garis Kemiskinan" (rata kanan, di kiri titik)
+  // right 190: ruang untuk label komoditas di daun pohon (rata kiri, di kanan titik)
+  const margin = { top: 20, right: 190, bottom: 20, left: 170 };
 
   const hierData = buildKomoditasHierarchy(data, scene3State.treeWilayah);
 
