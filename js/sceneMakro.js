@@ -12,150 +12,471 @@ function renderMakroSection() {
 function renderBRSWordNetwork() {
     const containerId = "#chart-teks-brs";
     const container = d3.select(containerId);
+
     if (container.empty()) return;
 
     container.selectAll("*").remove();
 
     const dataTeks = appData.dataTeksKemiskinan;
+
     if (!dataTeks || !dataTeks.length) return;
 
-    // Filter stop words umum yang kurang bermakna
+    // ============================================================
+    // 1. STOP WORD
+    // ============================================================
+
     const stopWords = new Set([
-        "ul", "li", "style", "box", "sizing", "border", "padding", "left", "rem",
-        "margin", "top", "px", "bottom", "color", "rgb", "font", "family", "quot",
-        "ibm", "plex", "sans", "serif", "size", "background", "text", "align",
-        "justify", "div", "class", "msonormal", "height", "normal", "span", "face",
-        "arial", "sebesar", "menjadi", "dibandingkan", "dibanding", "sebanyak",
-        "tercatat", "memiliki", "sebesar", "adalah", "pada", "yang", "dan", "di",
-        "ke", "dari", "ini", "itu", "orang", "poin", "bulan", "kapita", "rp"
+        "ul", "li", "style", "box", "sizing", "border", "padding",
+        "left", "rem", "margin", "top", "px", "bottom", "color",
+        "rgb", "font", "family", "quot", "ibm", "plex", "sans",
+        "serif", "size", "background", "text", "align", "justify",
+        "div", "class", "msonormal", "height", "normal", "span",
+        "face", "arial",
+
+        "sebesar", "menjadi", "dibandingkan", "dibanding",
+        "sebanyak", "tercatat", "memiliki", "adalah",
+        "pada", "yang", "dan", "di", "ke", "dari", "ini",
+        "itu", "orang", "poin", "bulan", "kapita", "rp"
     ]);
 
-    // Hitung frekuensi kata dari seluruh token data BRS
+    // ============================================================
+    // 2. HITUNG FREKUENSI KATA
+    // ============================================================
+
     const wordCounts = {};
+
     dataTeks.forEach(d => {
-        if (d.tokens && Array.isArray(d.tokens)) {
-            d.tokens.forEach(tok => {
-                const w = tok.toLowerCase().trim();
-                if (w.length > 2 && !stopWords.has(w) && isNaN(w)) {
-                    wordCounts[w] = (wordCounts[w] || 0) + 1;
-                }
-            });
-        }
+
+        if (!Array.isArray(d.tokens)) return;
+
+        d.tokens.forEach(tok => {
+
+            const w = String(tok)
+                .toLowerCase()
+                .trim();
+
+            if (
+                w.length > 2 &&
+                !stopWords.has(w) &&
+                isNaN(w)
+            ) {
+                wordCounts[w] = (wordCounts[w] || 0) + 1;
+            }
+
+        });
+
     });
 
-    // Ambil Top 45 kata paling sering muncul
+    // ============================================================
+    // 3. AMBIL 45 KATA TERATAS
+    // ============================================================
+
     const sortedWords = Object.entries(wordCounts)
-        .map(([text, count]) => ({ text, count }))
+        .map(([text, count]) => ({
+            text,
+            count
+        }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 45);
 
     if (!sortedWords.length) return;
 
-    const node = container.node();
-    const W = node.getBoundingClientRect().width || 800;
-    const H = 360;
+    // ============================================================
+    // 4. DIMENSI RESPONSIF
+    // ============================================================
 
-    const svg = container.append("svg")
+    const node = container.node();
+
+    const W = Math.max(
+        320,
+        Math.floor(
+            node.getBoundingClientRect().width || 800
+        )
+    );
+
+    const H = Math.min(
+        520,
+        Math.max(
+            360,
+            Math.round(W * 0.48)
+        )
+    );
+
+    // ============================================================
+    // 5. SVG
+    // ============================================================
+
+    const svg = container
+        .append("svg")
         .attr("width", "100%")
         .attr("height", H)
-        .attr("viewBox", `0 0 ${W} ${H}`)
+        .attr(
+            "viewBox",
+            `0 0 ${W} ${H}`
+        )
+        .attr(
+            "role",
+            "img"
+        )
+        .attr(
+            "aria-label",
+            "Word cloud istilah dominan dalam Berita Resmi Statistik BPS"
+        )
         .style("display", "block")
+        .style("overflow", "visible")
         .style("background", "transparent");
 
-    const minCount = d3.min(sortedWords, d => d.count);
-    const maxCount = d3.max(sortedWords, d => d.count);
+    // ============================================================
+    // 6. SKALA UKURAN FONT
+    // ============================================================
+
+    const minCount = d3.min(
+        sortedWords,
+        d => d.count
+    );
+
+    const maxCount = d3.max(
+        sortedWords,
+        d => d.count
+    );
 
     const fontSizeScale = d3.scaleSqrt()
-        .domain([minCount, maxCount])
-        .range([14, 42]);
+        .domain([
+            minCount,
+            maxCount
+        ])
+        .range([
+            15,
+            Math.min(
+                54,
+                Math.max(
+                    38,
+                    W * 0.055
+                )
+            )
+        ]);
 
-    function getWordColor(w) {
-        if (w === "persentase" || w === "turun" || w === "menurun") return "#2ec4b6"; // Teal
-        if (w === "makanan" || w === "garis" || w === "kemiskinan") return "#f4a261"; // Oranye
-        if (w === "perdesaan" || w === "perkotaan") return "#48cae4"; // Biru muda
-        if (w === "penduduk" || w === "miskin" || w === "jumlah") return "#ffffff"; // Putih
+    // ============================================================
+    // 7. WARNA KATA
+    // ============================================================
+
+    function getWordColor(word) {
+
+        if (
+            [
+                "persentase",
+                "turun",
+                "menurun",
+                "penurunan"
+            ].includes(word)
+        ) {
+            return "#2ec4b6";
+        }
+
+        if (
+            [
+                "makanan",
+                "garis",
+                "kemiskinan"
+            ].includes(word)
+        ) {
+            return "#f4a261";
+        }
+
+        if (
+            [
+                "perdesaan",
+                "perkotaan",
+                "provinsi"
+            ].includes(word)
+        ) {
+            return "#48cae4";
+        }
+
+        if (
+            [
+                "penduduk",
+                "miskin",
+                "jumlah"
+            ].includes(word)
+        ) {
+            return "#ffffff";
+        }
+
         return "#a1a1a6";
     }
 
-    // Centered Spiral/Force WordCloud Layout (Tanpa garis background, tampilan bersih)
-    const nodes = sortedWords.map(d => ({
-        id: d.text,
-        radius: fontSizeScale(d.count) * 0.75 + 4,
-        fontSize: fontSizeScale(d.count),
-        count: d.count
+    // ============================================================
+    // 8. FORMAT DATA UNTUK D3-CLOUD
+    // ============================================================
+
+    const words = sortedWords.map((d, i) => ({
+
+        ...d,
+
+        size: fontSizeScale(d.count),
+
+        // Hanya 0° atau 90°
+        // agar lebih editorial dan mudah dibaca
+        rotate: i % 5 === 0 ? 90 : 0
+
     }));
 
-    const simulation = d3.forceSimulation(nodes)
-        .force("center", d3.forceCenter(W / 2, H / 2))
-        .force("charge", d3.forceManyBody().strength(-30))
-        .force("collide", d3.forceCollide().radius(d => d.radius + 6).iterations(4));
+    // ============================================================
+    // 9. D3 CLOUD LAYOUT
+    // ============================================================
 
-    for (let i = 0; i < 200; ++i) simulation.tick();
-    simulation.stop();
+    const layout = d3.layout.cloud()
 
-    const tooltip = d3.select(".d3-tooltip.map-tooltip");
+        .size([
+            W - 24,
+            H - 24
+        ])
 
-    const gNodes = svg.append("g")
-        .attr("class", "word-cloud-nodes")
-        .selectAll("g.word-item")
-        .data(nodes)
-        .enter()
-        .append("g")
-        .attr("class", "word-item")
-        .attr("transform", d => {
-            d.x = Math.max(d.radius + 10, Math.min(W - d.radius - 10, d.x));
-            d.y = Math.max(d.radius + 10, Math.min(H - d.radius - 10, d.y));
-            return `translate(${d.x},${d.y})`;
-        })
-        .style("cursor", "pointer");
+        .words(words)
 
-    // Shadow teks untuk keterbacaan
-    gNodes.append("text")
-        .attr("text-anchor", "middle")
-        .attr("dy", "0.35em")
-        .style("font-size", d => d.fontSize + "px")
-        .style("font-weight", d => d.count > maxCount * 0.35 ? "700" : "500")
-        .style("font-family", "var(--font-sans)")
-        .style("fill", "#141414")
-        .style("stroke", "#141414")
-        .style("stroke-width", 4)
-        .style("stroke-linejoin", "round")
-        .text(d => d.id);
+        // Jarak antar kata
+        .padding(7)
 
-    // Teks Utama
-    gNodes.append("text")
-        .attr("text-anchor", "middle")
-        .attr("dy", "0.35em")
-        .style("font-size", d => d.fontSize + "px")
-        .style("font-weight", d => d.count > maxCount * 0.35 ? "700" : "500")
-        .style("font-family", "var(--font-sans)")
-        .style("fill", d => getWordColor(d.id))
-        .style("transition", "fill 0.2s ease, font-size 0.2s ease")
-        .text(d => d.id);
+        // Rotasi
+        .rotate(d => d.rotate)
 
-    gNodes
-        .on("mouseover", function (event, d) {
-            d3.select(this).select("text:nth-child(2)")
-                .style("fill", "#ffffff")
-                .style("font-size", (d.fontSize + 4) + "px");
+        // Font
+        .font("Archivo")
 
-            tooltip.html(`
-                <div style="font-weight:700;color:var(--aksen);font-size:13px;text-transform:capitalize">"${d.id}"</div>
-                <div style="font-size:11px;color:#fff">Frekuensi Muncul: <b>${d.count} kali</b> dalam Berita Resmi Statistik</div>
-            `).style("opacity", 1)
-            .style("left", (event.pageX + 15) + "px")
-            .style("top", (event.pageY - 30) + "px");
-        })
-        .on("mousemove", event => {
-            tooltip.style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 30) + "px");
-        })
-        .on("mouseleave", function (event, d) {
-            d3.select(this).select("text:nth-child(2)")
-                .style("fill", getWordColor(d.id))
-                .style("font-size", d.fontSize + "px");
+        // Ukuran font
+        .fontSize(d => d.size)
 
-            tooltip.style("opacity", 0).style("left", "-1000px");
-        });
+        // Pola penyebaran
+        .spiral("archimedean")
+
+        // Setelah layout selesai
+        .on("end", draw);
+
+    layout.start();
+
+    // ============================================================
+    // 10. TOOLTIP
+    // ============================================================
+
+    const tooltip = d3.select(
+        ".d3-tooltip.map-tooltip"
+    );
+
+    // ============================================================
+    // 11. DRAW WORD CLOUD
+    // ============================================================
+
+    function draw(placedWords) {
+
+        const g = svg
+            .append("g")
+            .attr(
+                "class",
+                "word-cloud-group"
+            )
+            .attr(
+                "transform",
+                `translate(${W / 2},${H / 2})`
+            );
+
+        const items = g
+            .selectAll("g.word-item")
+            .data(placedWords)
+            .enter()
+            .append("g")
+            .attr(
+                "class",
+                "word-item"
+            )
+            .attr(
+                "transform",
+                d =>
+                    `translate(${d.x},${d.y}) rotate(${d.rotate})`
+            )
+            .style(
+                "cursor",
+                "pointer"
+            );
+
+        // ========================================================
+        // TEKS WORD CLOUD
+        // ========================================================
+
+        items
+            .append("text")
+            .attr(
+                "text-anchor",
+                "middle"
+            )
+            .attr(
+                "dy",
+                "0.35em"
+            )
+            .style(
+                "font-family",
+                "Archivo, var(--font-sans), sans-serif"
+            )
+            .style(
+                "font-size",
+                d => `${d.size}px`
+            )
+            .style(
+                "font-weight",
+                d =>
+                    d.count >= maxCount * 0.55
+                        ? "700"
+                        : "500"
+            )
+            .style(
+                "fill",
+                d => getWordColor(d.text)
+            )
+
+            // Halo agar teks tetap terbaca
+            .style(
+                "paint-order",
+                "stroke"
+            )
+            .style(
+                "stroke",
+                "#141414"
+            )
+            .style(
+                "stroke-width",
+                "3px"
+            )
+            .style(
+                "stroke-linejoin",
+                "round"
+            )
+
+            .text(
+                d => d.text
+            );
+
+        // ========================================================
+        // INTERAKSI
+        // ========================================================
+
+        items
+
+            .on(
+                "mouseenter",
+                function(event, d) {
+
+                    d3.select(this)
+                        .select("text")
+                        .transition()
+                        .duration(120)
+                        .style(
+                            "font-size",
+                            `${Math.min(
+                                d.size + 4,
+                                64
+                            )}px`
+                        )
+                        .style(
+                            "fill",
+                            "#ffffff"
+                        );
+
+                    if (!tooltip.empty()) {
+
+                        tooltip
+                            .html(`
+                                <div style="
+                                    font-weight:700;
+                                    color:var(--aksen);
+                                    font-size:13px;
+                                    text-transform:capitalize
+                                ">
+                                    "${d.text}"
+                                </div>
+
+                                <div style="
+                                    font-size:11px;
+                                    color:#fff
+                                ">
+                                    Frekuensi muncul:
+                                    <b>${d.count} kali</b>
+                                </div>
+                            `)
+
+                            .style(
+                                "opacity",
+                                1
+                            )
+
+                            .style(
+                                "left",
+                                `${event.pageX + 15}px`
+                            )
+
+                            .style(
+                                "top",
+                                `${event.pageY - 30}px`
+                            );
+                    }
+
+                }
+            )
+
+            .on(
+                "mousemove",
+                event => {
+
+                    if (!tooltip.empty()) {
+
+                        tooltip
+                            .style(
+                                "left",
+                                `${event.pageX + 15}px`
+                            )
+                            .style(
+                                "top",
+                                `${event.pageY - 30}px`
+                            );
+
+                    }
+
+                }
+            )
+
+            .on(
+                "mouseleave",
+                function(event, d) {
+
+                    d3.select(this)
+                        .select("text")
+                        .transition()
+                        .duration(120)
+                        .style(
+                            "font-size",
+                            `${d.size}px`
+                        )
+                        .style(
+                            "fill",
+                            getWordColor(d.text)
+                        );
+
+                    if (!tooltip.empty()) {
+
+                        tooltip
+                            .style(
+                                "opacity",
+                                0
+                            )
+                            .style(
+                                "left",
+                                "-1000px"
+                            );
+
+                    }
+
+                }
+            );
+    }
 }
 
 // ── 2. LINE CHART TREN KEMISKINAN HISTORIS (ALL PROVINCES + NASIONAL HIGHLIGHT) ──

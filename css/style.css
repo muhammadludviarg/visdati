@@ -684,3 +684,41 @@ select:focus, select:hover {
     min-height: 360px;
   }
 }
+
+/* ================================================================
+   WORD CLOUD — D3 CLOUD
+   ================================================================ */
+
+#chart-teks-brs {
+  min-height: 360px;
+  overflow: hidden;
+}
+
+#chart-teks-brs .word-cloud-group {
+  shape-rendering: geometricPrecision;
+}
+
+#chart-teks-brs .word-item text {
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    opacity 0.18s ease,
+    filter 0.18s ease;
+}
+
+#chart-teks-brs .word-item:hover text {
+  filter: brightness(1.12);
+}
+
+
+/* ================================================================
+   RESPONSIVE MOBILE
+   ================================================================ */
+
+@media (max-width: 640px) {
+
+  #chart-teks-brs {
+    min-height: 320px;
+  }
+
+}
