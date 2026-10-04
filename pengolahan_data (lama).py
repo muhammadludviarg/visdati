@@ -35,7 +35,7 @@ def normal(teks):
     return " ".join(re.sub(r"[^a-z0-9]+", " ", teks.lower()).split())
 
 ATURAN = {
-    "p0_provinsi":   [("persentase penduduk miskin", "provinsi dan daerah", "2025")],
+    "p0_provinsi":   [("persentase penduduk miskin", "provinsi dan daerah")],
     "garis":         [("garis kemiskinan", "provinsi")],
     "p1":            [("kedalaman kemiskinan",)],
     "p2":            [("keparahan kemiskinan",)],
