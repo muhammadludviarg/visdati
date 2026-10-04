@@ -1039,7 +1039,7 @@ function updateDumbbellYear(tahun, animate = true) {
         .attr("cx", xDesa)
         .attr("cy", 0)
         .attr("r", 5.5)
-        .attr("fill", "#599CDE")
+        .attr("fill", "#FF9A00")
         .style("opacity", 1);
     } else {
       row.select(".dot-desa").transition(t).style("opacity", 0);
@@ -1053,7 +1053,7 @@ function updateDumbbellYear(tahun, animate = true) {
         .attr("cx", xKota)
         .attr("cy", 0)
         .attr("r", 5.5)
-        .attr("fill", "#FF9A00")
+        .attr("fill", "#599CDE")
         .style("opacity", 1);
     } else {
       row.select(".dot-kota").transition(t).style("opacity", 0);
@@ -1109,12 +1109,12 @@ function updateDumbbellYear(tahun, animate = true) {
                 <div style="font-weight:700;font-size:12px;color:#F2F2F2;margin-bottom:6px">${prov} · ${tahun}</div>
                 <div style="display:flex; justify-content:space-between; gap:15px;">
                     <div>
-                        <div style="font-size:10px;color:#599CDE;font-weight:700">● Perdesaan</div>
+                        <div style="font-size:10px;color:#FF9A00;font-weight:700">● Perdesaan</div>
                         <div style="font-size:11px;color:#F2F2F2">${p0DesaTxt}</div>
                         <div style="font-size:10px;color:#BDBDBD">${jmDesaTxt} jiwa</div>
                     </div>
                     <div>
-                        <div style="font-size:10px;color:#FF9A00;font-weight:700">● Perkotaan</div>
+                        <div style="font-size:10px;color:#599CDE;font-weight:700">● Perkotaan</div>
                         <div style="font-size:11px;color:#F2F2F2">${p0KotaTxt}</div>
                         <div style="font-size:10px;color:#BDBDBD">${jmKotaTxt} jiwa</div>
                     </div>
