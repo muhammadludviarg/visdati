@@ -854,7 +854,7 @@ function updateTrenChart(selectedProvinsi) {
   if (titleEl) {
     titleEl.textContent =
       selectedProvinsi === "Indonesia"
-        ? "Tren Historis Persentase Penduduk Miskin Indonesia (1996–2025)"
+        ? "Tren Historis Persentase Penduduk Miskin Indonesia (2010–2025)"
         : `Tren Historis Kemiskinan: ${selectedProvinsi} (vs Semua Provinsi & Nasional)`;
   }
 }
